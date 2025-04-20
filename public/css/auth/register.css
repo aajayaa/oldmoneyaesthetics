@@ -1,0 +1,264 @@
+
+
+/* Main Section */
+main {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem;
+    height: 80vh;
+    overflow-y: scroll;
+}
+
+/* For WebKit browsers (Chrome, Safari) */
+main::-webkit-scrollbar {
+    width: 0;  /* Hide scrollbar but keep functionality */
+    background: transparent;  /* Optional: make scrollbar track transparent */
+  }
+
+  /* For Firefox */
+  main {
+    scrollbar-width: none;  /* Hide scrollbar */
+  }
+
+  /* For IE/Edge */
+  main {
+    -ms-overflow-style: none;  /* Hide scrollbar */
+  }
+
+.main-header {
+    text-align: center;
+    margin-bottom: 2rem;
+    border-bottom: 1px solid var(--warm-beige);
+    padding-bottom: 1rem;
+}
+
+.logo-main {
+    color: var(--navy-blue);
+    font-size: 2.5rem;
+    font-weight: bold;
+    letter-spacing: 1px;
+    margin-bottom: 0.5rem;
+}
+
+.tagline {
+    color: var(--pewter);
+    font-style: italic;
+}
+
+.register-container {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 3rem;
+}
+
+.register-form {
+    background-color: var(--white);
+    padding: 2.5rem;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 500px;
+    border: 1px solid var(--stone-gray);
+}
+
+.form-title {
+    color: var(--navy-blue);
+    margin-bottom: 1.5rem;
+    text-align: center;
+    font-size: 1.8rem;
+    position: relative;
+    padding-bottom: 0.5rem;
+}
+
+.form-title:after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80px;
+    height: 3px;
+    background-color: var(--gold-foil);
+}
+
+.form-group {
+    margin-bottom: 1.5rem;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    color: var(--navy-blue);
+    font-weight: 500;
+}
+
+.form-control {
+    width: 100%;
+    padding: 0.8rem 1rem;
+    border: 1px solid var(--stone-gray);
+    border-radius: 4px;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    background-color: var(--ivory-white);
+}
+
+.form-control:focus {
+    outline: none;
+    border-color: var(--gold-foil);
+    box-shadow: 0 0 0 2px rgba(197, 168, 128, 0.2);
+}
+
+.btn {
+    display: inline-block;
+    padding: 0.8rem 1.5rem;
+    border: none;
+    border-radius: 4px;
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-align: center;
+    text-decoration: none;
+}
+
+.btn-primary {
+    background-color: var(--hunter-green);
+    color: white;
+    width: 100%;
+}
+
+.btn-primary:hover {
+    background-color: var(--navy-blue);
+}
+
+.btn-outline {
+    background-color: transparent;
+    border: 1px solid var(--hunter-green);
+    color: var(--hunter-green);
+    width: 100%;
+}
+
+.btn-outline:hover {
+    background-color: var(--hunter-green);
+    color: white;
+}
+
+.social-login {
+    margin-top: 2rem;
+}
+
+.social-login p {
+    text-align: center;
+    color: var(--pewter);
+    margin-bottom: 1rem;
+    position: relative;
+}
+
+.social-login p:before,
+.social-login p:after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    width: 30%;
+    height: 1px;
+    background-color: var(--warm-beige);
+}
+
+.social-login p:before {
+    left: 0;
+}
+
+.social-login p:after {
+    right: 0;
+}
+
+.social-buttons {
+    display: flex;
+    gap: 1rem;
+}
+
+.social-btn {
+    flex: 1;
+    padding: 0.6rem;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-weight: 500;
+}
+
+.social-btn i {
+    margin-right: 0.5rem;
+}
+
+.btn-google {
+    background-color: #DB4437;
+}
+
+.btn-facebook {
+    background-color: #4267B2;
+}
+
+.login-link {
+    text-align: center;
+    margin-top: 1.5rem;
+    color: var(--pewter);
+}
+
+.login-link a {
+    color: var(--burgundy);
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.login-link a:hover {
+    text-decoration: underline;
+}
+
+.benefits {
+    background-color: var(--warm-beige);
+    padding: 2rem;
+    border-radius: 8px;
+    max-width: 400px;
+}
+
+.benefits-title {
+    color: var(--navy-blue);
+    margin-bottom: 1.5rem;
+    font-size: 1.5rem;
+    text-align: center;
+}
+
+.benefits-list {
+    list-style-type: none;
+}
+
+.benefits-list li {
+    margin-bottom: 1rem;
+    padding-left: 2rem;
+    position: relative;
+}
+
+.benefits-list li:before {
+    content: '✓';
+    position: absolute;
+    left: 0;
+    color: var(--success-green);
+    font-weight: bold;
+}
+
+@media (max-width: 768px) {
+    .register-container {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .benefits {
+        max-width: 500px;
+        margin-top: 2rem;
+    }
+}
+
+

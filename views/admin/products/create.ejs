@@ -1,0 +1,931 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Product | Heritage Collection</title>
+    <style>
+        :root {
+            /* Your color palette */
+            --ivory-white: #F8F4E9;
+            --warm-beige: #E6DAC8;
+            --stone-gray: #D9D9D6;
+            --navy-blue: #0A2342;
+            --hunter-green: #283D3B;
+            --burgundy: #6D2E46;
+            --gold-foil: #C5A880;
+            --charcoal-black: #2A2A2A;
+            --antique-brass: #B68D4C;
+            --pewter: #8A8A8A;
+            --success-green: #4A6B57;
+            --error-maroon: #8C2F3D;
+            --white: #ffffff;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Georgia', serif;
+        }
+
+        body {
+            display: flex;
+            min-height: 100vh;
+            background-color: var(--ivory-white);
+            color: var(--charcoal-black);
+        }
+
+        /* Sidebar Styles (same as before) */
+        .dashboard-sidebar {
+            width: 280px;
+            background-color: var(--navy-blue);
+            color: var(--ivory-white);
+            height: 100vh;
+            position: sticky;
+            top: 0;
+            overflow-y: auto;
+            transition: all 0.3s ease;
+            flex-shrink: 0;
+        }
+
+        /* (Include all previous sidebar styles here) */
+
+        /* Main Content Area */
+        .main-content {
+            flex: 1;
+            padding: 2rem;
+            overflow-y: auto;
+            transition: margin-left 0.3s ease;
+        }
+
+        /* Add Product Form Styles */
+        .form-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--warm-beige);
+        }
+
+        .form-title {
+            color: var(--navy-blue);
+            font-size: 1.8rem;
+        }
+
+        .form-actions {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 0.7rem 1.5rem;
+            border: none;
+            border-radius: 4px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+            text-decoration: none;
+        }
+
+        .btn-primary {
+            background-color: var(--hunter-green);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--navy-blue);
+        }
+
+        .btn-outline {
+            background-color: transparent;
+            border: 1px solid var(--hunter-green);
+            color: var(--hunter-green);
+        }
+
+        .btn-outline:hover {
+            background-color: var(--hunter-green);
+            color: white;
+        }
+
+        .product-form {
+            background-color: var(--white);
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        }
+
+        .form-section {
+            margin-bottom: 2rem;
+        }
+
+        .section-title {
+            color: var(--navy-blue);
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid var(--warm-beige);
+            font-size: 1.2rem;
+        }
+
+        .form-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group {
+            flex: 1;
+            min-width: 250px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--navy-blue);
+            font-weight: 500;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 0.7rem 1rem;
+            border: 1px solid var(--stone-gray);
+            border-radius: 4px;
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+            background-color: var(--ivory-white);
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--gold-foil);
+            box-shadow: 0 0 0 2px rgba(197, 168, 128, 0.2);
+        }
+
+        textarea.form-control {
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        .form-select {
+            appearance: none;
+            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%232A2A2A' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+            background-repeat: no-repeat;
+            background-position: right 0.75rem center;
+            background-size: 1rem;
+        }
+
+        .input-group {
+            display: flex;
+            align-items: center;
+        }
+
+        .input-group-prepend {
+            padding: 0.7rem 0.8rem;
+            background-color: var(--warm-beige);
+            border: 1px solid var(--stone-gray);
+            border-right: none;
+            border-radius: 4px 0 0 4px;
+            font-size: 0.9rem;
+            color: var(--charcoal-black);
+        }
+
+        .input-group .form-control {
+            border-radius: 0 4px 4px 0;
+        }
+
+        .image-upload {
+            border: 2px dashed var(--stone-gray);
+            border-radius: 8px;
+            padding: 2rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-bottom: 1rem;
+        }
+
+        .image-upload:hover {
+            border-color: var(--gold-foil);
+            background-color: rgba(197, 168, 128, 0.05);
+        }
+
+        .image-upload-icon {
+            font-size: 2.5rem;
+            color: var(--pewter);
+            margin-bottom: 1rem;
+        }
+
+        .image-upload-text {
+            color: var(--navy-blue);
+            margin-bottom: 0.5rem;
+        }
+
+        .image-upload-hint {
+            color: var(--pewter);
+            font-size: 0.85rem;
+        }
+
+        .preview-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .preview-thumbnail {
+            position: relative;
+            border-radius: 4px;
+            overflow: hidden;
+            border: 1px solid var(--stone-gray);
+        }
+
+        .preview-thumbnail img {
+            width: 100%;
+            height: 120px;
+            object-fit: cover;
+            display: block;
+        }
+
+        .remove-image {
+            position: absolute;
+            top: 0.3rem;
+            right: 0.3rem;
+            background-color: var(--error-maroon);
+            color: white;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .preview-thumbnail:hover .remove-image {
+            opacity: 1;
+        }
+
+        .variant-row {
+            display: flex;
+            gap: 1rem;
+            align-items: flex-end;
+            margin-bottom: 1rem;
+            padding: 1rem;
+            background-color: var(--warm-beige);
+            border-radius: 4px;
+        }
+
+        .remove-variant {
+            background-color: transparent;
+            border: none;
+            color: var(--error-maroon);
+            cursor: pointer;
+            font-size: 1.2rem;
+            padding: 0 0.5rem 0.5rem;
+        }
+
+        .add-variant {
+            background-color: transparent;
+            border: none;
+            color: var(--success-green);
+            cursor: pointer;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-top: 0.5rem;
+        }
+
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 50px;
+            height: 24px;
+            margin-left: 1rem;
+        }
+
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: var(--stone-gray);
+            transition: .4s;
+            border-radius: 24px;
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 18px;
+            width: 18px;
+            left: 3px;
+            bottom: 3px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+
+        input:checked+.slider {
+            background-color: var(--success-green);
+        }
+
+        input:checked+.slider:before {
+            transform: translateX(26px);
+        }
+
+
+
+        /* Size and Color Items */
+        .size-item,
+        .color-item {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+            margin-bottom: 1rem;
+            padding: 1rem;
+            background-color: var(--warm-beige);
+            border-radius: 4px;
+        }
+
+        .color-swatch {
+            width: 40px;
+            height: 40px;
+            border-radius: 4px;
+            border: 1px solid var(--stone-gray);
+            cursor: pointer;
+        }
+
+        .color-picker {
+            width: 40px;
+            height: 40px;
+            padding: 0;
+            border: none;
+            background: none;
+            cursor: pointer;
+        }
+
+        .remove-item {
+            background: none;
+            border: none;
+            color: var(--error-maroon);
+            cursor: pointer;
+            font-size: 1.2rem;
+        }
+
+
+
+        @media (max-width: 768px) {
+            .main-content {
+                padding: 1.5rem;
+            }
+
+            .form-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 1rem;
+            }
+
+            .form-actions {
+                width: 100%;
+                justify-content: flex-end;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .product-form {
+                padding: 1.5rem;
+            }
+
+            .form-row {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .form-group {
+                min-width: 100%;
+            }
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+
+<body>
+    <!-- Dashboard Sidebar (same as before) -->
+    <aside class="dashboard-sidebar">
+        <!-- Include your full sidebar code here -->
+    </aside>
+
+    <!-- Main Content Area -->
+    <main class="main-content">
+        <div class="form-header">
+            <h1 class="form-title">Add New Product</h1>
+            <div class="form-actions">
+                <button type="button" class="btn btn-outline">Discard</button>
+                <button type="button" class="btn btn-primary">Save Draft</button>
+                <button type="button" class="btn btn-primary">Publish Product</button>
+            </div>
+        </div>
+
+        <form class="product-form" method="POST" action="/admin/products/create" enctype="multipart/form-data">
+            <!-- Basic Information Section -->
+            <div class="form-section">
+                <h2 class="section-title">Basic Information</h2>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="productName">Product Name*</label>
+                        <input type="text" id="productName" name="productName" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="productSKU">SKU</label>
+                        <input type="text" id="productSKU" name="productSKU" class="form-control">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="productCategory">Category*</label>
+                        <select id="productCategory" name="productCategory" class="form-control form-select" required>
+                            <option value="">Select a category</option>
+
+                            <% categories.forEach(category=> { %>
+                                <option value="<%= category._id %>">
+                                    <%= category.name %>
+                                </option>
+                                <% }) %>
+
+
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="productCollection">Collection</label>
+                        <select id="productCollection" name="productCollection" class="form-control form-select">
+                            <option value="">Select a collection</option>
+                            <option value="starboy">Starboy</option>
+                            <option value="oldmoney">Old Money Classics</option>
+                            <option value="tailored">Tailored</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="productDescription">Description</label>
+                    <textarea id="productDescription" name="productDescription" class="form-control"></textarea>
+                </div>
+            </div>
+
+            <!-- Media Section -->
+            <div class="form-section">
+                <h2 class="section-title">Media</h2>
+                <div class="image-upload" id="imageUpload">
+                    <div class="image-upload-icon">
+                        <i class="fas fa-cloud-upload-alt"></i>
+                    </div>
+                    <div class="image-upload-text">Click to upload or drag and drop</div>
+                    <div class="image-upload-hint">SVG, PNG, JPG or GIF (max. 5MB each)</div>
+                    <input type="file" id="fileInput" multiple style="display: none;">
+                </div>
+                <div class="preview-grid" id="imagePreview">
+                    <!-- Images will appear here -->
+                </div>
+            </div>
+
+            <!-- Pricing Section -->
+            <div class="form-section">
+                <h2 class="section-title">Pricing</h2>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="productCurrency">Currency*</label>
+                        <select id="productCurrency" name="productCurrency" class="form-control form-select" required>
+                            <option value="INR">Nepalese Rupee (NPR)</option>
+                            <option value="USD">US Dollar (USD)</option>
+                            <option value="EUR">Euro (EUR)</option>
+                            <option value="GBP">British Pound (GBP)</option>
+                            <option value="CAD">Canadian Dollar (CAD)</option>
+                            <option value="AUD">Australian Dollar (AUD)</option>
+                            <option value="JPY">Japanese Yen (JPY)</option>
+                            <option value="INR">Indian Rupee (INR)</option>
+                            <option value="AED">UAE Dirham (AED)</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="productPrice">Price*</label>
+                        <div class="input-group">
+                            <span class="input-group-prepend currency-symbol">$</span>
+                            <input type="number" id="productPrice" name="productPrice" class="form-control" step="0.01"
+                                required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="productComparePrice">Compare at Price</label>
+                        <div class="input-group">
+                            <span class="input-group-prepend currency-symbol">$</span>
+                            <input type="number" id="productComparePrice" name="productComparePrice"
+                                class="form-control" step="0.01">
+                        </div>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="productCost">Cost per item</label>
+                        <div class="input-group">
+                            <span class="input-group-prepend currency-symbol">$</span>
+                            <input type="number" id="productCost" name="productCost" class="form-control" step="0.01">
+                        </div>
+                        <small class="text-muted">Customers won't see this</small>
+                    </div>
+                    <div class="form-group">
+                        <label>Charge taxes</label>
+                        <div style="display: flex; align-items: center;">
+                            <span>No</span>
+                            <label class="switch">
+                                <input type="hidden" name="chargeTaxes" value="false">
+                                <input type="checkbox" name="chargeTaxes" value="true"
+                                    onchange="this.previousElementSibling.value= this.checked ? 'true' : 'false' ">
+                                <span class="slider"></span>
+                            </label>
+                            <span>Yes</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Inventory Section -->
+            <div class="form-section">
+                <h2 class="section-title">Inventory</h2>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="productSKU">SKU</label>
+                        <input type="text" id="productSKU" name="productSKU" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label for="productBarcode">Barcode (ISBN, UPC, etc.)</label>
+                        <input type="text" id="productBarcode" name="productBarcode" class="form-control">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Track quantity</label>
+                        <div style="display: flex; align-items: center;">
+                            <span>No</span>
+                            <label class="switch">
+                                <input type="hidden" name="trackQuantity" value="false">
+                                <input type="checkbox" name="trackQuantity" value="true" checked
+                                    onchange="this.previousElementSibling.value = this.checked ? 'true' : 'false' ">
+                                <span class="slider"></span>
+                            </label>
+                            <span>Yes</span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Featured Product</label>
+                        <div style="display: flex; align-items: center;">
+                            <span>No</span>
+                            <label class="switch">
+                                <input type="hidden" name="isFeatured" value="false">
+                                <input type="checkbox" id="isFeatured" name="isFeatured" value="true" checked onchange="this.previousElementSibling.value = this.checked ? 'true' : 'false' ">
+                                <span class="slider"></span>
+                            </label>
+                            <span>Yes</span>
+                        </div>
+
+                    </div>
+                    <div class="form-group">
+                        <label for="productQuantity">Quantity</label>
+                        <input type="number" id="productQuantity" name="productQuantity" class="form-control" value="0">
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Sizes Section -->
+            <div class="form-section">
+                <h2 class="section-title">Sizes</h2>
+                <div id="sizesContainer">
+                    <!-- Size items will be added here -->
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <button type="button" class="btn btn-outline" id="addSize">
+                            <i class="fas fa-plus"></i> Add Size
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Colors Section -->
+            <div class="form-section">
+                <h2 class="section-title">Colors</h2>
+
+                <div id="colorsContainer">
+                    <!-- Color items will be added here -->
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <button type="button" class="btn btn-outline" id="addColor">
+                            <i class="fas fa-plus"></i> Add Color
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+
+
+
+
+            <div class="form-actions" style="margin-top: 2rem; justify-content: flex-end;">
+                <button type="button" class="btn btn-outline">Discard</button>
+                <button type="button" class="btn btn-primary">Save Draft</button>
+                <button type="submit" class="btn btn-primary">Publish Product</button>
+            </div>
+        </form>
+    </main>
+
+    <script>
+        // Image Upload Preview
+        const imageUpload = document.getElementById('imageUpload');
+        const fileInput = document.getElementById('fileInput');
+        const imagePreview = document.getElementById('imagePreview');
+
+        imageUpload.addEventListener('click', () => fileInput.click());
+
+        fileInput.addEventListener('change', function () {
+            const files = this.files;
+            for (let i = 0; i < files.length; i++) {
+                const file = files[i];
+                if (!file.type.match('image.*')) continue;
+
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    const thumb = document.createElement('div');
+                    thumb.className = 'preview-thumbnail';
+                    thumb.innerHTML = `
+                        <img src="${e.target.result}" alt="Preview">
+                        <div class="remove-image" title="Remove image">
+                            <i class="fas fa-times"></i>
+                        </div>
+                    `;
+                    imagePreview.appendChild(thumb);
+
+                    // Add remove functionality
+                    thumb.querySelector('.remove-image').addEventListener('click', function () {
+                        thumb.remove();
+                    });
+                }
+                reader.readAsDataURL(file);
+            }
+        });
+
+        // Drag and drop functionality
+        imageUpload.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            imageUpload.style.borderColor = 'var(--gold-foil)';
+            imageUpload.style.backgroundColor = 'rgba(197, 168, 128, 0.1)';
+        });
+
+        imageUpload.addEventListener('dragleave', () => {
+            imageUpload.style.borderColor = 'var(--stone-gray)';
+            imageUpload.style.backgroundColor = 'transparent';
+        });
+
+        imageUpload.addEventListener('drop', (e) => {
+            e.preventDefault();
+            imageUpload.style.borderColor = 'var(--stone-gray)';
+            imageUpload.style.backgroundColor = 'transparent';
+            fileInput.files = e.dataTransfer.files;
+            const event = new Event('change');
+            fileInput.dispatchEvent(event);
+        });
+
+
+
+
+
+
+        // sizes and colors section 
+        // Size Management
+        document.addEventListener('DOMContentLoaded', function () {
+            const addSizeButton = document.getElementById('addSize');
+            const sizesContainer = document.getElementById('sizesContainer');
+        
+            if (addSizeButton && sizesContainer) {
+                addSizeButton.addEventListener('click', function () {
+                    const sizeItem = document.createElement('div');
+                    sizeItem.className = 'size-item';
+                    sizeItem.innerHTML = `
+                        <div class="form-group" style="flex: 2;">
+                            <input type="text" class="form-control" name="sizeName[]" placeholder="Size name (e.g., Small)" required>
+                        </div>
+                        <div class="form-group" style="flex: 3;">
+                            <input type="text" class="form-control" name="sizeDescription[]" placeholder="Description (optional)">
+                        </div>
+                        <div class="form-group">
+                            <label class="switch">
+                                <input type="hidden" name="sizeEnabled[]" value="false">
+                                <input type="checkbox" name="sizeEnabled[]" value="true" checked 
+                                       onchange="this.previousElementSibling.value = this.checked ? 'true' : 'false'">
+                                <span class="slider"></span>
+                            </label>
+                            <span>Enabled</span>
+                        </div>
+                        <button type="button" class="remove-item">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    `;
+        
+                    sizesContainer.appendChild(sizeItem);
+        
+                    const removeButton = sizeItem.querySelector('.remove-item');
+                    removeButton.addEventListener('click', () => sizeItem.remove());
+                });
+            }
+        });
+        
+        // Color Management
+        document.getElementById('addColor').addEventListener('click', function () {
+            const colorId = Date.now();
+            const colorItem = document.createElement('div');
+            colorItem.className = 'color-item';
+            colorItem.innerHTML = `
+                <div class="form-group">
+                    <div class="color-swatch" id="swatch-${colorId}" 
+                         style="background-color: #ffffff;"></div>
+                    <input type="color" class="color-picker" id="picker-${colorId}" 
+                           value="#ffffff" style="display: none;">
+                </div>
+                <div class="form-group" style="flex: 2;">
+                    <input type="text" class="form-control color-name" name="colorName[]" placeholder="Color name" required>
+                </div>
+                <div class="form-group">
+                    <input type="text" class="form-control hex-code" name="hexCode[]" placeholder="Hex code" 
+                           id="hex-${colorId}" value="#ffffff">
+                </div>
+                <div class="form-group">
+                    <label class="switch">
+                        <input type="hidden" name="colorEnabled[]" value="false">
+                        <input type="checkbox" name="colorEnabled[]" value="true" checked 
+                               onchange="this.previousElementSibling.value = this.checked ? 'true' : 'false'">
+                        <span class="slider"></span>
+                    </label>
+                    <span>Enabled</span>
+                </div>
+                <button type="button" class="remove-item">
+                    <i class="fas fa-times"></i>
+                </button>
+            `;
+            document.getElementById('colorsContainer').appendChild(colorItem);
+
+            // Color picker functionality with name mapping
+            const picker = colorItem.querySelector('.color-picker');
+            const swatch = colorItem.querySelector('.color-swatch');
+            const hexInput = colorItem.querySelector('.hex-code');
+            const nameInput = colorItem.querySelector('.color-name');
+
+            // Color name mapping
+            const colorNames = {
+                '#000000': 'Black',
+                '#FFFFFF': 'White',
+                '#FF0000': 'Red',
+                '#00FF00': 'Green',
+                '#0000FF': 'Blue',
+                '#FFFF00': 'Yellow',
+                '#FF00FF': 'Magenta',
+                '#00FFFF': 'Cyan',
+                '#808080': 'Gray',
+                '#800000': 'Maroon',
+                '#808000': 'Olive',
+                '#008000': 'Dark Green',
+                '#800080': 'Purple',
+                '#008080': 'Teal',
+                '#000080': 'Navy'
+            };
+
+            function findClosestColor(hex) {
+                let closest = '#FFFFFF';
+                let minDistance = Number.MAX_VALUE;
+
+                const r1 = parseInt(hex.slice(1, 3), 16);
+                const g1 = parseInt(hex.slice(3, 5), 16);
+                const b1 = parseInt(hex.slice(5, 7), 16);
+
+                for (let color in colorNames) {
+                    const r2 = parseInt(color.slice(1, 3), 16);
+                    const g2 = parseInt(color.slice(3, 5), 16);
+                    const b2 = parseInt(color.slice(5, 7), 16);
+
+                    const distance = Math.sqrt(
+                        Math.pow(r2 - r1, 2) +
+                        Math.pow(g2 - g1, 2) +
+                        Math.pow(b2 - b1, 2)
+                    );
+
+                    if (distance < minDistance) {
+                        minDistance = distance;
+                        closest = color;
+                    }
+                }
+                return colorNames[closest];
+            }
+
+            function updateColorFields(hexValue) {
+                swatch.style.backgroundColor = hexValue;
+                hexInput.value = hexValue.toUpperCase();
+                nameInput.value = findClosestColor(hexValue);
+            }
+
+            swatch.addEventListener('click', () => picker.click());
+
+            picker.addEventListener('input', function () {
+                updateColorFields(this.value);
+            });
+
+            hexInput.addEventListener('change', function () {
+                if (/^#[0-9A-F]{6}$/i.test(this.value)) {
+                    picker.value = this.value;
+                    updateColorFields(this.value);
+                }
+            });
+
+            // Add remove functionality
+            colorItem.querySelector('.remove-item').addEventListener('click', function () {
+                colorItem.remove();
+            });
+        });
+
+        // Handle form submission
+        // Handle form submission
+        document.querySelector('.product-form').addEventListener('submit', function (e) {
+            e.preventDefault();
+
+            const formData = new FormData(this);
+
+            // Collect sizes
+            const sizes = Array.from(document.querySelectorAll('.size-item')).map(item => ({
+                name: item.querySelector('input[name="sizeName[]"]').value,
+                description: item.querySelector('input[name="sizeDescription[]"]').value,
+                enabled: item.querySelector('input[name="sizeEnabled[]"][type="checkbox"]').checked
+            }));
+
+            // Collect colors
+            const colors = Array.from(document.querySelectorAll('.color-item')).map(item => ({
+                name: item.querySelector('input[name="colorName[]"]').value,
+                hexCode: item.querySelector('input[name="hexCode[]"]').value,
+                enabled: item.querySelector('input[name="colorEnabled[]"][type="checkbox"]').checked
+            }));
+
+            // Add sizes and colors to formData
+            formData.append('sizes', JSON.stringify(sizes));
+            formData.append('colors', JSON.stringify(colors));
+
+            // Add images
+            const imageFiles = fileInput.files;
+            for (let i = 0; i < imageFiles.length; i++) {
+                formData.append('images', imageFiles[i]);
+            }
+
+            // Submit the form
+            fetch('/admin/products/create', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(data => {
+                if (data.success) {
+                    window.location.href = '/admin/products';
+                } else {
+                    alert('Error creating product: ' + data.message);
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Error creating product. Please try again.');
+            });
+        });
+
+
+
+
+
+    </script>
+</body>
+
+</html>

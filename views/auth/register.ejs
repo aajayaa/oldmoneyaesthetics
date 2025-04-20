@@ -1,0 +1,70 @@
+<%- include ('../partials/header') %> 
+        <main>
+            <header class="main-header">
+                <div class="logo-main">STRIV.ENP</div>
+                <div class="tagline">Timeless style for the modern home</div>
+            </header>
+    
+            <div class="register-container">
+                <form class="register-form" action="/register" method="POST">
+                    <h2 class="form-title">Create Your Account</h2>
+                    
+                    <div class="form-group">
+                        <label for="firstName">First Name</label>
+                        <input type="text" id="firstName" name="firstName" class="form-control" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="lastName">Last Name</label>
+                        <input type="text" id="lastName" name="lastName" class="form-control" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="email">Email Address</label>
+                        <input type="email" id="email" name="email" class="form-control" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="password">Password</label>
+                        <input type="password" id="password" name="password" class="form-control" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="confirmPassword">Confirm Password</label>
+                        <input type="password" id="confirmPassword" name="confirmPassword" class="form-control" required>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-primary">Register</button>
+                    
+                    <div class="social-login">
+                        <p>or register with</p>
+                        <div class="social-buttons">
+                            <a href="#" class="btn social-btn btn-google">
+                                <i class="fab fa-google"></i> Google
+                            </a>
+                            <a href="#" class="btn social-btn btn-facebook">
+                                <i class="fab fa-facebook-f"></i> Facebook
+                            </a>
+                        </div>
+                    </div>
+                    
+                    <div class="login-link">
+                        Already have an account? <a href="/login">Sign in</a>
+                    </div>
+                </form>
+                
+                <div class="benefits">
+                    <h3 class="benefits-title">Why Register With Us?</h3>
+                    <ul class="benefits-list">
+                        <li>Exclusive access to our heritage collections</li>
+                        <li>Early notifications for new arrivals</li>
+                        <li>Members-only discounts and promotions</li>
+                        <li>Faster checkout with saved details</li>
+                        <li>Track your order history</li>
+                        <li>Create wishlists for future purchases</li>
+                    </ul>
+                </div>
+            </div>
+        </main>
+      
+  <%- include('../partials/footer')  %> 

@@ -1,0 +1,112 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    /* ===== Core Neutrals (Backgrounds & Text) ===== */
+    --ivory-white: #F8F4E9;
+    /* Main background, product cards */
+    --warm-beige: #E6DAC8;
+    /* Secondary backgrounds, subtle dividers */
+    --stone-gray: #D9D9D6;
+    /* Borders, neutral accents */
+
+    /* ===== Classic Heritage Colors (Brand Primary) ===== */
+    --navy-blue: #0A2342;
+    /* Headers, navigation, buttons */
+    --hunter-green: #283D3B;
+    /* CTAs, featured sections */
+    --burgundy: #6D2E46;
+    /* Sale badges, premium collections */
+
+    /* ===== Sophisticated Accents (Interactive Elements) ===== */
+    --gold-foil: #C5A880;
+    /* Buttons, icons, hover states */
+    --charcoal-black: #2A2A2A;
+    /* Body text, headings (softer than pure black) */
+
+    /* ===== Vintage Metallics (Decorative Details) ===== */
+    --antique-brass: #B68D4C;
+    /* Icon accents, decorative lines */
+    --pewter: #8A8A8A;
+    /* Secondary icons, subtle metallic touches */
+
+    /* ===== Utility Colors (Functional) ===== */
+    --success-green: #4A6B57;
+    /* Confirmation messages */
+    --error-maroon: #8C2F3D;
+    /* Error alerts (matches burgundy palette) */
+
+    --white: #ffffff;
+}
+
+body {
+    background-color: var(--ivory-white);
+    color: var(--charcoal-black);
+    font-family: 'Lato', sans-serif;
+    line-height: 1.6;
+    
+}
+
+.product-card {
+    background-color: var(--ivory-white);
+    border: 1px solid var(--stone-gray);
+}
+
+.secondary-section {
+    background-color: var(--warm-beige);
+}
+
+h1,
+h2,
+h3 {
+    color: var(--navy-blue);
+    font-family: 'Playfair Display', serif;
+}
+
+.primary-button {
+    background-color: var(--navy-blue);
+    color: var(--ivory-white);
+    border: none;
+}
+
+.secondary-button {
+    background-color: var(--hunter-green);
+    color: var(--ivory-white);
+}
+
+.luxury-accent-button {
+    background-color: var(--gold-foil);
+    color: var(--charcoal-black);
+    line-height: 1.6;
+}
+
+.primary-button:hover {
+    background-color: var(--burgundy);
+    /* Darker shade for hover */
+}
+
+a:hover:not(.logo) {
+    color: var(--ivory-white);
+}
+
+
+
+.divider-line {
+    border-top: 1px solid var(--pewter);
+}
+
+a {
+    text-decoration: none;
+    color: var(--gold-foil);
+}
+
+
+
+
+
+
+
+/* avatar div */

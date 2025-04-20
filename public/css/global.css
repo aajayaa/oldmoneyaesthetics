@@ -1,0 +1,109 @@
+/* ===== CORE VARIABLES ===== */
+:root {
+    /* Neutrals */
+    --ivory-white: #F8F4E9;
+    --warm-beige: #E6DAC8;
+    --stone-gray: #D9D9D6;
+    --charcoal-black: #2A2A2A;
+    --white: #FFFFFF;
+    --pewter: #8A8A8A;
+    
+    /* Brand Colors */
+    --navy-blue: #0A2342;
+    --hunter-green: #283D3B;
+    --burgundy: #6D2E46;
+    
+    /* Accents */
+    --gold-foil: #C5A880;
+    --antique-brass: #B68D4C;
+    
+    /* Utility */
+    --success-green: #4A6B57;
+    --error-maroon: #8C2F3D;
+  }
+  
+  /* ===== BASE RESET & TYPOGRAPHY ===== */
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  body {
+    background-color: var(--ivory-white);
+    color: var(--charcoal-black);
+    font-family: 'Lato', sans-serif;
+    line-height: 1.6;
+  }
+  
+  h1, h2, h3 {
+    color: var(--navy-blue);
+    font-family: 'Playfair Display', serif;
+  }
+  
+  a {
+    color: var(--gold-foil);
+    text-decoration: none;
+    transition: color 0.3s ease;
+  }
+  
+  a:hover:not(.logo) {
+    color: var(--ivory-white);
+  }
+  
+  /* ===== REUSABLE COMPONENTS ===== */
+  /* Cards */
+  .card {
+    background-color: var(--ivory-white);
+    border: 1px solid var(--stone-gray);
+  }
+  
+  .section-bg {
+    background-color: var(--warm-beige);
+  }
+  
+  .divider {
+    border-top: 1px solid var(--pewter);
+  }
+  
+  .avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+  }
+  
+  /* Buttons */
+  .btn {
+    display: inline-block;
+    padding: 0.8rem 1.5rem;
+    border: none;
+    border-radius: 0;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    line-height: 1.6;
+  }
+  
+  .btn-primary {
+    background-color: var(--navy-blue);
+    color: var(--ivory-white);
+  }
+  
+  .btn-primary:hover {
+    background-color: var(--burgundy);
+  }
+  
+  .btn-secondary {
+    background-color: var(--hunter-green);
+    color: var(--ivory-white);
+  }
+  
+  .btn-accent {
+    background-color: var(--gold-foil);
+    color: var(--charcoal-black);
+  }
+  
+  /* ===== LAYOUT COMPONENTS ===== */
+  
+  
+  
