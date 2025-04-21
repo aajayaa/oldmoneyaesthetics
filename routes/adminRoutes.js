@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const { isAuthenticated, isAdmin } = require('../middlewares/isAuthenticated');
+const { isAuthenticated, isAdmin } = require('../middlewares/isauthenticated');
 const adminController = require('../controllers/adminController');
 const uploadOptions = require('../utils/uploadOptions');
 

@@ -1,0 +1,74 @@
+<%- include ('../partials/header') %> 
+<section class="contact-page">
+    <div class="contact-container">
+        <!-- Contact Content -->
+        <div class="contact-content">
+            <h2 class="contact-title">Atelier Consultations</h2>
+            <div class="title-divider"></div>
+            <p class="contact-intro">Schedule a private fitting or inquire about our bespoke services through our London atelier.</p>
+
+            <!-- Contact Info -->
+            <div class="contact-info-grid">
+                <div class="contact-info">
+                    <div class="info-icon"></div>
+                    <h3>Savile Row Atelier</h3>
+                    <p>17 Savile Row<br>London W1S 3PZ<br>United Kingdom</p>
+                </div>
+
+                <div class="contact-info">
+                    <div class="info-icon"></div>
+                    <h3>Appointments</h3>
+                    <p>Monday - Friday: 9AM - 6PM<br>Saturday: By Appointment<br>+44 20 7946 0815</p>
+                </div>
+            </div>
+
+            <!-- Contact Form -->
+            <form class="contact-form">
+                <div class="form-row">
+                    <div class="input-group">
+                        <label>Full Name</label>
+                        <input type="text" required>
+                    </div>
+                    <div class="input-group">
+                        <label>Email</label>
+                        <input type="email" required>
+                    </div>
+                </div>
+
+                <div class="input-group">
+                    <label>Subject</label>
+                    <select required>
+                        <option value="">Select Inquiry Type</option>
+                        <option>Bespoke Commission</option>
+                        <option>Fitting Appointment</option>
+                        <option>Fabric Inquiry</option>
+                        <option>General Inquiry</option>
+                    </select>
+                </div>
+
+                <div class="input-group">
+                    <label>Message</label>
+                    <textarea rows="5" required></textarea>
+                </div>
+
+                <button type="submit" class="contact-cta">Send Inquiry</button>
+            </form>
+        </div>
+
+        <!-- Map Section -->
+        <div class="contact-map">
+            <div class="map-overlay"></div>
+            <div class="map-placeholder">
+                <span>Savile Row Atelier</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Social Links -->
+    <div class="social-links">
+        <a href="#" class="social-icon">ⅅ</a>
+        <a href="#" class="social-icon">ⓘ</a>
+        <a href="#" class="social-icon">ⓣ</a>
+    </div>
+</section>
+<%- include ('../partials/footer') %> 

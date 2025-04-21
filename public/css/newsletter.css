@@ -1,0 +1,164 @@
+/* Newsletter Styles */
+.newsletter {
+    padding: 4rem 5%;
+    background-color: var(--ivory-white);
+    border-top: 1px solid var(--stone-gray);
+    position: relative;
+}
+
+.newsletter-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    gap: 3rem;
+    align-items: center;
+}
+
+.newsletter-content {
+    flex: 1;
+}
+
+.newsletter-title {
+    font-family: 'Playfair Display', serif;
+    color: var(--navy-blue);
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+    position: relative;
+    display: inline-block;
+}
+
+.newsletter-title::after {
+    content: '';
+    position: absolute;
+    bottom: -10px;
+    left: 0;
+    width: 60%;
+    height: 2px;
+    background: var(--antique-brass);
+}
+
+.newsletter-desc {
+    color: var(--pewter);
+    font-size: 1.1rem;
+    line-height: 1.6;
+    margin: 1.5rem 0;
+    max-width: 500px;
+}
+
+.newsletter-form {
+    max-width: 600px;
+}
+
+.form-group {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.newsletter-input {
+    flex: 1;
+    padding: 1rem;
+    border: 1px solid var(--stone-gray);
+    background: var(--white);
+    font-size: 1rem;
+    min-width: 250px;
+    transition: all 0.3s ease;
+}
+
+.newsletter-input:focus {
+    outline: none;
+    border-color: var(--antique-brass);
+    box-shadow: 0 0 0 2px rgba(182, 141, 76, 0.1);
+}
+
+.newsletter-button {
+    background: var(--navy-blue);
+    color: var(--gold-foil);
+    border: 1px solid var(--gold-foil);
+    padding: 1rem 2.5rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.newsletter-button:hover {
+    background: var(--hunter-green);
+    transform: translateY(-1px);
+}
+
+.privacy-note {
+    color: var(--pewter);
+    font-size: 0.9rem;
+    font-style: italic;
+}
+
+/* Decorative Elements */
+.newsletter-decoration {
+    flex: 0 0 300px;
+    position: relative;
+    display: none; /* Hidden on mobile */
+}
+
+.seal {
+    width: 200px;
+    height: 200px;
+    background: var(--white);
+    border: 2px solid var(--antique-brass);
+    border-radius: 50%;
+    position: relative;
+    margin: 0 auto;
+}
+
+.seal::before {
+    content: 'Est. 1892';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: var(--antique-brass);
+    font-family: 'Playfair Display', serif;
+    font-size: 1.2rem;
+}
+
+/* Responsive Design */
+@media (min-width: 768px) {
+    .newsletter-decoration {
+        display: block;
+    }
+    
+    .newsletter-container {
+        padding: 2rem 0;
+    }
+}
+
+@media (max-width: 768px) {
+    .newsletter-container {
+        flex-direction: column;
+        text-align: center;
+    }
+    
+    .newsletter-title::after {
+        left: 50%;
+        transform: translateX(-50%);
+        width: 100px;
+    }
+    
+    .form-group {
+        flex-direction: column;
+    }
+    
+    .newsletter-button {
+        width: 100%;
+    }
+}
+
+@media (max-width: 480px) {
+    .newsletter-title {
+        font-size: 2rem;
+    }
+    
+    .newsletter-desc {
+        font-size: 1rem;
+    }
+}

@@ -58,7 +58,7 @@ const productSchema = new mongoose.Schema({
     },
     sizes: [sizeSchema],
     colors: [colorSchema],
-    collections: {
+    prductCollection: {
         type: String,
         required: false, // Changed from true to false
         trim: true
@@ -81,11 +81,7 @@ const productSchema = new mongoose.Schema({
         sparse: true,
         trim: true
     },
-    collection: {
-        type: String,
-        required: false, // Made collection optional
-        trim: true
-    },
+    
     originalPrice: Number, // For showing discounts
     costPrice: Number, // For profit calculations
     currency: {

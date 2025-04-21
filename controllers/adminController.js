@@ -22,40 +22,43 @@ const getDashboard = async (req, res) => {
 
 const createProduct = async (req, res) => {
   try {
-    // Add null check for req.user
+    // Check if user is authenticated
     if (!req.user) {
       return res.redirect('/login');
     }
-    
+
     const categories = await Category.find({ status: 'published' }).select('name _id');
     res.render('admin/products/create', {
       title: 'Create Product',
       user: req.user,
-      isAdmin: req.user.role.toLowerCase() === 'admin', // Standardize role check to lowercase
+      isAdmin: req.user?.role?.toLowerCase() === 'admin', // Safe navigation operator
       categories: categories
     });
   } catch (error) {
     console.error('Error fetching categories:', error);
-    res.render('admin/products/create', {
-      title: 'Create Product',
-      user: req.user,
-      isAdmin: req.user?.role?.toLowerCase() === 'admin', // Safe navigation
-      categories: []
-    });
+    res.redirect('/login'); // Redirect to login on error
   }
 };
 
-const viewProduct = (req, res) => {
-  // Add null check for req.user
-  if (!req.user) {
-    return res.redirect('/login');
+const viewProduct = async (req, res) => {
+  try {
+    // Check if user is authenticated
+    if (!req.user) {
+      return res.redirect('/login');
+    }
+
+    const products = await Product.find().populate('category');
+    
+    res.render('admin/products/view', {
+      title: 'All Products',
+      user: req.user,
+      isAdmin: req.user?.role?.toLowerCase() === 'admin', // Safe navigation
+      products: products || []
+    });
+  } catch (error) {
+    console.error('Error fetching products:', error);
+    res.redirect('/login');
   }
-  
-  res.render('admin/products/view', {
-    title: 'All Products',
-    user: req.user,
-    isAdmin: req.user.role.toLowerCase() === 'admin' // Standardize role check
-  });
 };
 
 const createCategory = (req, res) => {
@@ -96,6 +99,8 @@ const getBooleanValue = (value) => {
 
 const handleCategorySubmit = async (req, res) => {
   try {
+
+    console.log(req.user);
     // Add null check for req.user
     if (!req.user) {
       return res.redirect('/login');
@@ -115,7 +120,7 @@ const handleCategorySubmit = async (req, res) => {
     if (!file) return res.status(400).send("No image in the request");
     
     const fileName = req.file.filename;
-    const basePath = `${req.protocol}://${req.get("host")}/public/uploads/`;
+    const basePath = `${req.protocol}://${req.get("host")}/public/images/uploads/`;
 
     let category = new Category({
       name: categoryName,
@@ -201,14 +206,14 @@ const handleProductSubmit = async (req, res) => {
       return res.status(400).send("At least one image is required");
     }
 
-    const basePath = `${req.protocol}://${req.get("host")}/public/uploads/`;
+    const basePath = `${req.protocol}://${req.get("host")}/public/images/uploads/`;
     const imagesPaths = req.files.map((file) => `${basePath}${file.filename}`);
 
     let product = new Product({
       name: productName,
       description: productDescription,
       category: productCategory,
-      collection: productCollection,
+      productCollection: productCollection,
       price: parseFloat(productPrice), // Ensure number type
       originalPrice: productComparePrice ? parseFloat(productComparePrice) : null,
       costPrice: productCost ? parseFloat(productCost) : null,

@@ -1,0 +1,77 @@
+<%- include ('../partials/header') %> 
+<section class="cart-page">
+    <div class="cart-container">
+        <!-- Cart Items -->
+        <div class="cart-items">
+            <h2 class="cart-title">Your Atelier Selection</h2>
+            
+            <% if (cart && cart.length > 0) { %>
+                <% cart.forEach(item => { %>
+                    <article class="cart-item">
+                        <div class="item-image">
+                            <img src="<%= item.image %>" alt="<%= item.name %>">
+                        </div>
+                        
+                        <div class="item-details">
+                            <h3 class="item-title"><%= item.name %></h3>
+                            <p class="item-meta">Size: <%= item.size %> | Color: <%= item.color %></p>
+                            <p class="item-price">£<%= item.price %></p>
+                            
+                            <div class="item-controls">
+                                <div class="quantity-selector">
+                                    <button class="quantity-btn" data-id="<%= item.productId %>">−</button>
+                                    <input type="number" value="<%= item.quantity %>" min="1" class="quantity-input">
+                                    <button class="quantity-btn" data-id="<%= item.productId %>">+</button>
+                                </div>
+                                <button class="remove-item" data-id="<%= item.productId %>">Remove</button>
+                            </div>
+                        </div>
+                    </article>
+                <% }) %>
+
+                <!-- Cart Summary -->
+                <aside class="cart-summary">
+                    <div class="summary-card">
+                        <h3 class="summary-title">Order Summary</h3>
+                        
+                        <div class="summary-details">
+                            <div class="summary-row">
+                                <span>Subtotal</span>
+                                <span>£<%= cart.reduce((total, item) => total + (item.price * item.quantity), 0) %></span>
+                            </div>
+                            <div class="summary-row">
+                                <span>Shipping</span>
+                                <span>£50</span>
+                            </div>
+                            <div class="summary-row total">
+                                <span>Total</span>
+                                <span>£<%= cart.reduce((total, item) => total + (item.price * item.quantity), 0) + 50 %></span>
+                            </div>
+                        </div>
+
+                        <div class="promo-section">
+                            <input type="text" placeholder="Enter Promo Code" class="promo-input">
+                            <button class="promo-btn">Apply</button>
+                        </div>
+
+                        <a href="/cart/checkout"><button class="checkout-btn">Proceed to Checkout</button></a>
+                        
+                        <p class="security-note">
+                            <svg aria-hidden="true" viewBox="0 0 24 24" width="16" height="16">
+                                <path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm0 10.99h7c-.53 4.12-3.28 7.79-7 8.94V12H5V6.3l7-3.11v8.8z"/>
+                            </svg>
+                            Secure SSL Encryption
+                        </p>
+                    </div>
+                </aside>
+            <% } else { %>
+                <div class="empty-cart">
+                    <h2>Your cart is empty</h2>
+                    <a href="/collections" class="continue-shopping">Continue Shopping</a>
+                </div>
+            <% } %>
+        </div>
+    </div>
+</section>
+
+<%- include ('../partials/footer') %>

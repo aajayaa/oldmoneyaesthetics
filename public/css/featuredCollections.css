@@ -1,0 +1,139 @@
+/* Featured Collections Styles */
+.collections {
+    padding: 4rem 5%;
+    background-color: var(--ivory-white);
+    position: relative;
+}
+
+.section-header {
+    text-align: center;
+    margin-bottom: 3rem;
+    position: relative;
+}
+
+.section-title {
+    font-family: 'Playfair Display', serif;
+    color: var(--hunter-green);
+    font-size: 2.5rem;
+    letter-spacing: 0.5px;
+}
+
+.title-decoration {
+    width: 60px;
+    height: 2px;
+    background: var(--antique-brass);
+    margin: 1rem auto;
+    position: relative;
+}
+
+.title-decoration::after {
+    content: '';
+    position: absolute;
+    top: -4px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 8px;
+    height: 8px;
+    background: var(--gold-foil);
+    border-radius: 50%;
+}
+
+.collection-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.collection-card {
+    position: relative;
+    min-height: 400px;
+    background: var(--white);
+    padding: 2rem;
+    overflow: hidden;
+    transition: transform 0.3s ease;
+}
+
+.card-decoration {
+    position: absolute;
+    width: 100%;
+    height: 4px;
+    background: var(--gold-foil);
+    top: 0;
+    left: -100%;
+    transition: left 0.4s ease;
+}
+
+.collection-card:hover .card-decoration {
+    left: 0;
+}
+
+.card-content {
+    position: relative;
+    z-index: 2;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+.collection-title {
+    font-family: 'Playfair Display', serif;
+    color: var(--navy-blue);
+    font-size: 1.8rem;
+    margin-bottom: 1rem;
+}
+
+.collection-desc {
+    color: var(--pewter);
+    font-size: 1rem;
+    line-height: 1.6;
+    margin-bottom: 1.5rem;
+    font-weight: 300;
+    max-width: 80%;
+}
+
+.collection-cta {
+    background: transparent;
+    border: 1px solid var(--antique-brass);
+    color: var(--charcoal-black);
+    padding: 0.75rem 2rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.collection-cta:hover {
+    background: var(--antique-brass);
+    color: var(--white);
+}
+
+.card-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.collection-card:hover .card-overlay {
+    opacity: 1;
+}
+
+@media (max-width: 768px) {
+    .collection-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .collection-card {
+        min-height: 300px;
+    }
+}

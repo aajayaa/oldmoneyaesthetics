@@ -1,0 +1,198 @@
+/* About Page Styles */
+.about-page {
+    background-color: var(--ivory-white);
+}
+
+.about-hero {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    min-height: 80vh;
+}
+
+.hero-content {
+    padding: 4rem 5%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    background: var(--warm-beige);
+}
+
+.heritage-title {
+    font-family: 'Playfair Display', serif;
+    color: var(--navy-blue);
+    font-size: 3.5rem;
+    line-height: 1.1;
+    margin-bottom: 1.5rem;
+}
+
+.heritage-subtitle {
+    color: var(--pewter);
+    font-size: 1.5rem;
+    font-weight: 300;
+    margin-bottom: 2rem;
+}
+
+.heritage-divider {
+    width: 100px;
+    height: 2px;
+    background: var(--antique-brass);
+    margin: 2rem 0;
+}
+
+.hero-image {
+    background: url('https://via.placeholder.com/800x1000/F8F4E9/C5A880?text=Heritage+Tailoring') center/cover;
+    position: relative;
+}
+
+.image-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(45deg, rgba(10, 35, 66, 0.1) 0%, rgba(248, 244, 233, 0) 100%);
+}
+
+/* History Section */
+.history-section {
+    padding: 4rem 5%;
+}
+
+.history-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.section-title {
+    font-family: 'Playfair Display', serif;
+    color: var(--hunter-green);
+    font-size: 2.5rem;
+    margin-bottom: 2rem;
+}
+
+.history-text {
+    color: var(--charcoal-black);
+    line-height: 1.6;
+    margin-bottom: 2rem;
+    font-size: 1.1rem;
+}
+
+.signature-image {
+    max-width: 200px;
+    opacity: 0.8;
+}
+
+/* Timeline */
+.timeline {
+    position: relative;
+    padding-left: 2rem;
+}
+
+.timeline::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 100%;
+    width: 2px;
+    background: var(--antique-brass);
+}
+
+.timeline-item {
+    position: relative;
+    margin-bottom: 3rem;
+}
+
+.timeline-marker {
+    position: absolute;
+    left: -2.7rem;
+    top: 0;
+    width: 20px;
+    height: 20px;
+    border: 2px solid var(--antique-brass);
+    border-radius: 50%;
+    background: var(--ivory-white);
+}
+
+.timeline-content h3 {
+    font-family: 'Playfair Display', serif;
+    color: var(--navy-blue);
+    margin-bottom: 0.5rem;
+}
+
+/* Values Section */
+.values-section {
+    padding: 4rem 5%;
+    background: var(--warm-beige);
+}
+
+.values-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.value-card {
+    padding: 2rem;
+    background: var(--white);
+    text-align: center;
+    border: 1px solid var(--stone-gray);
+}
+
+.value-icon {
+    width: 50px;
+    height: 50px;
+    background: var(--gold-foil);
+    margin: 0 auto 1rem;
+    clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+    .about-hero {
+        grid-template-columns: 1fr;
+    }
+    
+    .history-grid {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+    }
+    
+    .values-grid {
+        grid-template-columns: 1fr;
+        max-width: 600px;
+    }
+}
+
+@media (max-width: 768px) {
+    .heritage-title {
+        font-size: 2.5rem;
+    }
+    
+    .timeline {
+        padding-left: 1.5rem;
+    }
+    
+    .timeline-marker {
+        left: -1.8rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .heritage-title {
+        font-size: 2rem;
+    }
+    
+    .heritage-subtitle {
+        font-size: 1.2rem;
+    }
+    
+    .section-title {
+        font-size: 2rem;
+    }
+}

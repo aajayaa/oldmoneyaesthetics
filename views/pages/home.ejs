@@ -1,4 +1,152 @@
-<%- include ('../partials/header') %> 
-<%- include ('../partials/footer') %> 
+<%- include ('../partials/header') %>
+    <section class="hero">
 
-    
+
+        <div class="hero-content">
+            <h1 class="hero-title">Timeless Elegance Woven Through Generations</h1>
+            <p class="hero-subtitle">Experience sartorial excellence with bespoke tailoring traditions dating back to
+                1892. Discover garments crafted with precision and heritage.</p>
+            <button class="cta-button">Explore the Atelier</button>
+        </div>
+
+        <div class="hero-decor"></div>
+    </section>
+
+
+    <section class="collections">
+        <div class="section-header">
+            <h2 class="section-title">Curated Collections</h2>
+            <div class="title-decoration"></div>
+        </div>
+
+        <div class="collection-grid">
+            <!-- Starboy Collection -->
+            <article class="collection-card">
+                <div class="card-decoration"></div>
+                <div class="card-content">
+                    <h3 class="collection-title">Starboy</h3>
+                    <p class="collection-desc">Modern interpretations of classic silhouettes</p>
+                    <button class="collection-cta">Discover</button>
+                </div>
+                <div class="card-overlay" style="background-color: rgba(10, 35, 66, 0.1);"></div>
+            </article>
+
+            <!-- Oldmoney Classics -->
+            <article class="collection-card">
+                <div class="card-decoration"></div>
+                <div class="card-content">
+                    <h3 class="collection-title">Oldmoney Classics</h3>
+                    <p class="collection-desc">Timeless pieces that define generations</p>
+                    <button class="collection-cta">Explore</button>
+                </div>
+                <div class="card-overlay" style="background-color: rgba(40, 61, 59, 0.1);"></div>
+            </article>
+
+            <!-- Tailored -->
+            <article class="collection-card">
+                <div class="card-decoration"></div>
+                <div class="card-content">
+                    <h3 class="collection-title">Tailored</h3>
+                    <p class="collection-desc">Bespoke perfection for the discerning gentleman</p>
+                    <button class="collection-cta">Commission</button>
+                </div>
+                <div class="card-overlay" style="background-color: rgba(109, 46, 70, 0.1);"></div>
+            </article>
+        </div>
+    </section>
+
+
+    <section class="products">
+        <div class="section-header">
+            <h2 class="section-title">Signature Creations</h2>
+            <div class="title-decoration"></div>
+        </div>
+
+        <div class="product-grid">
+            <% products.forEach(product=> { %>
+                <!-- Product 1 -->
+                <article class="product-card">
+                    <a href="/product/<%= product._id %> ">
+                        <div class="product-image">
+                            <img src="<%= product.image %> " alt="<%= product.name.toUpperCase() %> ">
+                            <div class="product-overlay"></div>
+                        </div>
+                        <div class="product-info">
+                            <h3 class="product-title">
+                                <%= product.name.toUpperCase() %>
+                            </h3>
+                            <p class="product-desc">
+                                <%= product.description %>
+                            </p>
+                            <div class="product-meta">
+                                <span class="product-price">
+                                    <%= `${product.currency}.${product.price}` %>
+                                </span>
+                                <button class="product-cta">Configure</button>
+                            </div>
+                        </div>
+                    </a>
+                </article>
+                <% }) %>
+
+
+                    <!-- Product 2 -->
+                    <article class="product-card">
+                        <div class="product-image">
+                            <img src="https://via.placeholder.com/400x500/F8F4E9/C5A880?text=Cashmere+Coat"
+                                alt="Chesterfield Coat">
+                            <div class="product-overlay"></div>
+                        </div>
+                        <div class="product-info">
+                            <h3 class="product-title">Chesterfield Coat</h3>
+                            <p class="product-desc">Double-breasted cashmere overcoat</p>
+                            <div class="product-meta">
+                                <span class="product-price">£1,950</span>
+                                <button class="product-cta">Configure</button>
+                            </div>
+                        </div>
+                    </article>
+
+                    <!-- Product 3 -->
+                    <article class="product-card">
+                        <div class="product-image">
+                            <img src="https://via.placeholder.com/400x500/F8F4E9/C5A880?text=Silk+Waistcoat"
+                                alt="Brocade Waistcoat">
+                            <div class="product-overlay"></div>
+                        </div>
+                        <div class="product-info">
+                            <h3 class="product-title">Brocade Waistcoat</h3>
+                            <p class="product-desc">Hand-embroidered silk evening waistcoat</p>
+                            <div class="product-meta">
+                                <span class="product-price">£650</span>
+                                <button class="product-cta">Configure</button>
+                            </div>
+                        </div>
+                    </article>
+        </div>
+    </section>
+
+    <section class="newsletter">
+        <div class="newsletter-container">
+            <div class="newsletter-content">
+                <h2 class="newsletter-title">The Gentleman's Ledger</h2>
+                <p class="newsletter-desc">Receive exclusive access to private sales, tailoring insights, and heritage
+                    craftsmanship stories.</p>
+
+                <form class="newsletter-form">
+                    <div class="form-group">
+                        <input type="email" placeholder="Your refined email address" class="newsletter-input">
+                        <button type="submit" class="newsletter-button">Subscribe</button>
+                    </div>
+                    <p class="privacy-note">We guard your privacy like our signature stitchwork</p>
+                </form>
+            </div>
+
+            <div class="newsletter-decoration">
+                <div class="seal"></div>
+            </div>
+        </div>
+    </section>
+
+
+    <%- include ('../partials/footer') %>

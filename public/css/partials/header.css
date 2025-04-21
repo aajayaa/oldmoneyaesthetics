@@ -39,8 +39,41 @@
 .icon i {
     margin: 0 8px;
 }
+.profile-dropdown {
+    position: relative;
+    display: inline-block;
+}
+
 .avatar {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%; 
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    cursor: pointer;
+    object-fit: cover;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    right: 0;
+    background-color: var(--white);
+    min-width: 160px;
+    box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+    z-index: 1;
+    border-radius: 4px;
+}
+
+.dropdown-content a {
+    color: var(--charcoal-black);
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+}
+
+.dropdown-content a:hover {
+    background-color: var(--ivory-white);
+}
+
+.profile-dropdown:hover .dropdown-content {
+    display: block;
 }
