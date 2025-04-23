@@ -55,14 +55,48 @@
 .dropdown-content {
     display: none;
     position: absolute;
+    top: 100%;
     right: 0;
-    background-color: var(--white);
-    min-width: 160px;
-    box-shadow: 0 8px 16px rgba(0,0,0,0.1);
-    z-index: 1;
+    background: var(--white);
+    padding: 1rem;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
     border-radius: 4px;
+    z-index: 1000;
 }
 
+.search-container.active {
+    display: block;
+}
+
+.search-form {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.search-input {
+    padding: 0.5rem 1rem;
+    border: 1px solid var(--stone-gray);
+    border-radius: 4px;
+    min-width: 250px;
+}
+
+.search-submit {
+    background: var(--navy-blue);
+    color: var(--gold-foil);
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.search-submit:hover {
+    background: var(--hunter-green);
+}
+
+#searchToggle {
+    cursor: pointer;
+}
 .dropdown-content a {
     color: var(--charcoal-black);
     padding: 12px 16px;

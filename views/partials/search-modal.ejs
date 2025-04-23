@@ -1,0 +1,137 @@
+<!-- Add this to your header -->
+<div class="search-modal">
+    <div class="search-overlay"></div>
+    <div class="search-container">
+      <button class="close-search">&times;</button>
+      <div class="search-content">
+        <input type="text" placeholder="Search our collections..." class="search-input">
+        <button class="search-button">Search</button>
+      </div>
+    </div>
+  </div>
+  
+  <style>
+  /* Search Modal Styles */
+  .search-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+  }
+  
+  .search-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(42, 42, 42, 0.8);
+  }
+  
+  .search-container {
+    position: relative;
+    background: var(--white);
+    padding: 2rem;
+    border-radius: 8px;
+    width: 90%;
+    max-width: 600px;
+    animation: modalSlideIn 0.3s ease-out;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+  }
+  
+  .close-search {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    background: none;
+    border: none;
+    font-size: 2rem;
+    color: var(--pewter);
+    cursor: pointer;
+    transition: color 0.3s ease;
+  }
+  
+  .close-search:hover {
+    color: var(--charcoal-black);
+  }
+  
+  .search-content {
+    display: flex;
+    gap: 1rem;
+    margin-top: 2rem;
+  }
+  
+  .search-input {
+    flex: 1;
+    padding: 1rem;
+    border: 1px solid var(--stone-gray);
+    font-size: 1.1rem;
+  }
+  
+  .search-button {
+    padding: 1rem 2rem;
+    background: var(--navy-blue);
+    color: var(--gold-foil);
+    border: 1px solid var(--gold-foil);
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+  
+  .search-button:hover {
+    background: var(--hunter-green);
+  }
+  
+  @keyframes modalSlideIn {
+    from {
+      transform: translateY(-50px);
+      opacity: 0;
+    }
+    to {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  }
+  </style>
+  
+  <script>
+  // Get elements
+  const searchIcon = document.querySelector('.fa-search');
+  const searchModal = document.querySelector('.search-modal');
+  const closeSearch = document.querySelector('.close-search');
+  const searchOverlay = document.querySelector('.search-overlay');
+  
+  // Open modal
+  searchIcon.addEventListener('click', () => {
+    searchModal.style.display = 'flex';
+    setTimeout(() => searchModal.style.opacity = '1', 10);
+  });
+  
+  // Close modal functions
+  function closeSearchModal() {
+    searchModal.style.opacity = '0';
+    setTimeout(() => searchModal.style.display = 'none', 300);
+  }
+  
+  // Close events
+  closeSearch.addEventListener('click', closeSearchModal);
+  searchOverlay.addEventListener('click', closeSearchModal);
+  
+  // Close on ESC key
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') closeSearchModal();
+  });
+  
+  // Handle Enter key in search input
+  document.querySelector('.search-input').addEventListener('keypress', (e) => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      // Add your search logic here
+      console.log('Search for:', e.target.value);
+    }
+  });
+  </script>

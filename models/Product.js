@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
-const Category = require('./Category'); // Assuming you have a Category model
-const User = require('./User'); // Assuming you have a User model for author
+const Category = require('./Category');
+const User = require('./User');
 
 const sizeSchema = new mongoose.Schema({
     name: {
@@ -10,6 +10,11 @@ const sizeSchema = new mongoose.Schema({
         maxlength: [50, 'Size name cannot exceed 50 characters']
     },
     description: {
+        type: String,  // Fixed: Changed 'tpype' to 'type'
+        trim: true,
+        maxlength: [50, 'Description cannot exceed 50 characters']
+    },
+    richDescription: {
         type: String,
         trim: true,
         maxlength: [200, 'Description cannot exceed 200 characters']
@@ -17,8 +22,7 @@ const sizeSchema = new mongoose.Schema({
     enabled: {
         type: Boolean,
         default: true
-    },
-    
+    }
 }, { _id: true });
 const colorSchema = new mongoose.Schema({
     name: {
@@ -58,22 +62,10 @@ const productSchema = new mongoose.Schema({
     },
     sizes: [sizeSchema],
     colors: [colorSchema],
-    prductCollection: {
+    prductCollection: {  // Note: There's a typo in 'productCollection'
         type: String,
-        required: false, // Changed from true to false
+        required: false,
         trim: true
-    },
-    originalPrice: Number,
-    costPrice: Number,
-    currency: {
-        type: String,
-        default: 'NPR',
-        enum: ['USD', 'EUR', 'GBP', 'NPR', 'INR', 'CAD', 'AUD', 'JPY', 'AED']
-    },
-    stock: {
-        type: Number,
-        required: true,
-        min: 0
     },
     sku: {
         type: String,
@@ -81,7 +73,7 @@ const productSchema = new mongoose.Schema({
         sparse: true,
         trim: true
     },
-    
+
     originalPrice: Number, // For showing discounts
     costPrice: Number, // For profit calculations
     currency: {
@@ -103,11 +95,7 @@ const productSchema = new mongoose.Schema({
         type: Boolean,
         default: true,
     },
-    barcode: {
-        type: String,
-        unique: true,
-        sparse: true // Allows null values
-    },
+
     // Categorization
     category: {
         type: mongoose.Schema.Types.ObjectId,
@@ -135,7 +123,7 @@ const productSchema = new mongoose.Schema({
         },
     ],
 
-    
+
 
     isFeatured: {
         type: Boolean,

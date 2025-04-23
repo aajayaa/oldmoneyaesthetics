@@ -1,403 +1,403 @@
-<%- include ('../../partials/admin/sidebar') %> 
+<%- include ('../../partials/admin/sidebar') %>
 
 
 
-<style>
-    :root {
-        /* Your color palette */
-        --ivory-white: #F8F4E9;
-        --warm-beige: #E6DAC8;
-        --stone-gray: #D9D9D6;
-        --navy-blue: #0A2342;
-        --hunter-green: #283D3B;
-        --burgundy: #6D2E46;
-        --gold-foil: #C5A880;
-        --charcoal-black: #2A2A2A;
-        --antique-brass: #B68D4C;
-        --pewter: #8A8A8A;
-        --success-green: #4A6B57;
-        --error-maroon: #8C2F3D;
-        --white: #ffffff;
-    }
-
-    * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-        font-family: 'Georgia', serif;
-    }
-
-    body {
-        display: flex;
-        min-height: 100vh;
-        background-color: var(--ivory-white);
-        color: var(--charcoal-black);
-    }
-
-    /* Sidebar Styles (same as before) */
-    .dashboard-sidebar {
-        width: 280px;
-        background-color: var(--navy-blue);
-        color: var(--ivory-white);
-        height: 100vh;
-        position: sticky;
-        top: 0;
-        overflow-y: auto;
-        transition: all 0.3s ease;
-        flex-shrink: 0;
-    }
-    
-    /* (Include all previous sidebar styles here) */
-    
-    /* Main Content Area */
-    .main-content {
-        flex: 1;
-        padding: 2rem;
-        overflow-y: auto;
-        transition: margin-left 0.3s ease;
-    }
-
-    /* Products Page Styles */
-    .page-header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-bottom: 2rem;
-        padding-bottom: 1rem;
-        border-bottom: 1px solid var(--warm-beige);
-    }
-
-    .page-title {
-        color: var(--navy-blue);
-        font-size: 1.8rem;
-    }
-
-    .page-actions {
-        display: flex;
-        gap: 1rem;
-    }
-
-    .btn {
-        display: inline-block;
-        padding: 0.7rem 1.5rem;
-        border: none;
-        border-radius: 4px;
-        font-size: 0.9rem;
-        font-weight: 500;
-        cursor: pointer;
-        transition: all 0.3s ease;
-        text-align: center;
-        text-decoration: none;
-    }
-
-    .btn-primary {
-        background-color: var(--hunter-green);
-        color: white;
-    }
-
-    .btn-primary:hover {
-        background-color: var(--navy-blue);
-    }
-
-    .btn-outline {
-        background-color: transparent;
-        border: 1px solid var(--hunter-green);
-        color: var(--hunter-green);
-    }
-
-    .btn-outline:hover {
-        background-color: var(--hunter-green);
-        color: white;
-    }
-
-    /* Filters Bar */
-    .filters-bar {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 1rem;
-        margin-bottom: 2rem;
-        padding: 1rem;
-        background-color: var(--white);
-        border-radius: 8px;
-        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
-    }
-
-    .filter-group {
-        flex: 1;
-        min-width: 200px;
-    }
-
-    .filter-group label {
-        display: block;
-        margin-bottom: 0.5rem;
-        color: var(--navy-blue);
-        font-size: 0.85rem;
-        font-weight: 500;
-    }
-
-    .filter-control {
-        width: 100%;
-        padding: 0.6rem 1rem;
-        border: 1px solid var(--stone-gray);
-        border-radius: 4px;
-        font-size: 0.9rem;
-        background-color: var(--ivory-white);
-    }
-
-    .filter-control:focus {
-        outline: none;
-        border-color: var(--gold-foil);
-    }
-
-    .filter-actions {
-        display: flex;
-        align-items: flex-end;
-        gap: 0.5rem;
-    }
-
-    /* Products Table */
-    .products-table {
-        width: 100%;
-        border-collapse: collapse;
-        background-color: var(--white);
-        border-radius: 8px;
-        overflow: hidden;
-        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
-    }
-
-    .products-table th {
-        background-color: var(--navy-blue);
-        color: var(--ivory-white);
-        padding: 1rem;
-        text-align: left;
-        font-weight: 500;
-    }
-
-    .products-table td {
-        padding: 1rem;
-        border-bottom: 1px solid var(--warm-beige);
-        vertical-align: middle;
-    }
-
-    .products-table tr:last-child td {
-        border-bottom: none;
-    }
-
-    .products-table tr:hover {
-        background-color: rgba(230, 218, 200, 0.2);
-    }
-
-    .product-info {
-        display: flex;
-        align-items: center;
-        gap: 1rem;
-    }
-
-    .product-image {
-        width: 60px;
-        height: 60px;
-        border-radius: 4px;
-        object-fit: cover;
-        border: 1px solid var(--stone-gray);
-    }
-
-    .product-name {
-        font-weight: 500;
-        color: var(--navy-blue);
-        margin-bottom: 0.25rem;
-    }
-
-    .product-sku {
-        font-size: 0.8rem;
-        color: var(--pewter);
-    }
-
-    .status-badge {
-        display: inline-block;
-        padding: 0.3rem 0.6rem;
-        border-radius: 4px;
-        font-size: 0.8rem;
-        font-weight: 500;
-    }
-
-    .status-active {
-        background-color: rgba(74, 107, 87, 0.1);
-        color: var(--success-green);
-    }
-
-    .status-draft {
-        background-color: rgba(138, 138, 138, 0.1);
-        color: var(--pewter);
-    }
-
-    .status-archived {
-        background-color: rgba(140, 47, 61, 0.1);
-        color: var(--error-maroon);
-    }
-
-    .price-value {
-        font-weight: 500;
-        color: var(--navy-blue);
-    }
-
-    .price-compare {
-        font-size: 0.8rem;
-        color: var(--pewter);
-        text-decoration: line-through;
-        margin-left: 0.5rem;
-    }
-
-    .stock-value {
-        font-weight: 500;
-    }
-
-    .stock-in {
-        color: var(--success-green);
-    }
-
-    .stock-out {
-        color: var(--error-maroon);
-    }
-
-    .stock-low {
-        color: var(--antique-brass);
-    }
-
-    .action-btn {
-        background: none;
-        border: none;
-        color: var(--pewter);
-        cursor: pointer;
-        font-size: 1rem;
-        margin-right: 0.8rem;
-        transition: color 0.3s ease;
-    }
-
-    .action-btn:hover {
-        color: var(--navy-blue);
-    }
-
-    .action-btn.delete:hover {
-        color: var(--error-maroon);
-    }
-
-    /* Pagination */
-    .pagination {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-top: 2rem;
-        padding-top: 1rem;
-        border-top: 1px solid var(--warm-beige);
-    }
-
-    .pagination-info {
-        color: var(--pewter);
-        font-size: 0.9rem;
-    }
-
-    .pagination-controls {
-        display: flex;
-        gap: 0.5rem;
-    }
-
-    .page-btn {
-        width: 36px;
-        height: 36px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        border-radius: 4px;
-        border: 1px solid var(--stone-gray);
-        background-color: var(--white);
-        color: var(--charcoal-black);
-        cursor: pointer;
-        transition: all 0.3s ease;
-    }
-
-    .page-btn.active {
-        background-color: var(--navy-blue);
-        color: var(--ivory-white);
-        border-color: var(--navy-blue);
-    }
-
-    .page-btn:hover:not(.active) {
-        background-color: var(--warm-beige);
-    }
-
-    .page-btn.disabled {
-        opacity: 0.5;
-        cursor: not-allowed;
-    }
-
-    /* Empty State */
-    .empty-state {
-        text-align: center;
-        padding: 4rem 2rem;
-        background-color: var(--white);
-        border-radius: 8px;
-        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
-    }
-
-    .empty-icon {
-        font-size: 3rem;
-        color: var(--pewter);
-        margin-bottom: 1rem;
-    }
-
-    .empty-title {
-        color: var(--navy-blue);
-        margin-bottom: 0.5rem;
-    }
-
-    .empty-text {
-        color: var(--pewter);
-        margin-bottom: 1.5rem;
-        max-width: 500px;
-        margin-left: auto;
-        margin-right: auto;
-    }
-
-    @media (max-width: 992px) {
-        .products-table {
-            display: block;
-            overflow-x: auto;
-            white-space: nowrap;
+    <style>
+        :root {
+            /* Your color palette */
+            --ivory-white: #F8F4E9;
+            --warm-beige: #E6DAC8;
+            --stone-gray: #D9D9D6;
+            --navy-blue: #0A2342;
+            --hunter-green: #283D3B;
+            --burgundy: #6D2E46;
+            --gold-foil: #C5A880;
+            --charcoal-black: #2A2A2A;
+            --antique-brass: #B68D4C;
+            --pewter: #8A8A8A;
+            --success-green: #4A6B57;
+            --error-maroon: #8C2F3D;
+            --white: #ffffff;
         }
-    }
 
-    @media (max-width: 768px) {
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Georgia', serif;
+        }
+
+        body {
+            display: flex;
+            min-height: 100vh;
+            background-color: var(--ivory-white);
+            color: var(--charcoal-black);
+        }
+
+        /* Sidebar Styles (same as before) */
+        .dashboard-sidebar {
+            width: 280px;
+            background-color: var(--navy-blue);
+            color: var(--ivory-white);
+            height: 100vh;
+            position: sticky;
+            top: 0;
+            overflow-y: auto;
+            transition: all 0.3s ease;
+            flex-shrink: 0;
+        }
+
+        /* (Include all previous sidebar styles here) */
+
+        /* Main Content Area */
         .main-content {
-            padding: 1.5rem;
+            flex: 1;
+            padding: 2rem;
+            overflow-y: auto;
+            transition: margin-left 0.3s ease;
         }
-        
-        .page-header {
-            flex-direction: column;
-            align-items: flex-start;
-            gap: 1rem;
-        }
-        
-        .page-actions {
-            width: 100%;
-            justify-content: flex-end;
-        }
-    }
 
-    @media (max-width: 576px) {
-        .filters-bar {
-            flex-direction: column;
+        /* Products Page Styles */
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--warm-beige);
         }
-        
-        .filter-actions {
-            justify-content: flex-end;
+
+        .page-title {
+            color: var(--navy-blue);
+            font-size: 1.8rem;
         }
-        
-        .pagination {
-            flex-direction: column;
+
+        .page-actions {
+            display: flex;
             gap: 1rem;
         }
-    }
-</style>
+
+        .btn {
+            display: inline-block;
+            padding: 0.7rem 1.5rem;
+            border: none;
+            border-radius: 4px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+            text-decoration: none;
+        }
+
+        .btn-primary {
+            background-color: var(--hunter-green);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--navy-blue);
+        }
+
+        .btn-outline {
+            background-color: transparent;
+            border: 1px solid var(--hunter-green);
+            color: var(--hunter-green);
+        }
+
+        .btn-outline:hover {
+            background-color: var(--hunter-green);
+            color: white;
+        }
+
+        /* Filters Bar */
+        .filters-bar {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            padding: 1rem;
+            background-color: var(--white);
+            border-radius: 8px;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+        }
+
+        .filter-group {
+            flex: 1;
+            min-width: 200px;
+        }
+
+        .filter-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--navy-blue);
+            font-size: 0.85rem;
+            font-weight: 500;
+        }
+
+        .filter-control {
+            width: 100%;
+            padding: 0.6rem 1rem;
+            border: 1px solid var(--stone-gray);
+            border-radius: 4px;
+            font-size: 0.9rem;
+            background-color: var(--ivory-white);
+        }
+
+        .filter-control:focus {
+            outline: none;
+            border-color: var(--gold-foil);
+        }
+
+        .filter-actions {
+            display: flex;
+            align-items: flex-end;
+            gap: 0.5rem;
+        }
+
+        /* Products Table */
+        .products-table {
+            width: 100%;
+            border-collapse: collapse;
+            background-color: var(--white);
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        }
+
+        .products-table th {
+            background-color: var(--navy-blue);
+            color: var(--ivory-white);
+            padding: 1rem;
+            text-align: left;
+            font-weight: 500;
+        }
+
+        .products-table td {
+            padding: 1rem;
+            border-bottom: 1px solid var(--warm-beige);
+            vertical-align: middle;
+        }
+
+        .products-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .products-table tr:hover {
+            background-color: rgba(230, 218, 200, 0.2);
+        }
+
+        .product-info {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .product-image {
+            width: 60px;
+            height: 60px;
+            border-radius: 4px;
+            object-fit: cover;
+            border: 1px solid var(--stone-gray);
+        }
+
+        .product-name {
+            font-weight: 500;
+            color: var(--navy-blue);
+            margin-bottom: 0.25rem;
+        }
+
+        .product-sku {
+            font-size: 0.8rem;
+            color: var(--pewter);
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 0.3rem 0.6rem;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+
+        .status-active {
+            background-color: rgba(74, 107, 87, 0.1);
+            color: var(--success-green);
+        }
+
+        .status-draft {
+            background-color: rgba(138, 138, 138, 0.1);
+            color: var(--pewter);
+        }
+
+        .status-archived {
+            background-color: rgba(140, 47, 61, 0.1);
+            color: var(--error-maroon);
+        }
+
+        .price-value {
+            font-weight: 500;
+            color: var(--navy-blue);
+        }
+
+        .price-compare {
+            font-size: 0.8rem;
+            color: var(--pewter);
+            text-decoration: line-through;
+            margin-left: 0.5rem;
+        }
+
+        .stock-value {
+            font-weight: 500;
+        }
+
+        .stock-in {
+            color: var(--success-green);
+        }
+
+        .stock-out {
+            color: var(--error-maroon);
+        }
+
+        .stock-low {
+            color: var(--antique-brass);
+        }
+
+        .action-btn {
+            background: none;
+            border: none;
+            color: var(--pewter);
+            cursor: pointer;
+            font-size: 1rem;
+            margin-right: 0.8rem;
+            transition: color 0.3s ease;
+        }
+
+        .action-btn:hover {
+            color: var(--navy-blue);
+        }
+
+        .action-btn.delete:hover {
+            color: var(--error-maroon);
+        }
+
+        /* Pagination */
+        .pagination {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 2rem;
+            padding-top: 1rem;
+            border-top: 1px solid var(--warm-beige);
+        }
+
+        .pagination-info {
+            color: var(--pewter);
+            font-size: 0.9rem;
+        }
+
+        .pagination-controls {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .page-btn {
+            width: 36px;
+            height: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 4px;
+            border: 1px solid var(--stone-gray);
+            background-color: var(--white);
+            color: var(--charcoal-black);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .page-btn.active {
+            background-color: var(--navy-blue);
+            color: var(--ivory-white);
+            border-color: var(--navy-blue);
+        }
+
+        .page-btn:hover:not(.active) {
+            background-color: var(--warm-beige);
+        }
+
+        .page-btn.disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 4rem 2rem;
+            background-color: var(--white);
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        }
+
+        .empty-icon {
+            font-size: 3rem;
+            color: var(--pewter);
+            margin-bottom: 1rem;
+        }
+
+        .empty-title {
+            color: var(--navy-blue);
+            margin-bottom: 0.5rem;
+        }
+
+        .empty-text {
+            color: var(--pewter);
+            margin-bottom: 1.5rem;
+            max-width: 500px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        @media (max-width: 992px) {
+            .products-table {
+                display: block;
+                overflow-x: auto;
+                white-space: nowrap;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .main-content {
+                padding: 1.5rem;
+            }
+
+            .page-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 1rem;
+            }
+
+            .page-actions {
+                width: 100%;
+                justify-content: flex-end;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .filters-bar {
+                flex-direction: column;
+            }
+
+            .filter-actions {
+                justify-content: flex-end;
+            }
+
+            .pagination {
+                flex-direction: column;
+                gap: 1rem;
+            }
+        }
+    </style>
 
     <!-- Main Content Area -->
     <main class="main-content">
@@ -461,177 +461,51 @@
                 </tr>
             </thead>
             <tbody>
-                <!-- Product 1 -->
-                <tr>
-                    <td>
-                        <div class="product-info">
-                            <img src="https://images.unsplash.com/photo-1555041469-a586c61ea9bc" alt="Product" class="product-image">
-                            <div>
-                                <div class="product-name">Heritage Oak Dining Table</div>
-                                <div class="product-sku">SKU: HC-TBL-001</div>
+
+                <% products.forEach(product=> { %>
+
+
+                    <!-- Product 1 -->
+                    <tr>
+                        <td>
+                            <div class="product-info">
+                                <img src="<%= product.image %> " alt="Product" class="product-image">
+                                <div>
+                                    <div class="product-name">
+                                        <%= product.name %>
+                                    </div>
+                                    <div class="product-sku">SKU: <%= product.sku %>
+                                    </div>
+                                </div>
                             </div>
-                        </div>
-                    </td>
-                    <td>
-                        <span class="status-badge status-active">Active</span>
-                    </td>
-                    <td>
-                        <span class="price-value">$1,299.00</span>
-                        <span class="price-compare">$1,499.00</span>
-                    </td>
-                    <td>
-                        <span class="stock-value stock-in">12 in stock</span>
-                    </td>
-                    <td>Furniture</td>
-                    <td>
-                        <button class="action-btn" title="Edit">
-                            <i class="fas fa-edit"></i>
-                        </button>
-                        <button class="action-btn" title="Duplicate">
-                            <i class="fas fa-copy"></i>
-                        </button>
-                        <button class="action-btn delete" title="Delete">
-                            <i class="fas fa-trash"></i>
-                        </button>
-                    </td>
-                </tr>
-                
-                <!-- Product 2 -->
-                <tr>
-                    <td>
-                        <div class="product-info">
-                            <img src="https://images.unsplash.com/photo-1567538096630-e0c55bd6374c" alt="Product" class="product-image">
-                            <div>
-                                <div class="product-name">Artisan Ceramic Vase</div>
-                                <div class="product-sku">SKU: HC-VAS-042</div>
-                            </div>
-                        </div>
-                    </td>
-                    <td>
-                        <span class="status-badge status-active">Active</span>
-                    </td>
-                    <td>
-                        <span class="price-value">$89.00</span>
-                    </td>
-                    <td>
-                        <span class="stock-value stock-low">3 in stock</span>
-                    </td>
-                    <td>Home Decor</td>
-                    <td>
-                        <button class="action-btn" title="Edit">
-                            <i class="fas fa-edit"></i>
-                        </button>
-                        <button class="action-btn" title="Duplicate">
-                            <i class="fas fa-copy"></i>
-                        </button>
-                        <button class="action-btn delete" title="Delete">
-                            <i class="fas fa-trash"></i>
-                        </button>
-                    </td>
-                </tr>
-                
-                <!-- Product 3 -->
-                <tr>
-                    <td>
-                        <div class="product-info">
-                            <img src="https://images.unsplash.com/photo-1581539250439-c96689b516dd" alt="Product" class="product-image">
-                            <div>
-                                <div class="product-name">Linen Throw Blanket</div>
-                                <div class="product-sku">SKU: HC-TXT-112</div>
-                            </div>
-                        </div>
-                    </td>
-                    <td>
-                        <span class="status-badge status-draft">Draft</span>
-                    </td>
-                    <td>
-                        <span class="price-value">$65.00</span>
-                    </td>
-                    <td>
-                        <span class="stock-value stock-out">Out of stock</span>
-                    </td>
-                    <td>Textiles</td>
-                    <td>
-                        <button class="action-btn" title="Edit">
-                            <i class="fas fa-edit"></i>
-                        </button>
-                        <button class="action-btn" title="Duplicate">
-                            <i class="fas fa-copy"></i>
-                        </button>
-                        <button class="action-btn delete" title="Delete">
-                            <i class="fas fa-trash"></i>
-                        </button>
-                    </td>
-                </tr>
-                
-                <!-- Product 4 -->
-                <tr>
-                    <td>
-                        <div class="product-info">
-                            <img src="https://images.unsplash.com/photo-1517705008128-361805f42e86" alt="Product" class="product-image">
-                            <div>
-                                <div class="product-name">Brass Floor Lamp</div>
-                                <div class="product-sku">SKU: HC-LMP-023</div>
-                            </div>
-                        </div>
-                    </td>
-                    <td>
-                        <span class="status-badge status-active">Active</span>
-                    </td>
-                    <td>
-                        <span class="price-value">$245.00</span>
-                        <span class="price-compare">$275.00</span>
-                    </td>
-                    <td>
-                        <span class="stock-value stock-in">8 in stock</span>
-                    </td>
-                    <td>Lighting</td>
-                    <td>
-                        <button class="action-btn" title="Edit">
-                            <i class="fas fa-edit"></i>
-                        </button>
-                        <button class="action-btn" title="Duplicate">
-                            <i class="fas fa-copy"></i>
-                        </button>
-                        <button class="action-btn delete" title="Delete">
-                            <i class="fas fa-trash"></i>
-                        </button>
-                    </td>
-                </tr>
-                
-                <!-- Product 5 -->
-                <tr>
-                    <td>
-                        <div class="product-info">
-                            <img src="https://images.unsplash.com/photo-1598300042247-d088f8ab3a91" alt="Product" class="product-image">
-                            <div>
-                                <div class="product-name">Vintage Leather Chair</div>
-                                <div class="product-sku">SKU: HC-CHR-015</div>
-                            </div>
-                        </div>
-                    </td>
-                    <td>
-                        <span class="status-badge status-archived">Archived</span>
-                    </td>
-                    <td>
-                        <span class="price-value">$850.00</span>
-                    </td>
-                    <td>
-                        <span class="stock-value stock-out">Out of stock</span>
-                    </td>
-                    <td>Furniture</td>
-                    <td>
-                        <button class="action-btn" title="Edit">
-                            <i class="fas fa-edit"></i>
-                        </button>
-                        <button class="action-btn" title="Duplicate">
-                            <i class="fas fa-copy"></i>
-                        </button>
-                        <button class="action-btn delete" title="Delete">
-                            <i class="fas fa-trash"></i>
-                        </button>
-                    </td>
-                </tr>
+                        </td>
+                        <td>
+                            <span class="status-badge status-active">Active</span>
+                        </td>
+                        <td>
+                            <span class="price-value">Rs. <%= product.price %> </span>
+                            <span class="price-compare">Rs. <%= product.originalPrice %> </span>
+                        </td>
+                        <td>
+                            <span class="stock-value stock-in">
+                                <%= product?.stock> 0 ? `${product.stock} in stock` : 'Out of stock' %>
+                            </span>
+                        </td>
+                        <td>t-shirts </td>
+                        <td>
+                            <a href="/admin/products/edit/<%= product._id %> "> <button class="action-btn" title="Edit">
+                                    <i class="fas fa-edit"></i>
+                                </button></a>
+                            <a href="/admin/products/edit/:id"><button class="action-btn" title="Duplicate">
+                                    <i class="fas fa-copy"></i>
+                                </button></a>
+                            <a href="/admin/products/delete/:id"></a> <button class="action-btn delete" title="Delete">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </td>
+                    </tr>
+                    <% }) %>
+
             </tbody>
         </table>
 
@@ -673,14 +547,14 @@
 
     <script>
         // Simple filter functionality
-        document.getElementById('search').addEventListener('input', function() {
+        document.getElementById('search').addEventListener('input', function () {
             const searchTerm = this.value.toLowerCase();
             const rows = document.querySelectorAll('.products-table tbody tr');
-            
+
             rows.forEach(row => {
                 const productName = row.querySelector('.product-name').textContent.toLowerCase();
                 const productSku = row.querySelector('.product-sku').textContent.toLowerCase();
-                
+
                 if (productName.includes(searchTerm) || productSku.includes(searchTerm)) {
                     row.style.display = '';
                 } else {
@@ -690,18 +564,18 @@
         });
 
         // Category filter
-        document.getElementById('category').addEventListener('change', function() {
+        document.getElementById('category').addEventListener('change', function () {
             const category = this.value;
             const rows = document.querySelectorAll('.products-table tbody tr');
-            
+
             if (!category) {
                 rows.forEach(row => row.style.display = '');
                 return;
             }
-            
+
             rows.forEach(row => {
                 const rowCategory = row.querySelector('td:nth-child(5)').textContent.toLowerCase();
-                
+
                 if (rowCategory.includes(category)) {
                     row.style.display = '';
                 } else {
@@ -711,18 +585,18 @@
         });
 
         // Status filter
-        document.getElementById('status').addEventListener('change', function() {
+        document.getElementById('status').addEventListener('change', function () {
             const status = this.value;
             const rows = document.querySelectorAll('.products-table tbody tr');
-            
+
             if (!status) {
                 rows.forEach(row => row.style.display = '');
                 return;
             }
-            
+
             rows.forEach(row => {
                 const rowStatus = row.querySelector('.status-badge').textContent.toLowerCase();
-                
+
                 if (rowStatus.includes(status)) {
                     row.style.display = '';
                 } else {
@@ -732,13 +606,13 @@
         });
 
         // Clear filters
-        document.querySelector('.filter-actions button:nth-child(2)').addEventListener('click', function() {
+        document.querySelector('.filter-actions button:nth-child(2)').addEventListener('click', function () {
             document.getElementById('search').value = '';
             document.getElementById('category').value = '';
             document.getElementById('status').value = '';
-            
+
             const rows = document.querySelectorAll('.products-table tbody tr');
             rows.forEach(row => row.style.display = '');
         });
     </script>
-<%- include ('../../partials/admin/footer') %> 
+    <%- include ('../../partials/admin/footer') %>

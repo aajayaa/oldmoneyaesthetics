@@ -11,6 +11,8 @@ router.use(isAdmin);
 router.get('/dashboard', adminController.getDashboard);
 router.get('/products/create', adminController.createProduct);
 router.get('/products', adminController.viewProduct);
+router.get('/products/edit/:id', adminController.showProductUpdateForm);
+router.post('/products/update/:id', adminController.handleProductUpdate);
 router.get('/orders', adminController.orders);
 router.get('/categories', adminController.viewCategory);
 router.get('/categories/create', adminController.createCategory);
