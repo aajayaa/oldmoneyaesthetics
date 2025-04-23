@@ -269,27 +269,61 @@ const updateQuantity = async (req, res) => {
     }
 };
 
+// const checkout = async (req, res) => {
+//     const { product_name, unit_amount, quantity } = req.body;
+//     const session = await stripe.checkout.sessions.create({
+//         line_items: [
+//             {
+//                 price_data: {
+//                     currency: 'usd',
+//                     product_data: {
+//                         name: product_name,
+//                     },
+//                     unit_amount: parseInt(unit_amount) * 100,
+//                 },
+//                 quantity: parseInt(quantity),
+//             },
+//         ],
+//         mode: 'payment',
+//         success_url: "http://localhost:8000/checkout/success?session_id={CHECKOUT_SESSION_ID}",
+//         cancel_url: "http://localhost:8000/checkout/cancel"
+//     })
+//     res.redirect(session.url)
+// }
+
 const checkout = async (req, res) => {
     const { product_name, unit_amount, quantity } = req.body;
-    const session = await stripe.checkout.sessions.create({
-        line_items: [
-            {
-                price_data: {
-                    currency: 'usd',
-                    product_data: {
-                        name: product_name,
-                    },
-                    unit_amount: parseInt(unit_amount) * 100,
-                },
-                quantity: parseInt(quantity),
-            },
-        ],
+  
+    // If there's only 1 item, convert to arrays
+    const names = Array.isArray(product_name) ? product_name : [product_name];
+    const prices = Array.isArray(unit_amount) ? unit_amount : [unit_amount];
+    const quantities = Array.isArray(quantity) ? quantity : [quantity];
+  
+    const lineItems = names.map((name, index) => ({
+      price_data: {
+        currency: 'usd',
+        product_data: {
+          name: name,
+        },
+        unit_amount: parseFloat(prices[index]) * 100,
+      },
+      quantity: parseInt(quantities[index]),
+    }));
+  
+    try {
+      const session = await stripe.checkout.sessions.create({
+        line_items: lineItems,
         mode: 'payment',
         success_url: "http://localhost:8000/checkout/success?session_id={CHECKOUT_SESSION_ID}",
         cancel_url: "http://localhost:8000/checkout/cancel"
-    })
-    res.redirect(session.url)
-}
+      });
+  
+      res.redirect(session.url);
+    } catch (error) {
+      console.error("Stripe checkout error:", error.message);
+      res.status(500).send("Checkout failed.");
+    }
+  };
 
 module.exports = {
     addToCart,

@@ -293,6 +293,35 @@ const handleCategoryUpdate = async (req, res) => {
 };
 
 
+const handleProductDeletion = async (req, res) => {
+  try {
+    const category = await Category.findByIdAndDelete(req.params.id); // Changed to findByIdAndDelete
+
+    if (!category) {
+      req.falsh('error', 'Category not found');
+      // return res.status(404).json({
+      //   success: false,
+      //   message: "Category not found",
+      // });
+    }
+
+    // return res.status(200).json({
+    //   success: true,
+    //   message: "Category deleted successfully",
+    //   data: category,
+    // });
+    req.flash('success', 'Category deleted successfully');
+    res.redirect('/admin/categories');
+  } catch (err) {
+    return res.status(500).json({
+      success: false,
+      message: "Server error",
+      error: err.message,
+    });
+  }
+}
+
+
 const handleProductSubmit = async (req, res) => {
   try {
     // Add null check for req.user
@@ -316,7 +345,8 @@ const handleProductSubmit = async (req, res) => {
 
     // Validate required fields
     if (!productName || !productCategory || !productPrice) {
-      return res.status(400).send("Product name, category and price are required");
+      // return res.status(400).send("Product name, category and price are required");
+      req.flash('error', 'Product name, category and price are required');
     }
 
     const productSKU = Array.isArray(req.body.productSKU) ? req.body.productSKU[0] : req.body.productSKU;
@@ -325,7 +355,8 @@ const handleProductSubmit = async (req, res) => {
     if (productSKU) {
       const existingSKU = await Product.findOne({ sku: productSKU });
       if (existingSKU) {
-        throw new Error('A product with this SKU already exists');
+        // throw new Error('A product with this SKU already exists');
+        req.flash('error', 'A product with this SKU already exists');
       }
     }
 

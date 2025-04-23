@@ -8,157 +8,102 @@
                 <% if (cartItems && cartItems.length> 0) { %>
                     <% cartItems.forEach(item=> { %>
                         <article class="cart-item" data-product-id="<%= item.productId %>" data-size="<%= item.size %>"
-                            data-color="<%= item.color %>" data-price="<%= item.price %>>
+                            data-color="<%= item.color %>" data-price="<%= item.price %>">
+                            <!-- Fixed missing closing quote -->
                             <div class=" item-image">
-                            <img src="<%= item.image %>" alt="<%= item.name %>">
-            </div>
-
-            <div class="item-details">
-                <h3 class="item-title">
-                    <%= item.name %>
-                </h3>
-                <p class="item-meta">Size: <%= item.size %> | Color: <%= item.color %>
-                </p>
-                <p class="item-price">£<%= item.price %>
-                </p>
-
-                <div class="item-controls">
-                    <div class="quantity-selector">
-                        <button class="quantity-btn" data-id="<%= item.productId %>">−</button>
-                        <input type="number" value="<%= item.quantity %>" min="1" class="quantity-input">
-                        <button class="quantity-btn" data-id="<%= item.productId %>">+</button>
-                    </div>
-                    <form action="/remove-from-cart" method="POST">
-                        <input type="hidden" name="productId" value="<%= item.productId %>">
-                        <input type="hidden" name="color" value="<%= item.color %>">
-                        <input type="hidden" name="size" value="<%= item.size %>">
-                        <button type="submit">Remove</button>
-                    </form>
-
-                </div>
-            </div>
-            </article>
-            <% }) %>
-
-                <!-- Cart Summary -->
-                <aside class="cart-summary">
-                    <div class="summary-card">
-                        <h3 class="summary-title">Order Summary</h3>
-
-                        <div class="summary-details">
-                            <div class="summary-row">
-                                <span>Subtotal</span>
-                                <span>£<%= cartTotal %></span>
+                                <img src="<%= item.image %>" alt="<%= item.name %>">
                             </div>
-                            <div class="summary-row">
-                                <span>Shipping</span>
-                                <span>£50</span>
-                            </div>
-                            <div class="summary-row total">
-                                <span>Total</span>
-                                <span>£<%= cartTotal + 50 %></span>
-                            </div>
-                        </div>
 
-                        <div class="promo-section">
-                            <input type="text" placeholder="Enter Promo Code" class="promo-input">
-                            <button class="promo-btn">Apply</button>
-                        </div>
-                        <% cartItems.forEach(item=> { %>
-
-
-                            <form action="/checkout" method="post">
-                                <input type="hidden" name="product_name" value="<%= item.name %> " required />
-                                <input type="hidden" name="unit_amount" value="<%= item.price %> " required />
-                                <input type="hidden" name="quantity" value="<%= item.quantity %> " required />
-                                <button class="checkout-btn" type="submit">Proceed to Checkout</button>
-                            </form>
-                            <% }) %>
-                                <p class="security-note">
-                                    <svg aria-hidden="true" viewBox="0 0 24 24" width="16" height="16">
-                                        <path
-                                            d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm0 10.99h7c-.53 4.12-3.28 7.79-7 8.94V12H5V6.3l7-3.11v8.8z" />
-                                    </svg>
-                                    Secure SSL Encryption
+                            <div class="item-details">
+                                <h3 class="item-title">
+                                    <%= item.name %>
+                                </h3>
+                                <p class="item-meta">Size: <%= item.size %> | Color: <%= item.color %>
                                 </p>
-                    </div>
-                </aside>
-                <% } else { %>
-                    <div class="empty-cart">
-                        <h2>Your cart is empty</h2>
-                        <a href="/collections" class="continue-shopping">Continue Shopping</a>
-                    </div>
-                    <% } %>
-        </div>
+                                <p class="item-price">£<%= item.price %>
+                                </p>
+
+                                <div class="item-controls">
+                                    <div class="quantity-selector">
+                                        <button class="quantity-btn" data-id="<%= item.productId %>">−</button>
+                                        <input type="number" value="<%= item.quantity %>" min="1"
+                                            class="quantity-input">
+                                        <button class="quantity-btn" data-id="<%= item.productId %>">+</button>
+                                    </div>
+                                    <form action="/remove-from-cart" method="POST">
+                                        <input type="hidden" name="productId" value="<%= item.productId %>">
+                                        <input type="hidden" name="color" value="<%= item.color %>">
+                                        <input type="hidden" name="size" value="<%= item.size %>">
+                                        <button type="submit">Remove</button>
+                                    </form>
+
+                                </div>
+                            </div>
+                        </article>
+                        <% }) %>
+
+                            <!-- Cart Summary -->
+                            <aside class="cart-summary">
+                                <div class="summary-card">
+                                    <h3 class="summary-title">Order Summary</h3>
+
+                                    <div class="summary-details">
+                                        <div class="summary-row">
+                                            <span>Subtotal</span>
+                                            <span>£<%= cartTotal %></span>
+                                        </div>
+                                        <div class="summary-row">
+                                            <span>Shipping</span>
+                                            <span>£50</span>
+                                        </div>
+                                        <div class="summary-row total">
+                                            <span>Total</span>
+                                            <span>£<%= cartTotal + 50 %></span>
+                                        </div>
+                                    </div>
+
+                                    <div class="promo-section">
+                                        <input type="text" placeholder="Enter Promo Code" class="promo-input">
+                                        <button class="promo-btn">Apply</button>
+                                    </div>
+
+
+                                    <form action="/checkout" method="post">
+                                        <% cartItems.forEach((item, index)=> { %>
+
+                                            <input type="hidden" name="product_name" value="<%= item.name.trim() %>"
+                                                required />
+                                            <input type="hidden" name="unit_amount" value="<%= parseFloat(item.price) %>"
+                                                required />
+                                            <input type="hidden" name="quantity" value="<%= parseInt(item.quantity) %>"
+                                                required />
+
+                                            <% }) %>
+                                                <button class="checkout-btn" type="submit">
+                                                    <i class="fas fa-lock"></i>
+                                                    Proceed to Checkout
+                                                </button>
+                                    </form>
+
+                                    <p class="security-note">
+                                        <svg aria-hidden="true" viewBox="0 0 24 24" width="16" height="16">
+                                            <path
+                                                d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm0 10.99h7c-.53 4.12-3.28 7.79-7 8.94V12H5V6.3l7-3.11v8.8z" />
+                                        </svg>
+                                        Secure SSL Encryption
+                                    </p>
+                                </div>
+                            </aside>
+                            <% } else { %>
+                                <div class="empty-cart">
+                                    <h2>Your cart is empty</h2>
+                                    <a href="/collections" class="continue-shopping">Continue Shopping</a>
+                                </div>
+                                <% } %>
+            </div>
         </div>
     </section>
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            const quantityButtons = document.querySelectorAll('.quantity-btn');
-            const quantityInputs = document.querySelectorAll('.quantity-input');
 
-            // Function to update quantity in UI and database
-            async function updateQuantity(productId, newQuantity, itemElement) {
-                try {
-                    const size = itemElement.dataset.size;
-                    const color = itemElement.dataset.color;
-
-                    const response = await fetch('/cart/update-quantity', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json'
-                        },
-                        body: JSON.stringify({
-                            productId: productId,
-                            size: size,
-                            color: color,
-                            quantity: newQuantity
-                        })
-                    });
-
-
-                    if (response.ok) {
-                        const data = await response.json();
-                        // Update the cart total
-                        document.querySelector('.summary-row.total span:last-child').textContent = `£${data.newTotal}`;
-                        document.querySelector('.summary-row:first-child span:last-child').textContent = `£${data.subtotal}`;
-                    } else {
-                        console.error('Failed to update quantity');
-                    }
-                } catch (error) {
-                    console.error('Error:', error);
-                }
-            }
-
-            // Add click event listeners to quantity buttons
-            quantityButtons.forEach(button => {
-                button.addEventListener('click', function () {
-                    const input = this.parentElement.querySelector('.quantity-input');
-                    const productId = this.dataset.id;
-                    let currentValue = parseInt(input.value);
-
-                    if (this.textContent === '+') {
-                        currentValue++;
-                    } else if (this.textContent === '−' && currentValue > 1) {
-                        currentValue--;
-                    }
-
-                    input.value = currentValue;
-                    updateQuantity(productId, currentValue, this.closest('.cart-item'));
-                });
-            });
-
-            // Add change event listeners to quantity inputs
-            quantityInputs.forEach(input => {
-                input.addEventListener('change', function () {
-                    const productId = this.closest('.quantity-selector').querySelector('.quantity-btn').dataset.id;
-                    const newValue = Math.max(1, parseInt(this.value) || 1);
-                    this.value = newValue;
-                    updateQuantity(productId, newValue, this.closest('.cart-item'));
-                });
-            });
-        });
-    </script>
 
 
     <%- include ('../partials/footer') %>

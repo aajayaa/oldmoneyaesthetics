@@ -1,89 +1,92 @@
-<%- include ('../partials/header') %> 
+<%- include ('../partials/header') %>
 
-<section class="products-page">
-    <!-- Controls -->
-    <div class="products-controls">
-        <div class="filter-group">
-            <span>Categories:</span>
-            <button class="filter-btn active" data-category="all">All</button>
-            <button class="filter-btn" data-category="suits">Suits</button>
-            <button class="filter-btn" data-category="outerwear">Outerwear</button>
-            <button class="filter-btn" data-category="accessories">Accessories</button>
+    <section class="products-page">
+        <!-- Controls -->
+        <div class="products-controls">
+            <div class="filter-group">
+                <span>Categories:</span>
+                <button class="filter-btn active" data-category="all">All</button>
+                <button class="filter-btn" data-category="suits">Suits</button>
+                <button class="filter-btn" data-category="outerwear">Outerwear</button>
+                <button class="filter-btn" data-category="accessories">Accessories</button>
+            </div>
+
+            <select class="sort-select">
+                <option value="price-asc">Price: Low to High</option>
+                <option value="price-desc">Price: High to Low</option>
+                <option value="newest">Newest First</option>
+                <option value="popular">Most Popular</option>
+            </select>
         </div>
+
+        <!-- Product Grid -->
+        <div class="products-grid">
+            <% collections.forEach(collection=> { %>
+
+                <article class="product-card" data-category="<%= collection.category.name %> "
+                    data-price="<%= collection.price %> ">
+                    <div class="product-image"><img src="<%= collection.image %> " alt=""></div>
+                    <h3>
+                        <%= collection.name %>
+                    </h3>
+                    <p class="product-price">Rs. <%= collection.price %>
+                    </p>
+                    <button class="product-cta">View</button>
+                </article>
+                <% }) %>
+
+        </div>
+
+        <!-- Pagination -->
+        <div class="pagination">
+            <% if (currentPage > 1) { %>
+                <a href="/collections?page=<%= currentPage - 1 %>" class="page-btn">←</a>
+            <% } else { %>
+                <button class="page-btn" disabled>←</button>
+            <% } %>
         
-        <select class="sort-select">
-            <option value="price-asc">Price: Low to High</option>
-            <option value="price-desc">Price: High to Low</option>
-            <option value="newest">Newest First</option>
-            <option value="popular">Most Popular</option>
-        </select>
-    </div>
-
-    <!-- Product Grid -->
-    <div class="products-grid">
-        <!-- Product 1 -->
-        <article class="product-card" data-category="suits" data-price="2850">
-            <div class="product-image"></div>
-            <h3>Savile Row Suit</h3>
-            <p class="product-price">£2,850</p>
-            <button class="product-cta">Configure</button>
-        </article>
-
-        <!-- Product 2 -->
-        <article class="product-card" data-category="outerwear" data-price="1950">
-            <div class="product-image"></div>
-            <h3>Chesterfield Coat</h3>
-            <p class="product-price">£1,950</p>
-            <button class="product-cta">Configure</button>
-        </article>
-
-        <!-- Product 3 -->
-        <article class="product-card" data-category="accessories" data-price="650">
-            <div class="product-image"></div>
-            <h3>Brocade Waistcoat</h3>
-            <p class="product-price">£650</p>
-            <button class="product-cta">Configure</button>
-        </article>
-    </div>
-
-    <!-- Pagination -->
-    <div class="pagination">
-        <button class="page-btn">←</button>
-        <button class="page-btn active">1</button>
-        <button class="page-btn">2</button>
-        <button class="page-btn">3</button>
-        <button class="page-btn">→</button>
-    </div>
-
-    <!-- Recommended -->
-    <section class="recommended-section">
-        <h2>You May Like These</h2>
-        <div class="recommended-grid">
-            <!-- Recommended Product 1 -->
-            <article class="product-card">
-                <div class="product-image"></div>
-                <h3>Silk Pocket Square</h3>
-                <p class="product-price">£120</p>
-                <button class="product-cta">View</button>
-            </article>
-
-            <!-- Recommended Product 2 -->
-            <article class="product-card">
-                <div class="product-image"></div>
-                <h3>Oxford Dress Shoes</h3>
-                <p class="product-price">£450</p>
-                <button class="product-cta">View</button>
-            </article>
-
-            <!-- Recommended Product 3 -->
-            <article class="product-card">
-                <div class="product-image"></div>
-                <h3>Cashmere Scarf</h3>
-                <p class="product-price">£280</p>
-                <button class="product-cta">View</button>
-            </article>
+            <% for (let i = 1; i <= totalPages; i++) { %>
+                <a href="/collections?page=<%= i %>" class="page-btn <%= currentPage === i ? 'active' : '' %>"><%= i %></a>
+            <% } %>
+        
+            <% if (currentPage < totalPages) { %>
+                <a href="/collections?page=<%= currentPage + 1 %>" class="page-btn">→</a>
+            <% } else { %>
+                <button class="page-btn" disabled>→</button>
+            <% } %>
+                        
+            
         </div>
-    </section>
-</section>
 
-<%- include ('../partials/footer') %> 
+        <!-- Recommended -->
+        <section class="recommended-section">
+            <h2>You May Like These</h2>
+            <div class="recommended-grid">
+                <!-- Recommended Product 1 -->
+                <article class="product-card">
+                    <div class="product-image"></div>
+                    <h3>Silk Pocket Square</h3>
+                    <p class="product-price">£120</p>
+                    <button class="product-cta">View</button>
+                </article>
+
+                <!-- Recommended Product 2 -->
+                <article class="product-card">
+                    <div class="product-image"></div>
+                    <h3>Oxford Dress Shoes</h3>
+                    <p class="product-price">£450</p>
+                    <button class="product-cta">View</button>
+                </article>
+
+                <!-- Recommended Product 3 -->
+                <article class="product-card">
+                    <div class="product-image"></div>
+                    <h3>Cashmere Scarf</h3>
+                    <p class="product-price">£280</p>
+                    <button class="product-cta">View</button>
+                </article>
+            </div>
+        </section>
+    </section>
+
+    <%- include ('../partials/footer') %>

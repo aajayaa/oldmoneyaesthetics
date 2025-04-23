@@ -68,7 +68,7 @@
                     </div>
                     <div class="image-upload-text">Click to upload or drag and drop</div>
                     <div class="image-upload-hint">SVG, PNG, JPG or GIF (max. 5MB each)</div>
-                    <input type="file" id="fileInput" multiple style="display: none;">
+                    <input type="file" id="fileInput" name="images" accept="image/*" required multiple style="display: none;">
                 </div>
                 <div class="preview-grid" id="imagePreview">
                     <!-- Images will appear here -->
@@ -856,60 +856,7 @@
             });
         });
 
-        // Handle form submission
-        // Handle form submission
-        document.querySelector('.product-form').addEventListener('submit', function (e) {
-            e.preventDefault();
-
-            const formData = new FormData(this);
-
-            // Collect sizes
-            const sizes = Array.from(document.querySelectorAll('.size-item')).map(item => ({
-                name: item.querySelector('input[name="sizeName[]"]').value,
-                description: item.querySelector('input[name="sizeDescription[]"]').value,
-                enabled: item.querySelector('input[name="sizeEnabled[]"][type="checkbox"]').checked
-            }));
-
-            // Collect colors
-            const colors = Array.from(document.querySelectorAll('.color-item')).map(item => ({
-                name: item.querySelector('input[name="colorName[]"]').value,
-                hexCode: item.querySelector('input[name="hexCode[]"]').value,
-                enabled: item.querySelector('input[name="colorEnabled[]"][type="checkbox"]').checked
-            }));
-
-            // Add sizes and colors to formData
-            formData.append('sizes', JSON.stringify(sizes));
-            formData.append('colors', JSON.stringify(colors));
-
-            // Add images
-            const imageFiles = fileInput.files;
-            for (let i = 0; i < imageFiles.length; i++) {
-                formData.append('images', imageFiles[i]);
-            }
-
-            // Submit the form
-            fetch('/admin/products/create', {
-                method: 'POST',
-                body: formData
-            })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
-                }
-                return response.json();
-            })
-            .then(data => {
-                if (data.success) {
-                    window.location.href = '/admin/products';
-                } else {
-                    alert('Error creating product: ' + data.message);
-                }
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                alert('Error creating product. Please try again.');
-            });
-        });
+       
 
 
 
