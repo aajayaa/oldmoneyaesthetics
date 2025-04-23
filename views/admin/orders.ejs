@@ -1,0 +1,414 @@
+<%- include ('../partials/admin/sidebar') %>
+
+    <main class="main-content">
+        <div class="form-header">
+            <h1 class="form-title">Order Management</h1>
+            <div class="form-actions">
+                <button type="button" class="btn btn-primary">
+                    <i class="fas fa-plus"></i> Create Order
+                </button>
+            </div>
+        </div>
+
+        <!-- Order Filters -->
+        <div class="filter-section">
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Date Range</label>
+                    <div class="date-range-picker">
+                        <input type="date" class="form-control">
+                        <span>to</span>
+                        <input type="date" class="form-control">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Order Status</label>
+                    <select class="form-control form-select">
+                        <option>All Statuses</option>
+                        <option>Pending</option>
+                        <option>Processing</option>
+                        <option>Shipped</option>
+                        <option>Delivered</option>
+                        <option>Cancelled</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Search Orders</label>
+                    <div class="search-input">
+                        <input type="text" class="form-control" placeholder="Search by order ID or customer name">
+                        <i class="fas fa-search"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Orders Table -->
+        <div class="orders-table-container">
+            <div class="table-header">
+                <span>Showing 1-10 of 85 orders</span>
+                <div class="bulk-actions">
+                    <select class="form-control">
+                        <option>Bulk Actions</option>
+                        <option>Export Selected</option>
+                        <option>Update Status</option>
+                        <option>Delete Orders</option>
+                    </select>
+                    <button class="btn btn-outline">Apply</button>
+                </div>
+            </div>
+
+            <table class="orders-table">
+                <thead>
+                    <tr>
+                        <th><input type="checkbox"></th>
+                        <th>Order ID</th>
+                        <th>Customer</th>
+                        <th>Date</th>
+                        <th>Total</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><input type="checkbox"></td>
+                        <td>#HC-2354</td>
+                        <td>
+                            <div class="customer-info">
+                                <div class="customer-name">Sarah Johnson</div>
+                                <small>sarah@example.com</small>
+                            </div>
+                        </td>
+                        <td>2023-07-15</td>
+                        <td>$289.99</td>
+                        <td>
+                            <span class="order-status status-processing">
+                                <i class="fas fa-sync-alt"></i> Processing
+                            </span>
+                        </td>
+                        <td>
+                            <div class="table-actions">
+                                <button class="icon-btn" title="View Order">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                                <button class="icon-btn" title="Edit Order">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                                <div class="dropdown">
+                                    <button class="icon-btn" title="More options">
+                                        <i class="fas fa-ellipsis-v"></i>
+                                    </button>
+                                    <div class="dropdown-menu">
+                                        <a href="#"><i class="fas fa-truck"></i> Track Shipment</a>
+                                        <a href="#"><i class="fas fa-undo"></i> Refund</a>
+                                        <a href="#"><i class="fas fa-times"></i> Cancel</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                    <!-- More rows with different statuses -->
+                </tbody>
+            </table>
+
+            <!-- Pagination -->
+            <div class="pagination">
+                <button class="btn btn-outline"><i class="fas fa-chevron-left"></i></button>
+                <span class="page-numbers">
+                    <button class="active">1</button>
+                    <button>2</button>
+                    <button>3</button>
+                    <span>...</span>
+                    <button>8</button>
+                </span>
+                <button class="btn btn-outline"><i class="fas fa-chevron-right"></i></button>
+            </div>
+        </div>
+    </main>
+
+    <style>
+        /* Add these styles to your existing CSS */
+
+        /* Order Page Specific Styles */
+        .filter-section {
+            background: var(--white);
+            padding: 1.5rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            margin-bottom: 1.5rem;
+        }
+
+        .date-range-picker {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .date-range-picker span {
+            color: var(--pewter);
+        }
+
+        .search-input {
+            position: relative;
+        }
+
+        .search-input i {
+            position: absolute;
+            right: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--pewter);
+        }
+
+        .orders-table-container {
+            background: var(--white);
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        }
+
+        .table-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .bulk-actions {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .orders-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .orders-table th,
+        .orders-table td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid var(--stone-gray);
+        }
+
+        .orders-table th {
+            color: var(--navy-blue);
+            font-weight: 600;
+        }
+
+        .order-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.35rem 1rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+        }
+
+        .status-pending {
+            background: rgba(109, 46, 70, 0.1);
+            color: var(--burgundy);
+        }
+
+        .status-processing {
+            background: rgba(197, 168, 128, 0.1);
+            color: var(--gold-foil);
+        }
+
+        .status-shipped {
+            background: rgba(10, 35, 66, 0.1);
+            color: var(--navy-blue);
+        }
+
+        .status-delivered {
+            background: rgba(74, 107, 87, 0.1);
+            color: var(--success-green);
+        }
+
+        .status-cancelled {
+            background: rgba(138, 138, 138, 0.1);
+            color: var(--pewter);
+        }
+
+        .table-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .icon-btn {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            border: none;
+            background: transparent;
+            color: var(--pewter);
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .icon-btn:hover {
+            background: var(--warm-beige);
+            color: var(--navy-blue);
+        }
+
+        .dropdown {
+            position: relative;
+        }
+
+        .dropdown-menu {
+            position: absolute;
+            right: 0;
+            top: 100%;
+            background: var(--white);
+            border: 1px solid var(--stone-gray);
+            border-radius: 6px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            padding: 0.5rem;
+            min-width: 160px;
+            display: none;
+            z-index: 100;
+        }
+
+        .dropdown-menu a {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.5rem 1rem;
+            color: var(--charcoal-black);
+            text-decoration: none;
+            border-radius: 4px;
+        }
+
+        .dropdown-menu a:hover {
+            background: var(--ivory-white);
+        }
+
+        .pagination {
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            gap: 0.5rem;
+            margin-top: 2rem;
+        }
+
+        .page-numbers button {
+            padding: 0.35rem 0.75rem;
+            border: 1px solid var(--stone-gray);
+            background: transparent;
+            color: var(--pewter);
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .page-numbers button.active {
+            border-color: var(--hunter-green);
+            background: var(--hunter-green);
+            color: white;
+        }
+
+        @media (max-width: 768px) {
+            .table-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 1rem;
+            }
+
+            .orders-table {
+                display: block;
+                overflow-x: auto;
+            }
+
+            .filter-section .form-row {
+                flex-direction: column;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .orders-table-container {
+                padding: 1rem;
+            }
+
+            .bulk-actions {
+                flex-direction: column;
+                width: 100%;
+            }
+
+            .bulk-actions select {
+                width: 100%;
+            }
+        }
+    </style>
+
+
+    <script>
+        // Order Page Scripts
+        document.addEventListener('DOMContentLoaded', function () {
+            // Dropdown functionality
+            document.querySelectorAll('.dropdown').forEach(dropdown => {
+                const button = dropdown.querySelector('.icon-btn');
+                const menu = dropdown.querySelector('.dropdown-menu');
+
+                button.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
+                });
+            });
+
+            // Close dropdowns when clicking outside
+            document.addEventListener('click', (e) => {
+                document.querySelectorAll('.dropdown-menu').forEach(menu => {
+                    if (!menu.parentElement.contains(e.target)) {
+                        menu.style.display = 'none';
+                    }
+                });
+            });
+
+            // Search functionality
+            const searchInput = document.querySelector('.search-input input');
+            searchInput.addEventListener('input', function () {
+                const searchTerm = this.value.toLowerCase();
+                document.querySelectorAll('.orders-table tbody tr').forEach(row => {
+                    const text = row.textContent.toLowerCase();
+                    row.style.display = text.includes(searchTerm) ? '' : 'none';
+                });
+            });
+
+            // Date picker initialization (would need a proper date picker library)
+            const dateInputs = document.querySelectorAll('input[type="date"]');
+            dateInputs.forEach(input => {
+                input.addEventListener('change', updateOrderFilters);
+            });
+
+            // Bulk actions
+            document.querySelector('.bulk-actions button').addEventListener('click', function () {
+                const selected = document.querySelectorAll('input[type="checkbox"]:checked');
+                const action = document.querySelector('.bulk-actions select').value;
+                // Handle bulk actions here
+            });
+
+            function updateOrderFilters() {
+                // Handle filter updates here
+            }
+        });
+
+        // Initialize table sorting
+        document.querySelectorAll('.orders-table th').forEach(header => {
+            header.addEventListener('click', function () {
+                const table = this.closest('table');
+                const columnIndex = this.cellIndex;
+                const rows = Array.from(table.querySelectorAll('tbody tr'));
+                const isAsc = this.classList.toggle('asc');
+
+                rows.sort((a, b) => {
+                    const aValue = a.cells[columnIndex].textContent;
+                    const bValue = b.cells[columnIndex].textContent;
+                    return isAsc ? aValue.localeCompare(bValue) : bValue.localeCompare(aValue);
+                });
+
+                table.querySelector('tbody').append(...rows);
+            });
+        });
+    </script>
+
+    <%- include ('../partials/admin/footer') %>

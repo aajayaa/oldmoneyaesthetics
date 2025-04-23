@@ -1,10 +1,228 @@
-<!DOCTYPE html>
-<html lang="en">
+<%- include ('../../partials/admin/sidebar') %> 
+    <!-- Main Content Area -->
+    <main class="main-content">
+        <div class="form-header">
+            <h1 class="form-title">Add New Product</h1>
+            <div class="form-actions">
+                <button type="button" class="btn btn-outline">Discard</button>
+                <button type="button" class="btn btn-primary">Save Draft</button>
+                <button type="button" class="btn btn-primary">Publish Product</button>
+            </div>
+        </div>
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Add Product | Heritage Collection</title>
+        <form class="product-form" method="POST" action="/admin/products/create" enctype="multipart/form-data">
+            <!-- Basic Information Section -->
+            <div class="form-section">
+                <h2 class="section-title">Basic Information</h2>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="productName">Product Name*</label>
+                        <input type="text" id="productName" name="productName" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="productSKU">SKU</label>
+                        <input type="text" id="productSKU" name="productSKU" class="form-control">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="productCategory">Category*</label>
+                        <select id="productCategory" name="productCategory" class="form-control form-select" required>
+                            <option value="">Select a category</option>
+
+                            <% categories.forEach(category=> { %>
+                                <option value="<%= category._id %>">
+                                    <%= category.name %>
+                                </option>
+                                <% }) %>
+
+
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="productCollection">Collection</label>
+                        <select id="productCollection" name="productCollection" class="form-control form-select">
+                            <option value="">Select a collection</option>
+                            <option value="starboy">Starboy</option>
+                            <option value="oldmoney">Old Money Classics</option>
+                            <option value="tailored">Tailored</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="productDescription">Description</label>
+                    <textarea id="productDescription" name="productDescription" class="form-control"></textarea>
+                </div>
+            </div>
+
+            <!-- Media Section -->
+            <div class="form-section">
+                <h2 class="section-title">Media</h2>
+                <div class="image-upload" id="imageUpload">
+                    <div class="image-upload-icon">
+                        <i class="fas fa-cloud-upload-alt"></i>
+                    </div>
+                    <div class="image-upload-text">Click to upload or drag and drop</div>
+                    <div class="image-upload-hint">SVG, PNG, JPG or GIF (max. 5MB each)</div>
+                    <input type="file" id="fileInput" multiple style="display: none;">
+                </div>
+                <div class="preview-grid" id="imagePreview">
+                    <!-- Images will appear here -->
+                </div>
+            </div>
+
+            <!-- Pricing Section -->
+            <div class="form-section">
+                <h2 class="section-title">Pricing</h2>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="productCurrency">Currency*</label>
+                        <select id="productCurrency" name="productCurrency" class="form-control form-select" required>
+                            <option value="INR">Nepalese Rupee (NPR)</option>
+                            <option value="USD">US Dollar (USD)</option>
+                            <option value="EUR">Euro (EUR)</option>
+                            <option value="GBP">British Pound (GBP)</option>
+                            <option value="CAD">Canadian Dollar (CAD)</option>
+                            <option value="AUD">Australian Dollar (AUD)</option>
+                            <option value="JPY">Japanese Yen (JPY)</option>
+                            <option value="INR">Indian Rupee (INR)</option>
+                            <option value="AED">UAE Dirham (AED)</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="productPrice">Price*</label>
+                        <div class="input-group">
+                            <span class="input-group-prepend currency-symbol">$</span>
+                            <input type="number" id="productPrice" name="productPrice" class="form-control" step="0.01"
+                                required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="productComparePrice">Compare at Price</label>
+                        <div class="input-group">
+                            <span class="input-group-prepend currency-symbol">$</span>
+                            <input type="number" id="productComparePrice" name="productComparePrice"
+                                class="form-control" step="0.01">
+                        </div>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="productCost">Cost per item</label>
+                        <div class="input-group">
+                            <span class="input-group-prepend currency-symbol">$</span>
+                            <input type="number" id="productCost" name="productCost" class="form-control" step="0.01">
+                        </div>
+                        <small class="text-muted">Customers won't see this</small>
+                    </div>
+                    <div class="form-group">
+                        <label>Charge taxes</label>
+                        <div style="display: flex; align-items: center;">
+                            <span>No</span>
+                            <label class="switch">
+                                <input type="hidden" name="chargeTaxes" value="false">
+                                <input type="checkbox" name="chargeTaxes" value="true"
+                                    onchange="this.previousElementSibling.value= this.checked ? 'true' : 'false' ">
+                                <span class="slider"></span>
+                            </label>
+                            <span>Yes</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Inventory Section -->
+            <div class="form-section">
+                <h2 class="section-title">Inventory</h2>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="productSKU">SKU</label>
+                        <input type="text" id="productSKU" name="productSKU" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label for="productBarcode">Barcode (ISBN, UPC, etc.)</label>
+                        <input type="text" id="productBarcode" name="productBarcode" class="form-control">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Track quantity</label>
+                        <div style="display: flex; align-items: center;">
+                            <span>No</span>
+                            <label class="switch">
+                                <input type="hidden" name="trackQuantity" value="false">
+                                <input type="checkbox" name="trackQuantity" value="true" checked
+                                    onchange="this.previousElementSibling.value = this.checked ? 'true' : 'false' ">
+                                <span class="slider"></span>
+                            </label>
+                            <span>Yes</span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Featured Product</label>
+                        <div style="display: flex; align-items: center;">
+                            <span>No</span>
+                            <label class="switch">
+                                <input type="hidden" name="isFeatured" value="false">
+                                <input type="checkbox" id="isFeatured" name="isFeatured" value="true" checked onchange="this.previousElementSibling.value = this.checked ? 'true' : 'false' ">
+                                <span class="slider"></span>
+                            </label>
+                            <span>Yes</span>
+                        </div>
+
+                    </div>
+                    <div class="form-group">
+                        <label for="productQuantity">Quantity</label>
+                        <input type="number" id="productQuantity" name="productQuantity" class="form-control" value="0">
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Sizes Section -->
+            <div class="form-section">
+                <h2 class="section-title">Sizes</h2>
+                <div id="sizesContainer">
+                    <!-- Size items will be added here -->
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <button type="button" class="btn btn-outline" id="addSize">
+                            <i class="fas fa-plus"></i> Add Size
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Colors Section -->
+            <div class="form-section">
+                <h2 class="section-title">Colors</h2>
+
+                <div id="colorsContainer">
+                    <!-- Color items will be added here -->
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <button type="button" class="btn btn-outline" id="addColor">
+                            <i class="fas fa-plus"></i> Add Color
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+
+
+
+
+            <div class="form-actions" style="margin-top: 2rem; justify-content: flex-end;">
+                <button type="button" class="btn btn-outline">Discard</button>
+                <button type="button" class="btn btn-primary">Save Draft</button>
+                <button type="submit" class="btn btn-primary">Publish Product</button>
+            </div>
+        </form>
+    </main>
+
     <style>
         :root {
             /* Your color palette */
@@ -422,238 +640,6 @@
             }
         }
     </style>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-</head>
-
-<body>
-    <!-- Dashboard Sidebar (same as before) -->
-    <aside class="dashboard-sidebar">
-        <!-- Include your full sidebar code here -->
-    </aside>
-
-    <!-- Main Content Area -->
-    <main class="main-content">
-        <div class="form-header">
-            <h1 class="form-title">Add New Product</h1>
-            <div class="form-actions">
-                <button type="button" class="btn btn-outline">Discard</button>
-                <button type="button" class="btn btn-primary">Save Draft</button>
-                <button type="button" class="btn btn-primary">Publish Product</button>
-            </div>
-        </div>
-
-        <form class="product-form" method="POST" action="/admin/products/create" enctype="multipart/form-data">
-            <!-- Basic Information Section -->
-            <div class="form-section">
-                <h2 class="section-title">Basic Information</h2>
-                <div class="form-row">
-                    <div class="form-group">
-                        <label for="productName">Product Name*</label>
-                        <input type="text" id="productName" name="productName" class="form-control" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="productSKU">SKU</label>
-                        <input type="text" id="productSKU" name="productSKU" class="form-control">
-                    </div>
-                </div>
-                <div class="form-row">
-                    <div class="form-group">
-                        <label for="productCategory">Category*</label>
-                        <select id="productCategory" name="productCategory" class="form-control form-select" required>
-                            <option value="">Select a category</option>
-
-                            <% categories.forEach(category=> { %>
-                                <option value="<%= category._id %>">
-                                    <%= category.name %>
-                                </option>
-                                <% }) %>
-
-
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label for="productCollection">Collection</label>
-                        <select id="productCollection" name="productCollection" class="form-control form-select">
-                            <option value="">Select a collection</option>
-                            <option value="starboy">Starboy</option>
-                            <option value="oldmoney">Old Money Classics</option>
-                            <option value="tailored">Tailored</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label for="productDescription">Description</label>
-                    <textarea id="productDescription" name="productDescription" class="form-control"></textarea>
-                </div>
-            </div>
-
-            <!-- Media Section -->
-            <div class="form-section">
-                <h2 class="section-title">Media</h2>
-                <div class="image-upload" id="imageUpload">
-                    <div class="image-upload-icon">
-                        <i class="fas fa-cloud-upload-alt"></i>
-                    </div>
-                    <div class="image-upload-text">Click to upload or drag and drop</div>
-                    <div class="image-upload-hint">SVG, PNG, JPG or GIF (max. 5MB each)</div>
-                    <input type="file" id="fileInput" multiple style="display: none;">
-                </div>
-                <div class="preview-grid" id="imagePreview">
-                    <!-- Images will appear here -->
-                </div>
-            </div>
-
-            <!-- Pricing Section -->
-            <div class="form-section">
-                <h2 class="section-title">Pricing</h2>
-                <div class="form-row">
-                    <div class="form-group">
-                        <label for="productCurrency">Currency*</label>
-                        <select id="productCurrency" name="productCurrency" class="form-control form-select" required>
-                            <option value="INR">Nepalese Rupee (NPR)</option>
-                            <option value="USD">US Dollar (USD)</option>
-                            <option value="EUR">Euro (EUR)</option>
-                            <option value="GBP">British Pound (GBP)</option>
-                            <option value="CAD">Canadian Dollar (CAD)</option>
-                            <option value="AUD">Australian Dollar (AUD)</option>
-                            <option value="JPY">Japanese Yen (JPY)</option>
-                            <option value="INR">Indian Rupee (INR)</option>
-                            <option value="AED">UAE Dirham (AED)</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label for="productPrice">Price*</label>
-                        <div class="input-group">
-                            <span class="input-group-prepend currency-symbol">$</span>
-                            <input type="number" id="productPrice" name="productPrice" class="form-control" step="0.01"
-                                required>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label for="productComparePrice">Compare at Price</label>
-                        <div class="input-group">
-                            <span class="input-group-prepend currency-symbol">$</span>
-                            <input type="number" id="productComparePrice" name="productComparePrice"
-                                class="form-control" step="0.01">
-                        </div>
-                    </div>
-                </div>
-                <div class="form-row">
-                    <div class="form-group">
-                        <label for="productCost">Cost per item</label>
-                        <div class="input-group">
-                            <span class="input-group-prepend currency-symbol">$</span>
-                            <input type="number" id="productCost" name="productCost" class="form-control" step="0.01">
-                        </div>
-                        <small class="text-muted">Customers won't see this</small>
-                    </div>
-                    <div class="form-group">
-                        <label>Charge taxes</label>
-                        <div style="display: flex; align-items: center;">
-                            <span>No</span>
-                            <label class="switch">
-                                <input type="hidden" name="chargeTaxes" value="false">
-                                <input type="checkbox" name="chargeTaxes" value="true"
-                                    onchange="this.previousElementSibling.value= this.checked ? 'true' : 'false' ">
-                                <span class="slider"></span>
-                            </label>
-                            <span>Yes</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Inventory Section -->
-            <div class="form-section">
-                <h2 class="section-title">Inventory</h2>
-                <div class="form-row">
-                    <div class="form-group">
-                        <label for="productSKU">SKU</label>
-                        <input type="text" id="productSKU" name="productSKU" class="form-control">
-                    </div>
-                    <div class="form-group">
-                        <label for="productBarcode">Barcode (ISBN, UPC, etc.)</label>
-                        <input type="text" id="productBarcode" name="productBarcode" class="form-control">
-                    </div>
-                </div>
-                <div class="form-row">
-                    <div class="form-group">
-                        <label>Track quantity</label>
-                        <div style="display: flex; align-items: center;">
-                            <span>No</span>
-                            <label class="switch">
-                                <input type="hidden" name="trackQuantity" value="false">
-                                <input type="checkbox" name="trackQuantity" value="true" checked
-                                    onchange="this.previousElementSibling.value = this.checked ? 'true' : 'false' ">
-                                <span class="slider"></span>
-                            </label>
-                            <span>Yes</span>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label>Featured Product</label>
-                        <div style="display: flex; align-items: center;">
-                            <span>No</span>
-                            <label class="switch">
-                                <input type="hidden" name="isFeatured" value="false">
-                                <input type="checkbox" id="isFeatured" name="isFeatured" value="true" checked onchange="this.previousElementSibling.value = this.checked ? 'true' : 'false' ">
-                                <span class="slider"></span>
-                            </label>
-                            <span>Yes</span>
-                        </div>
-
-                    </div>
-                    <div class="form-group">
-                        <label for="productQuantity">Quantity</label>
-                        <input type="number" id="productQuantity" name="productQuantity" class="form-control" value="0">
-                    </div>
-                </div>
-
-            </div>
-
-            <!-- Sizes Section -->
-            <div class="form-section">
-                <h2 class="section-title">Sizes</h2>
-                <div id="sizesContainer">
-                    <!-- Size items will be added here -->
-                </div>
-                <div class="form-row">
-                    <div class="form-group">
-                        <button type="button" class="btn btn-outline" id="addSize">
-                            <i class="fas fa-plus"></i> Add Size
-                        </button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Colors Section -->
-            <div class="form-section">
-                <h2 class="section-title">Colors</h2>
-
-                <div id="colorsContainer">
-                    <!-- Color items will be added here -->
-                </div>
-
-                <div class="form-row">
-                    <div class="form-group">
-                        <button type="button" class="btn btn-outline" id="addColor">
-                            <i class="fas fa-plus"></i> Add Color
-                        </button>
-                    </div>
-                </div>
-            </div>
-
-
-
-
-
-            <div class="form-actions" style="margin-top: 2rem; justify-content: flex-end;">
-                <button type="button" class="btn btn-outline">Discard</button>
-                <button type="button" class="btn btn-primary">Save Draft</button>
-                <button type="submit" class="btn btn-primary">Publish Product</button>
-            </div>
-        </form>
-    </main>
 
     <script>
         // Image Upload Preview
@@ -926,6 +912,4 @@
 
 
     </script>
-</body>
-
-</html>
+<%- include ('../../partials/admin/footer') %> 

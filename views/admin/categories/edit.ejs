@@ -1,0 +1,672 @@
+<%- include ('../../partials/admin/sidebar') %>
+
+
+    <style>
+        :root {
+            /* Your color palette */
+            --ivory-white: #F8F4E9;
+            --warm-beige: #E6DAC8;
+            --stone-gray: #D9D9D6;
+            --navy-blue: #0A2342;
+            --hunter-green: #283D3B;
+            --burgundy: #6D2E46;
+            --gold-foil: #C5A880;
+            --charcoal-black: #2A2A2A;
+            --antique-brass: #B68D4C;
+            --pewter: #8A8A8A;
+            --success-green: #4A6B57;
+            --error-maroon: #8C2F3D;
+            --white: #ffffff;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Georgia', serif;
+        }
+
+        body {
+            display: flex;
+            min-height: 100vh;
+            background-color: var(--ivory-white);
+            color: var(--charcoal-black);
+        }
+
+        /* Sidebar Styles (same as before) */
+        .dashboard-sidebar {
+            width: 280px;
+            background-color: var(--navy-blue);
+            color: var(--ivory-white);
+            height: 100vh;
+            position: sticky;
+            top: 0;
+            overflow-y: auto;
+            transition: all 0.3s ease;
+            flex-shrink: 0;
+        }
+
+        /* (Include all previous sidebar styles here) */
+
+        /* Main Content Area */
+        .main-content {
+            flex: 1;
+            padding: 2rem;
+            overflow-y: auto;
+            transition: margin-left 0.3s ease;
+        }
+
+        /* Category Form Styles */
+        .form-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--warm-beige);
+        }
+
+        .form-title {
+            color: var(--navy-blue);
+            font-size: 1.8rem;
+        }
+
+        .form-actions {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 0.7rem 1.5rem;
+            border: none;
+            border-radius: 4px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+            text-decoration: none;
+        }
+
+        .btn-primary {
+            background-color: var(--hunter-green);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--navy-blue);
+        }
+
+        .btn-outline {
+            background-color: transparent;
+            border: 1px solid var(--hunter-green);
+            color: var(--hunter-green);
+        }
+
+        .btn-outline:hover {
+            background-color: var(--hunter-green);
+            color: white;
+        }
+
+        .category-form {
+            background-color: var(--white);
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .form-section {
+            margin-bottom: 2rem;
+        }
+
+        .section-title {
+            color: var(--navy-blue);
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid var(--warm-beige);
+            font-size: 1.2rem;
+        }
+
+        .form-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group {
+            flex: 1;
+            min-width: 250px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--navy-blue);
+            font-weight: 500;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 0.7rem 1rem;
+            border: 1px solid var(--stone-gray);
+            border-radius: 4px;
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+            background-color: var(--ivory-white);
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--gold-foil);
+            box-shadow: 0 0 0 2px rgba(197, 168, 128, 0.2);
+        }
+
+        textarea.form-control {
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        .form-select {
+            appearance: none;
+            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%232A2A2A' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+            background-repeat: no-repeat;
+            background-position: right 0.75rem center;
+            background-size: 1rem;
+        }
+
+        .image-upload {
+            border: 2px dashed var(--stone-gray);
+            border-radius: 8px;
+            padding: 2rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-bottom: 1rem;
+        }
+
+        .image-upload:hover {
+            border-color: var(--gold-foil);
+            background-color: rgba(197, 168, 128, 0.05);
+        }
+
+        .image-upload-icon {
+            font-size: 2.5rem;
+            color: var(--pewter);
+            margin-bottom: 1rem;
+        }
+
+        .image-upload-text {
+            color: var(--navy-blue);
+            margin-bottom: 0.5rem;
+        }
+
+        .image-upload-hint {
+            color: var(--pewter);
+            font-size: 0.85rem;
+        }
+
+        .preview-image {
+            max-width: 200px;
+            max-height: 200px;
+            border-radius: 4px;
+            margin-top: 1rem;
+            display: none;
+            border: 1px solid var(--stone-gray);
+        }
+
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 50px;
+            height: 24px;
+            margin-left: 1rem;
+        }
+
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: var(--stone-gray);
+            transition: .4s;
+            border-radius: 24px;
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 18px;
+            width: 18px;
+            left: 3px;
+            bottom: 3px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+
+        input:checked+.slider {
+            background-color: var(--success-green);
+        }
+
+        input:checked+.slider:before {
+            transform: translateX(26px);
+        }
+
+        .seo-preview {
+            background-color: var(--warm-beige);
+            padding: 1rem;
+            border-radius: 4px;
+            margin-top: 1rem;
+        }
+
+        .seo-preview-title {
+            color: #1a0dab;
+            font-size: 1.1rem;
+            margin-bottom: 0.25rem;
+            font-weight: normal;
+        }
+
+        .seo-preview-url {
+            color: #006621;
+            font-size: 0.9rem;
+            margin-bottom: 0.25rem;
+        }
+
+        .seo-preview-desc {
+            color: #545454;
+            font-size: 0.9rem;
+        }
+
+        .status-options {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+            margin-top: 0.5rem;
+        }
+
+        .status-option {
+            display: flex;
+            cursor: pointer;
+        }
+
+        .status-radio {
+            position: absolute;
+            opacity: 0;
+        }
+
+        .status-label {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 0.75rem 1rem;
+            border-radius: 6px;
+            background-color: var(--ivory-white);
+            border: 1px solid var(--stone-gray);
+            width: 100%;
+            transition: all 0.2s ease;
+        }
+
+        .status-radio:checked+.status-label {
+            border-color: var(--hunter-green);
+            background-color: rgba(40, 61, 59, 0.05);
+        }
+
+        .status-radio:focus+.status-label {
+            box-shadow: 0 0 0 2px rgba(40, 61, 59, 0.2);
+        }
+
+        .status-icon {
+            font-size: 1.25rem;
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+        }
+
+        .status-icon.draft {
+            color: var(--pewter);
+            background-color: rgba(138, 138, 138, 0.1);
+        }
+
+        .status-icon.published {
+            color: var(--success-green);
+            background-color: rgba(74, 107, 87, 0.1);
+        }
+
+        .status-icon.archived {
+            color: var(--burgundy);
+            background-color: rgba(109, 46, 70, 0.1);
+        }
+
+        .status-text {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .status-text strong {
+            color: var(--navy-blue);
+            font-weight: 600;
+        }
+
+        .status-text small {
+            color: var(--pewter);
+            font-size: 0.8rem;
+            margin-top: 0.15rem;
+        }
+
+        .alert {
+            padding: 1rem;
+            margin-bottom: 1rem;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+        }
+
+        .alert-danger {
+            background-color: #dc3545;
+            color: white;
+        }
+
+        .alert-success {
+            background-color: #28a745;
+            color: white;
+        }
+
+        @media (max-width: 768px) {
+            .main-content {
+                padding: 1.5rem;
+            }
+
+            .form-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 1rem;
+            }
+
+            .form-actions {
+                width: 100%;
+                justify-content: flex-end;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .category-form {
+                padding: 1.5rem;
+            }
+
+            .form-row {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .form-group {
+                min-width: 100%;
+            }
+        }
+    </style>
+    <!-- Main Content Area -->
+    <main class="main-content">
+        <% if (messages.error) { %>
+            <div class="alert alert-danger">
+                <%= messages.error %>
+            </div>
+            <% } %>
+                <% if (messages.success) { %>
+                    <div class="alert alert-success">
+                        <%= messages.success %>
+                    </div>
+                    <% } %>
+                        <div class="form-header">
+                            <h1 class="form-title">Update Category</h1>
+                            <div class="form-actions">
+                                <button type="button" class="btn btn-outline">Discard</button>
+                                <button type="button" class="btn btn-primary">Save Draft</button>
+                                <button type="button" class="btn btn-primary">Publish Category</button>
+                            </div>
+                        </div>
+
+                        <form class="category-form" method="POST" action="/admin/categories/update/<%= category._id %> "
+                            enctype="multipart/form-data">
+                            <!-- Basic Information Section -->
+                            <div class="form-section">
+                                <h2 class="section-title">Basic Information</h2>
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="categoryName">Category Name*</label>
+                                        <input type="text" id="categoryName" name="categoryName" class="form-control"
+                                            value="<%= category.name %> " required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="categorySlug">URL Slug*</label>
+                                        <input type="text" id="categorySlug" name="categorySlug" class="form-control"
+                                            value="<%= category.slug %> " required>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="categoryDescription">Description</label>
+                                    <textarea id="categoryDescription" name="categoryDescription"
+                                        class="form-control"><%= category.description %> </textarea>
+                                </div>
+                                <div class="form-group">
+                                    <label>Category Image</label>
+                                    <div class="image-upload" id="imageUpload">
+                                        <div class="image-upload-icon">
+                                            <i class="fas fa-cloud-upload-alt"></i>
+                                        </div>
+                                        <div class="image-upload-text">Click to upload or drag and drop</div>
+                                        <div class="image-upload-hint">SVG, PNG, JPG or GIF (max. 5MB)</div>
+                                        <input type="file" id="fileInput" name="image" accept="image/*"
+                                            style="display: none;" value="<%= category.image %> ">
+                                        <img id="previewImage" class="preview-image" alt="Category preview"
+                                            src="<%= category?.image ? category.image: '' %> "
+                                            style="<%- category?.image ? 'display: block;' : 'display: none;' %>">
+                                    </div>
+                                </div>
+                            </div>
+
+
+
+                            <!-- Display Settings Section -->
+                            <div class="form-section">
+                                <h2 class="section-title">Display Settings</h2>
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label>Display in Navigation</label>
+                                        <div style="display: flex; align-items: center;">
+                                            <span>No</span>
+                                            <label class="switch">
+                                                <input type="hidden" name="showInNavigation" value="false">
+                                                <input type="checkbox" name="showInNavigation" value="true"
+                                                    <%=category?.displaySettings?.showInNavigation ? 'checked' : '' %>
+                                                onchange="this.previousElementSibling.value = this.checked ? 'true' :
+                                                'false' ">
+                                                <span class="slider"></span>
+                                            </label>
+                                            <span>Yes</span>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Featured Category</label>
+                                        <div style="display: flex; align-items: center;">
+                                            <span>No</span>
+                                            <label class="switch">
+                                                <!-- Hidden input ensures false value is sent when unchecked -->
+                                                <input type="hidden" name="isFeatured" value="false">
+                                                <input type="checkbox" name="isFeatured" id="isFeatured" value="true"
+                                                    <%=category?.displaySettings?.isFeatured ? 'checked' : '' %>
+                                                onchange="this.previousElementSibling.value = this.checked ? 'true' :
+                                                'false' ">
+                                                <span class="slider"></span>
+                                            </label>
+                                            <span>Yes</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- SEO Section -->
+                            <div class="form-section">
+                                <h2 class="section-title">SEO Settings</h2>
+                                <div class="form-group">
+                                    <label for="seoTitle">SEO Title</label>
+                                    <input type="text" id="seoTitle" name="seoTitle" class="form-control"
+                                        placeholder="Recommended: 50-60 characters" value="<%= category.seo.title %> ">
+                                </div>
+                                <div class="form-group">
+                                    <label for="seoDescription">Meta Description</label>
+                                    <textarea id="seoDescription" name="seoDescription" class="form-control"
+                                        placeholder="Recommended: 150-160 characters"><%= category.seo.description %> </textarea>
+                                </div>
+                                <div class="seo-preview">
+                                    <div class="seo-preview-title" id="seoPreviewTitle">Example SEO Title - Heritage
+                                        Collection</div>
+                                    <div class="seo-preview-url">https://heritagecollection.com/categories/<span
+                                            id="seoPreviewSlug">example-category</span></div>
+                                    <div class="seo-preview-desc" id="seoPreviewDesc">This is an example of how your
+                                        meta description
+                                        might appear in search engine results. Keep it concise and informative.</div>
+                                </div>
+                            </div>
+
+                            <!-- Category status -->
+                            <div class="form-section">
+                                <h2 class="section-title">Publication Status</h2>
+                                <div class="form-group">
+                                    <label>Category Status*</label>
+                                    <div class="status-options">
+                                        <label class="status-option">
+                                            <input type="radio" name="status" value="draft" checked class="status-radio"
+                                                <%=category?.status==='draft' ? 'checked' : '' %>>
+                                            <span class="status-label">
+                                                <i class="fas fa-pencil-alt status-icon draft"></i>
+                                                <span class="status-text">
+                                                    <strong>Draft</strong>
+                                                    <small>Visible only to admins</small>
+                                                </span>
+                                            </span>
+                                        </label>
+
+                                        <label class="status-option">
+                                            <input type="radio" name="status" value="published" class="status-radio"
+                                                <%=category?.status==='published' ? 'checked' : '' %>>
+                                            <span class="status-label">
+                                                <i class="fas fa-eye status-icon published"></i>
+                                                <span class="status-text">
+                                                    <strong>Published</strong>
+                                                    <small>Visible to all visitors</small>
+                                                </span>
+                                            </span>
+                                        </label>
+
+                                        <label class="status-option">
+                                            <input type="radio" name="status" value="archived" class="status-radio"
+                                                <%=category?.status==='archived' ? 'checked' : '' %>>
+                                            <span class="status-label">
+                                                <i class="fas fa-archive status-icon archived"></i>
+                                                <span class="status-text">
+                                                    <strong>Archived</strong>
+                                                    <small>Hidden from public view</small>
+                                                </span>
+                                            </span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-actions" style="margin-top: 2rem; justify-content: flex-end;">
+                                <button type="button" class="btn btn-outline">Discard</button>
+                                <button type="button" class="btn btn-primary">Save Draft</button>
+                                <button type="submit" class="btn btn-primary">Update Category</button>
+                            </div>
+                        </form>
+    </main>
+
+    <script>
+        // Image Upload Preview
+        const imageUpload = document.getElementById('imageUpload');
+        const fileInput = document.getElementById('fileInput');
+        const previewImage = document.getElementById('previewImage');
+
+        imageUpload.addEventListener('click', () => fileInput.click());
+
+        fileInput.addEventListener('change', function () {
+            const file = this.files[0];
+            if (!file.type.match('image.*')) return;
+
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                previewImage.src = e.target.result;
+                previewImage.style.display = 'block';
+                imageUpload.querySelector('.image-upload-icon').style.display = 'none';
+                imageUpload.querySelector('.image-upload-text').style.display = 'none';
+                imageUpload.querySelector('.image-upload-hint').style.display = 'none';
+            }
+            reader.readAsDataURL(file);
+        });
+
+        // Generate slug from category name
+        document.getElementById('categoryName').addEventListener('input', function () {
+            const slugInput = document.getElementById('categorySlug');
+            if (!slugInput.value) { // Only auto-generate if slug is empty
+                const slug = this.value.toLowerCase()
+                    .replace(/[^\w\s-]/g, '') // Remove non-word chars
+                    .replace(/[\s_-]+/g, '-') // Replace spaces/underscores with dashes
+                    .replace(/^-+|-+$/g, ''); // Trim dashes from start/end
+                slugInput.value = slug;
+
+                // Update SEO preview
+                document.getElementById('seoPreviewSlug').textContent = slug;
+            }
+        });
+
+        // Update SEO preview
+        document.getElementById('seoTitle').addEventListener('input', function () {
+            document.getElementById('seoPreviewTitle').textContent = this.value || 'Example SEO Title - Heritage Collection';
+        });
+
+        document.getElementById('seoDescription').addEventListener('input', function () {
+            document.getElementById('seoPreviewDesc').textContent = this.value || 'This is an example of how your meta description might appear in search engine results. Keep it concise and informative.';
+        });
+
+        document.getElementById('categorySlug').addEventListener('input', function () {
+            document.getElementById('seoPreviewSlug').textContent = this.value || 'example-category';
+        });
+
+        // Drag and drop functionality
+        imageUpload.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            imageUpload.style.borderColor = 'var(--gold-foil)';
+            imageUpload.style.backgroundColor = 'rgba(197, 168, 128, 0.1)';
+        });
+
+        imageUpload.addEventListener('dragleave', () => {
+            imageUpload.style.borderColor = 'var(--stone-gray)';
+            imageUpload.style.backgroundColor = 'transparent';
+        });
+
+        imageUpload.addEventListener('drop', (e) => {
+            e.preventDefault();
+            imageUpload.style.borderColor = 'var(--stone-gray)';
+            imageUpload.style.backgroundColor = 'transparent';
+            fileInput.files = e.dataTransfer.files;
+            const event = new Event('change');
+            fileInput.dispatchEvent(event);
+        });
+
+
+    </script>
+    <%- include ('../../partials/admin/footer') %>

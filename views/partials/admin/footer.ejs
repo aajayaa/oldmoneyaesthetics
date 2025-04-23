@@ -1,0 +1,60 @@
+<script>
+    // Toggle sidebar on mobile
+    const sidebarToggle = document.getElementById('sidebarToggle');
+    const dashboardSidebar = document.getElementById('dashboardSidebar');
+    const mainContent = document.getElementById('mainContent');
+
+    sidebarToggle.addEventListener('click', function() {
+        dashboardSidebar.classList.toggle('collapsed');
+        mainContent.classList.toggle('full-width');
+        
+        // Change icon based on state
+        const icon = this.querySelector('i');
+        if (dashboardSidebar.classList.contains('collapsed')) {
+            icon.classList.remove('fa-bars');
+            icon.classList.add('fa-times');
+        } else {
+            icon.classList.remove('fa-times');
+            icon.classList.add('fa-bars');
+        }
+    });
+
+    // Toggle submenus
+    const menuItems = document.querySelectorAll('.menu-item');
+    menuItems.forEach(item => {
+        const link = item.querySelector('.menu-link');
+        if (link.querySelector('.arrow')) {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                item.classList.toggle('active');
+                
+                // Close other open submenus in the same group
+                const parentList = item.parentElement;
+                parentList.querySelectorAll('.menu-item').forEach(sibling => {
+                    if (sibling !== item) {
+                        sibling.classList.remove('active');
+                    }
+                });
+            });
+        }
+    });
+
+    // Auto-collapse sidebar on small screens if needed
+    function checkScreenSize() {
+        if (window.innerWidth <= 768) {
+            dashboardSidebar.classList.add('collapsed');
+            mainContent.classList.add('full-width');
+            sidebarToggle.querySelector('i').classList.add('fa-bars');
+            sidebarToggle.querySelector('i').classList.remove('fa-times');
+        } else {
+            dashboardSidebar.classList.remove('collapsed');
+            mainContent.classList.remove('full-width');
+        }
+    }
+
+    // Run on load and resize
+    window.addEventListener('load', checkScreenSize);
+    window.addEventListener('resize', checkScreenSize);
+</script>
+</body>
+</html>

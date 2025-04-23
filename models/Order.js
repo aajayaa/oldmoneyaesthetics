@@ -19,9 +19,14 @@ const orderSchema = new mongoose.Schema({
         image: String
     }],
     totalAmount: Number,
-    status: {
+    payment_status: {
         type: String,
-        enum: ['pending', 'confirmed', 'processing', 'completed'],
+        enum: ['pending', 'failed', 'refunded', 'paid', 'cancelled'],
+        default: 'pending'
+    },
+    fulfillment_status: {
+        type: String,
+        enum: ['pending', 'processing', 'shipped', 'delivered', 'cancelled'],
         default: 'pending'
     },
     shippingAddress: {

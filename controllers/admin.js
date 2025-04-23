@@ -180,6 +180,18 @@ const handleProductSubmit = async (req, res) => {
   }
 }
 
+
+const orders = (req, res) => {
+  res.render('admin/orders');
+};
+// const orders = (req, res) => {
+//   res.render('admin/orders', {
+//     title: 'Orders',
+//     user: req.user,
+//     isAdmin: req.user.role === 'admin'
+//   });
+// };
+
 module.exports = {
   getDashboard,
   createProduct,

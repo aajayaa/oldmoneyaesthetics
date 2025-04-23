@@ -1,101 +1,123 @@
-<%- include ('../partials/header') %> 
+<%- include ('../partials/header') %>
 
-<section class="product-details">
-    <div class="product-container">
-        <!-- Product Gallery -->
-        <div class="product-gallery">
-            <div class="main-image">
-                <img src="<%= product.image %> " alt="Savile Row Suit">
-            </div>
-            <div class="thumbnails">
-                <div class="thumbnail active">
-                    <img src="<%= product.images[0] %> " alt="Front View">
+    <section class="product-details">
+        <div class="product-container">
+            <!-- Product Gallery -->
+            <div class="product-gallery">
+                <div class="main-image">
+                    <img src="<%= product.image %> " alt="Savile Row Suit">
                 </div>
-                <div class="thumbnail">
-                    <img src="<%= product.images[1] %>" alt="Back View">
-                </div>
-                <div class="thumbnail">
-                    <img src="<%= product.images[2] %>" alt="Fabric Detail">
-                </div>
-                <div class="thumbnail">
-                    <img src="<%= product.images[3] %>" alt="Fabric Detail">
-                </div>
-            </div>
-        </div>
-
-        <!-- Product Info -->
-        <div class="product-info">
-            <h1 class="product-title"><%= product.name %> </h1>
-            <p class="product-price">£ <%= product.price %> </p>
-            <div class="product-meta">
-                <span class="rating">★★★★☆ (<%= product.numReviews %>  reviews)</span>
-                <span class="sku">SKU: <%= product.sku %> </span>
-            </div>
-
-            <div class="product-description">
-                <p>Handcrafted using 480 Super 180's wool from Loro Piana. Features full canvas construction, horn buttons, and signature lapel stitching.</p>
-            </div>
-
-            <!-- Size Selection -->
-            <div class="size-selector">
-                <h3>Select Size</h3>
-                <div class="size-grid">
-                    <% product.sizes.forEach(size => { %>
-                        <button class="size-option"><%= size.name %></button>
-                    <% }) %>
-                </div>
-            </div>
-
-            <!-- Color Selection -->
-            <div class="color-selector">
-                <h3>Select Color</h3>
-                <div class="color-grid">
-                    <% product.colors.forEach(color => { %>
-                        <button class="color-option" style="background-color: <%= color.hexCode %>" title="<%= color.name %>">
-                            <span class="color-name"><%= color.name %></span>
-                        </button>
-                    <% }) %>
-                </div>
-            </div>
-
-            <!-- Add to Cart -->
-            <div class="add-to-cart">
-                <div class="quantity-selector">
-                    <button class="quantity-btn">−</button>
-                    <input type="number" value="1" min="1" class="quantity-input">
-                    <button class="quantity-btn">+</button>
-                </div>
-                <button class="atc-button">Add to Commission</button>
-            </div>
-
-            <!-- Product Details Accordion -->
-            <div class="details-accordion">
-                <div class="accordion-item">
-                    <button class="accordion-header">Fabric & Care</button>
-                    <div class="accordion-content">
-                        <p>100% Super 180's wool. Dry clean only. Includes lifetime pressing service.</p>
+                <div class="thumbnails">
+                    <div class="thumbnail active">
+                        <img src="<%= product.images[0] %> " alt="Front View">
                     </div>
-                </div>
-                <div class="accordion-item">
-                    <button class="accordion-header">Tailoring Details</button>
-                    <div class="accordion-content">
-                        <p>Hand-stitched lapels, functional buttonholes, and signature inner lining.</p>
+                    <div class="thumbnail">
+                        <img src="<%= product.images[1] %>" alt="Back View">
+                    </div>
+                    <div class="thumbnail">
+                        <img src="<%= product.images[2] %>" alt="Fabric Detail">
+                    </div>
+                    <div class="thumbnail">
+                        <img src="<%= product.images[3] %>" alt="Fabric Detail">
                     </div>
                 </div>
             </div>
+
+            <!-- Product Info -->
+            <div class="product-info">
+                <h1 class="product-title">
+                    <%= product.name %>
+                </h1>
+                <p class="product-price">£ <%= product.price %>
+                </p>
+                <div class="product-meta">
+                    <span class="rating">★★★★☆ (<%= product.numReviews %> reviews)</span>
+                    <span class="sku">SKU: <%= product.sku %> </span>
+                </div>
+
+                <div class="product-description">
+                    <p>Handcrafted using 480 Super 180's wool from Loro Piana. Features full canvas construction, horn
+                        buttons, and signature lapel stitching.</p>
+                </div>
+
+
+
+
+                <!-- Add to Cart -->
+                <form action="/add-to-cart" method="POST">
+                    <input type="hidden" name="id" value="<%= product._id %> ">
+                    <input type="hidden" name="name" value="<%= product.name %> ">
+                    <input type="hidden" name="price" value="<%= product.price %> ">
+                    <input type="hidden" name="image" value="<%= product.image %> ">
+
+                    <!-- Size Selection -->
+                    <div class="size-selector">
+                        <h3>Select Size</h3>
+                        <div class="size-grid">
+                            <% product.sizes.forEach((size, index)=> { %>
+                                <label class="size-option-label">
+                                    <input type="radio" name="size" value="<%= size.name %>" hidden <%=index===0
+                                        ? 'checked' : '' %>
+                                    required
+                                    >
+                                    <button type="button" class="size-option" title="<%= size.name %>">
+                                        <%= size.name %>
+                                    </button>
+                                </label>
+                                <% }) %>
+                        </div>
+                    </div>
+
+                    <!-- Color Selection -->
+                    <div class="color-selector">
+                        <h3>Select Color</h3>
+                        <div class="color-grid">
+                            <% product.colors.forEach((color, index)=> { %>
+                                <label class="color-option-label">
+                                    <input type="radio" name="color" value="<%= color.name %>" hidden <%=index===0
+                                        ? 'checked' : '' %>
+                                    required
+                                    >
+                                    <button type="button" class="color-option"
+                                        style="background-color: <%= color.hexCode %>"
+                                        title="<%= color.name %>"></button>
+                                </label>
+                                <% }) %>
+                        </div>
+                    </div>
+                    <div class="quatity-wrapper">
+                        <label for="quantity" class="quantity-title">Qty:</label>
+                        <input type="number" id="quantity" name="quantity" class="quantity-input" value="1" min="1" />
+                        <button type="submit" class="add-to-cart-btn">Add to Cart</button>
+                    </div>
+                </form>
+
+                <!-- Product Details Accordion -->
+                <div class="details-accordion">
+                    <div class="accordion-item">
+                        <button class="accordion-header">Fabric & Care</button>
+                        <div class="accordion-content">
+                            <p>100% Super 180's wool. Dry clean only. Includes lifetime pressing service.</p>
+                        </div>
+                    </div>
+                    <div class="accordion-item">
+                        <button class="accordion-header">Tailoring Details</button>
+                        <div class="accordion-content">
+                            <p>Hand-stitched lapels, functional buttonholes, and signature inner lining.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-    </div>
 
-    <!-- Recommended -->
-    <div class="recommended-products">
-        <h2>Complete Your Ensemble</h2>
-        <div class="recommended-grid">
-            <!-- Repeat product cards from previous section -->
+        <!-- Recommended -->
+        <div class="recommended-products">
+            <h2>Complete Your Ensemble</h2>
+            <div class="recommended-grid">
+                <!-- Repeat product cards from previous section -->
+            </div>
         </div>
-    </div>
-</section>
-<div class="notification" id="notification"></div>
+    </section>
+    <div class="notification" id="notification"></div>
 
-<%- include ('../partials/footer') %>
-
-
+    <%- include ('../partials/footer') %>

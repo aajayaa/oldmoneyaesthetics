@@ -1,6 +1,7 @@
 const uploadOptions = require('../utils/uploadOptions');
 const Category = require('../models/Category');
 const Product = require('../models/Product');
+// const flash = require('connect-flash');
 
 const getDashboard = async (req, res) => {
   try {
@@ -8,7 +9,7 @@ const getDashboard = async (req, res) => {
     if (!req.user) {
       return res.redirect('/login');
     }
-    
+
     res.render('admin/dashboard', {
       title: 'Dashboard',
       user: req.user,
@@ -48,7 +49,7 @@ const viewProduct = async (req, res) => {
     }
 
     const products = await Product.find().populate('category');
-    
+
     res.render('admin/products/view', {
       title: 'All Products',
       user: req.user,
@@ -62,29 +63,48 @@ const viewProduct = async (req, res) => {
 };
 
 const createCategory = (req, res) => {
-  // Add null check for req.user
+  // Add null check for req.user       
   if (!req.user) {
     return res.redirect('/login');
   }
-  
+
   res.render('admin/categories/create', {
     title: 'Create Category',
     user: req.user,
-    isAdmin: req.user.role.toLowerCase() === 'admin' // Standardize role check
+    isAdmin: req.user?.role?.toLowerCase() === 'admin' // Standardize role check
   });
 };
 
-const viewCategory = (req, res) => {
-  // Add null check for req.user
-  if (!req.user) {
-    return res.redirect('/login');
+const viewCategory = async (req, res) => {
+  try {
+    // Add null check for req.user
+    if (!req.user) {
+      return res.redirect('/login');
+    }
+
+    // Get categories and count products for each category
+    const categories = await Category.find();
+
+    // Get product counts for each category
+    const categoriesWithCounts = await Promise.all(categories.map(async (category) => {
+      const productCount = await Product.countDocuments({ category: category._id });
+      return {
+        ...category.toObject(),
+        productCount
+      };
+    }));
+
+    res.render('admin/categories/view', {
+      title: 'All Categories',
+      user: req.user,
+      isAdmin: req.user?.role?.toLowerCase() === 'admin',
+      categories: categoriesWithCounts || []
+    });
+  } catch (error) {
+    console.error('Error fetching categories:', error);
+    req.flash('error', 'Error fetching categories');
+    res.redirect('/admin/categories');
   }
-  
-  res.render('admin/categories/view', {
-    title: 'All Categories',
-    user: req.user,
-    isAdmin: req.user.role.toLowerCase() === 'admin' // Standardize role check
-  });
 };
 
 const getBooleanValue = (value) => {
@@ -99,26 +119,27 @@ const getBooleanValue = (value) => {
 
 const handleCategorySubmit = async (req, res) => {
   try {
-
-    console.log(req.user);
     // Add null check for req.user
     if (!req.user) {
       return res.redirect('/login');
     }
-    
+
     const { categoryName, categoryDescription, categorySlug, seoTitle, seoDescription, status } = req.body;
-    
+
     // Validate required fields
     if (!categoryName || !categorySlug) {
       return res.status(400).send("Category name and slug are required");
     }
-    
+
     const isFeatured = getBooleanValue(req.body.isFeatured);
     const showInNavigation = getBooleanValue(req.body.showInNavigation);
 
-    const file = req.file;
-    if (!file) return res.status(400).send("No image in the request");
-    
+    // Validate image file
+    if (!req.file) {
+      req.flash('error', 'Image is required');
+      return res.redirect('/admin/categories/create');
+    }
+
     const fileName = req.file.filename;
     const basePath = `${req.protocol}://${req.get("host")}/public/images/uploads/`;
 
@@ -129,24 +150,148 @@ const handleCategorySubmit = async (req, res) => {
       image: `${basePath}${fileName}`,
       seoTitle,
       seoDescription,
-      createdBy: req.user._id,
-      updatedBy: req.user._id,
+      createdBy: req.user._id, // Ensure this is populated
+      updatedBy: req.user._id, // Ensure this is populated
       displaySettings: {
         isFeatured,
         showInNavigation,
       },
       status: status || 'draft' // Default status if not provided
     });
-    
+
+
+
     category = await category.save();
+
+    // Flash success message
+    req.flash('success', 'Category created successfully');
     res.redirect('/admin/categories');
   } catch (error) {
     console.error('Category creation error:', error);
-    // Flash error message to user
-    req.flash('error', error.message || 'Failed to create category');
+    // Flash error message to user with more details
+    req.flash('error', `Failed to create category`);
     res.redirect('/admin/categories/create');
   }
 };
+
+// category deletion
+
+const handleCategoryDeletion = async (req, res) => {
+  try {
+    const category = await Category.findByIdAndDelete(req.params.id); // Changed to findByIdAndDelete
+
+    if (!category) {
+      req.falsh('error', 'Category not found');
+      // return res.status(404).json({
+      //   success: false,
+      //   message: "Category not found",
+      // });
+    }
+
+    // return res.status(200).json({
+    //   success: true,
+    //   message: "Category deleted successfully",
+    //   data: category,
+    // });
+    req.flash('success', 'Category deleted successfully');
+    res.redirect('/admin/categories');
+  } catch (err) {
+    return res.status(500).json({
+      success: false,
+      message: "Server error",
+      error: err.message,
+    });
+  }
+}
+
+// Show category update form
+const showCategoryUpdateForm = async (req, res) => {
+  try {
+    const category = await Category.findById(req.params.id);
+
+    if (!category) {
+      req.flash('error', 'Category not found');
+      return res.redirect('/admin/categories');
+    }
+
+    res.render('admin/categories/edit', {
+      title: 'Update Category',
+      user: req.user,
+      isAdmin: req.user?.role?.toLowerCase() === 'admin',
+      category: category,
+      uploadOptions: uploadOptions,
+    })
+  }catch (error) {
+    console.error('Error fetching category for update:', error);
+    req.flash('error', 'Error fetching category for update');
+    res.redirect('/admin/categories');
+  }
+}
+
+// category update
+const handleCategoryUpdate = async (req, res) => {
+  try {
+    const id = req.params.id;
+    const {
+      categoryName,
+      categoryDescription,
+      categorySlug,
+      seoTitle,
+      seoDescription,
+      status,
+    } = req.body;
+
+    if (!categoryName || !categorySlug) {
+      return res.status(400).send("Category name and slug are required");
+    }
+
+    const isFeatured = getBooleanValue(req.body.isFeatured);
+    const showInNavigation = getBooleanValue(req.body.showInNavigation);
+
+    const basePath = `${req.protocol}://${req.get('host')}/public/images/uploads/`;
+
+    const category = await Category.findById(id);
+    if (!category) {
+      req.flash('error', 'Category not found');
+      return res.redirect('/admin/categories');
+    }
+
+    let updatedFields = {
+      name: categoryName,
+      description: categoryDescription,
+      slug: categorySlug,
+      seoTitle,
+      seoDescription,
+      status: status || 'draft',
+      displaySettings: {
+        isFeatured,
+        showInNavigation,
+      },
+      image: category.image, // fallback to existing image
+    };
+
+    if (req.file) {
+      updatedFields.image = `${basePath}${req.file.filename}`;
+    }
+
+    const updatedCategory = await Category.findByIdAndUpdate(id, updatedFields, {
+      new: true,
+    });
+
+    if (!updatedCategory) {
+      req.flash('error', 'Category update failed');
+      return res.redirect(`/admin/categories/edit/${id}`);
+    }
+
+    req.flash('success', 'Category updated successfully');
+    res.redirect('/admin/categories');
+  } catch (error) {
+    console.error('Update error:', error);
+    req.flash('error', 'Error while updating category');
+    res.redirect('/admin/categories');
+  }
+};
+
 
 const handleProductSubmit = async (req, res) => {
   try {
@@ -154,18 +299,18 @@ const handleProductSubmit = async (req, res) => {
     if (!req.user) {
       return res.redirect('/login');
     }
-    
-    const { 
-      productName, 
-      productCategory, 
-      productCollection, 
-      productDescription, 
-      productCurrency, 
-      productPrice, 
-      productComparePrice, 
-      productCost, 
-      productBarcode, 
-      productQuantity 
+
+    const {
+      productName,
+      productCategory,
+      productCollection,
+      productDescription,
+      productCurrency,
+      productPrice,
+      productComparePrice,
+      productCost,
+      productBarcode,
+      productQuantity
     } = req.body;
 
     // Validate required fields
@@ -232,7 +377,7 @@ const handleProductSubmit = async (req, res) => {
       updatedBy: req.user._id,
       status: 'draft' // Default status
     });
-    
+
     product = await product.save();
     res.redirect('/admin/products');
   } catch (error) {
@@ -243,6 +388,10 @@ const handleProductSubmit = async (req, res) => {
   }
 };
 
+const orders = (req, res) => {
+  res.render('admin/orders');
+};
+
 module.exports = {
   getDashboard,
   createProduct,
@@ -250,5 +399,9 @@ module.exports = {
   createCategory,
   viewCategory,
   handleCategorySubmit,
-  handleProductSubmit
+  handleProductSubmit,
+  handleCategoryDeletion,
+  orders,
+  showCategoryUpdateForm,
+  handleCategoryUpdate
 };

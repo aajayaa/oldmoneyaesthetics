@@ -4,6 +4,8 @@ const app = express();
 const path = require('path');
 const cookieParser = require('cookie-parser');
 const session = require('express-session');
+const MongoStore = require('connect-mongo');
+const flash = require('connect-flash');
 const port = process.env.PORT;
 
 // Database Connection
@@ -21,11 +23,19 @@ app.use(session({
   secret: process.env.SESSION_SECRET,
   resave: false,
   saveUninitialized: false,
-  cookie: {
-    secure: false,
-    maxAge: 24 * 60 * 60 * 1000
-  }
+  store: MongoStore.create({
+    mongoUrl: process.env.DB_URI
+  }),
+  cookie: { maxAge: 1000 * 60 * 60 * 24 }
 }));
+
+app.use(flash());
+
+// Add flash messages to response locals
+app.use((req, res, next) => {
+  res.locals.messages = req.flash();
+  next();
+});
 
 // Make user available to all templates
 app.use((req, res, next) => {
@@ -47,7 +57,7 @@ const cartRoutes = require('./routes/cartRoutes');
 app.use('/', pageRoutes);
 app.use('/', authRoutes);
 app.use('/admin', adminRoutes);
-app.use('/cart', cartRoutes);
+app.use('/', cartRoutes);
 
 app.listen(port, () => {
   console.log(`Server is running on port http://localhost:${port}`);

@@ -274,3 +274,25 @@
       width: 100%;
     }
   }
+
+.item-controls form button {
+    background: var(--pewter);
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.item-controls form button:hover {
+    background: #d32f2f;
+    transform: translateY(-2px);
+}
+
+.item-controls form button:active {
+    transform: translateY(0);
+}

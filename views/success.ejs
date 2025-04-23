@@ -1,0 +1,239 @@
+<%- include('partials/header') %>
+<div class="success-container">
+    <div class="success-header">
+        <div class="success-icon">
+            <i class="fas fa-check-circle"></i>
+        </div>
+        <h1>Payment Successful! 🎉</h1>
+        <p class="success-message">Your order has been placed successfully. Thank you for your purchase!</p>
+    </div>
+
+    <div class="order-details">
+        <h2>Order Summary</h2>
+        <div class="order-status">
+            <span class="label">Status:</span>
+            <span class="status-badge <%= order?.status?.toLowerCase() %>"><%= order.status %></span>
+        </div>
+        <div class="order-total">
+            <span class="label">Total Paid:</span>
+            <span class="amount">£<%= order.total / 100 %></span>
+        </div>
+
+        <div class="shipping-info">
+            <h3><i class="fas fa-shipping-fast"></i> Shipping Address</h3>
+            <div class="address-details">
+                <p class="name"><%= order.shippingAddress.fullName %></p>
+                <p class="address"><%= order.shippingAddress.address %></p>
+                <p class="city-state"><%= order.shippingAddress.city %></p>
+                <p class="postal-country"><%= order.shippingAddress.postalCode %>, <%= order.shippingAddress.country %></p>
+            </div>
+        </div>
+
+        <div class="order-items">
+            <h3><i class="fas fa-box-open"></i> Items Ordered</h3>
+            <ul class="items-list">
+                <% order.items.forEach(item => { %>
+                    <li class="item">
+                        <div class="item-details">
+                            <span class="item-name"><%= item.name %></span>
+                            <span class="item-quantity">x <%= item.quantity %></span>
+                        </div>
+                        <span class="item-price">£<%= item.price %></span>
+                    </li>
+                <% }); %>
+            </ul>
+        </div>
+    </div>
+
+    <div class="action-buttons">
+        <a href="/" class="home-button">
+            <i class="fas fa-home"></i> Return to Home
+        </a>
+        <a href="/orders" class="orders-button">
+            <i class="fas fa-list"></i> View Orders
+        </a>
+    </div>
+</div>
+
+<style>
+.success-container {
+    max-width: 800px;
+    margin: 2rem auto;
+    padding: 2rem;
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
+}
+
+.success-header {
+    text-align: center;
+    margin-bottom: 3rem;
+}
+
+.success-icon {
+    font-size: 4rem;
+    color: #4CAF50;
+    margin-bottom: 1rem;
+}
+
+.success-message {
+    color: #666;
+    font-size: 1.1rem;
+}
+
+.order-details {
+    background: #f9f9f9;
+    padding: 2rem;
+    border-radius: 8px;
+    margin: 2rem 0;
+}
+
+h2 {
+    color: #333;
+    margin-bottom: 1.5rem;
+    border-bottom: 2px solid #eee;
+    padding-bottom: 0.5rem;
+}
+
+h3 {
+    color: #444;
+    margin: 1.5rem 0 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.order-status, .order-total {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 1rem 0;
+    padding: 0.5rem 0;
+}
+
+.status-badge {
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    font-weight: 500;
+    text-transform: capitalize;
+}
+
+.status-badge.pending { background: #fff3cd; color: #856404; }
+.status-badge.completed { background: #d4edda; color: #155724; }
+
+.label {
+    color: #666;
+    font-weight: 500;
+}
+
+.amount {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: #2c3e50;
+}
+
+.shipping-info {
+    background: white;
+    padding: 1.5rem;
+    border-radius: 8px;
+    margin: 1.5rem 0;
+}
+
+.address-details p {
+    margin: 0.3rem 0;
+    color: #555;
+}
+
+.items-list {
+    list-style: none;
+    padding: 0;
+}
+
+.item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem;
+    border-bottom: 1px solid #eee;
+}
+
+.item:last-child {
+    border-bottom: none;
+}
+
+.item-details {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.item-name {
+    font-weight: 500;
+}
+
+.item-quantity {
+    color: #666;
+}
+
+.item-price {
+    font-weight: 600;
+    color: #2c3e50;
+}
+
+.action-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    margin-top: 2rem;
+}
+
+.home-button, .orders-button {
+    padding: 0.8rem 1.5rem;
+    border-radius: 5px;
+    text-decoration: none;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.home-button {
+    background: #2c3e50;
+    color: white;
+}
+
+.orders-button {
+    background: #f8f9fa;
+    color: #2c3e50;
+    border: 1px solid #dee2e6;
+}
+
+.home-button:hover {
+    background: #34495e;
+    transform: translateY(-2px);
+}
+
+.orders-button:hover {
+    background: #e9ecef;
+    transform: translateY(-2px);
+}
+
+@media (max-width: 768px) {
+    .success-container {
+        margin: 1rem;
+        padding: 1rem;
+    }
+
+    .action-buttons {
+        flex-direction: column;
+    }
+
+    .home-button, .orders-button {
+        width: 100%;
+        justify-content: center;
+    }
+}
+</style>
+
+<%- include('partials/footer') %>

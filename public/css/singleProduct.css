@@ -144,9 +144,42 @@
 }
 
 .quantity-selector {
+    margin: 2rem 0;
     display: flex;
-    border: 1px solid var(--stone-gray);
+    align-items: center;
+    gap: 1rem;
 }
+
+.quantity-selector label {
+    color: var(--pewter);
+    font-size: 1rem;
+    font-weight: 500;
+}
+
+.quantity-selector input[type="number"] {
+    width: 80px;
+    padding: 0.8rem;
+    border: 1px solid var(--stone-gray);
+    border-radius: 4px;
+    font-size: 1rem;
+    color: var(--charcoal-black);
+    background: var(--white);
+    transition: all 0.3s ease;
+}
+
+.quantity-selector input[type="number"]:focus {
+    outline: none;
+    border-color: var(--antique-brass);
+    box-shadow: 0 0 0 2px rgba(182, 141, 76, 0.1);
+}
+
+/* Remove spinner buttons from number input */
+.quantity-selector input[type="number"]::-webkit-inner-spin-button,
+.quantity-selector input[type="number"]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
 
 .quantity-btn {
     padding: 1rem;
@@ -212,6 +245,71 @@
     overflow: hidden;
     transition: max-height 0.3s ease;
     padding: 0 1rem;
+}
+.quatity-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    margin: 2rem 0;
+}
+
+.quantity-title {
+    font-size: 1rem;
+    font-weight: 500;
+    color: var(--pewter);
+    min-width: 50px;
+}
+
+.quantity-input {
+    width: 80px;
+    padding: 0.8rem;
+    border: 1px solid var(--stone-gray);
+    border-radius: 4px;
+    font-size: 1rem;
+    color: var(--charcoal-black);
+    background: var(--white);
+    transition: all 0.3s ease;
+}
+
+.quantity-input:focus {
+    outline: none;
+    border-color: var(--antique-brass);
+    box-shadow: 0 0 0 2px rgba(182, 141, 76, 0.1);
+}
+
+/* Remove spinner buttons from number input */
+.quantity-input::-webkit-inner-spin-button,
+.quantity-input::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+.quantity-input {
+    -moz-appearance: textfield;
+}
+
+.add-to-cart-btn {
+    flex: 1;
+    background: var(--navy-blue);
+    color: var(--white);
+    border: none;
+    padding: 0.8rem 1.5rem;
+    border-radius: 4px;
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.add-to-cart-btn:hover {
+    background: var(--hunter-green);
+    transform: translateY(-2px);
+}
+
+.add-to-cart-btn:active {
+    transform: translateY(0);
 }
 
 /* Responsive Design */
