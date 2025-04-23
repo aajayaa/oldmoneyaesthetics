@@ -1,0 +1,323 @@
+<%- include ('../partials/admin/sidebar') %> 
+<main class="main-content">
+    <div class="form-header">
+        <h1 class="form-title">Sales Analytics</h1>
+        <div class="form-actions">
+            <div class="date-range-picker">
+                <input type="date" class="form-control">
+                <span>to</span>
+                <input type="date" class="form-control">
+            </div>
+            <button type="button" class="btn btn-primary">
+                <i class="fas fa-download"></i> Export Report
+            </button>
+        </div>
+    </div>
+
+    <!-- Key Metrics -->
+    <div class="metrics-grid">
+        <div class="metric-card">
+            <div class="metric-content">
+                <div class="metric-icon revenue">
+                    <i class="fas fa-coins"></i>
+                </div>
+                <div class="metric-data">
+                    <h3>$45,230</h3>
+                    <p>Total Revenue</p>
+                    <span class="metric-trend positive">+12.5% vs last period</span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="metric-card">
+            <div class="metric-content">
+                <div class="metric-icon orders">
+                    <i class="fas fa-shopping-bag"></i>
+                </div>
+                <div class="metric-data">
+                    <h3>1,234</h3>
+                    <p>Total Orders</p>
+                    <span class="metric-trend negative">-3.2% vs last period</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="metric-card">
+            <div class="metric-content">
+                <div class="metric-icon aov">
+                    <i class="fas fa-chart-line"></i>
+                </div>
+                <div class="metric-data">
+                    <h3>$186</h3>
+                    <p>Average Order Value</p>
+                    <span class="metric-trend positive">+8.1% vs last period</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="metric-card">
+            <div class="metric-content">
+                <div class="metric-icon customers">
+                    <i class="fas fa-users"></i>
+                </div>
+                <div class="metric-data">
+                    <h3>892</h3>
+                    <p>New Customers</p>
+                    <span class="metric-trend positive">+15.8% vs last period</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Chart -->
+    <div class="analytics-chart">
+        <div class="chart-header">
+            <h3>Sales Performance</h3>
+            <div class="chart-legend">
+                <span class="legend-item current"><i class="fas fa-square"></i> Current Period</span>
+                <span class="legend-item previous"><i class="fas fa-square"></i> Previous Period</span>
+            </div>
+        </div>
+        <canvas id="salesTrendChart"></canvas>
+    </div>
+
+    <!-- Secondary Metrics -->
+    <div class="analytics-grid">
+        <div class="category-breakdown">
+            <h4>Revenue by Category</h4>
+            <canvas id="categoryChart"></canvas>
+        </div>
+        
+        <div class="regional-sales">
+            <h4>Regional Sales</h4>
+            <canvas id="regionalChart"></canvas>
+        </div>
+        
+        <div class="top-products">
+            <h4>Best Selling Products</h4>
+            <div class="product-list">
+                <div class="product-item">
+                    <span class="product-name">Heritage Tweed Blazer</span>
+                    <span class="product-sales">$12,450</span>
+                </div>
+                <!-- More product items -->
+            </div>
+        </div>
+    </div>
+</main>
+
+<style>
+/* Analytics Styles */
+.metrics-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.metric-card {
+    background: var(--white);
+    padding: 1.5rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+}
+
+.metric-content {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+}
+
+.metric-icon {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.75rem;
+}
+
+.metric-icon.revenue { background: rgba(74, 107, 87, 0.1); color: var(--success-green); }
+.metric-icon.orders { background: rgba(109, 46, 70, 0.1); color: var(--burgundy); }
+.metric-icon.aov { background: rgba(197, 168, 128, 0.1); color: var(--gold-foil); }
+.metric-icon.customers { background: rgba(10, 35, 66, 0.1); color: var(--navy-blue); }
+
+.metric-data h3 {
+    color: var(--navy-blue);
+    margin-bottom: 0.25rem;
+}
+
+.metric-trend {
+    font-size: 0.85rem;
+    display: block;
+    margin-top: 0.5rem;
+}
+
+.metric-trend.positive { color: var(--success-green); }
+.metric-trend.negative { color: var(--error-maroon); }
+
+.analytics-chart {
+    background: var(--white);
+    padding: 2rem;
+    border-radius: 8px;
+    margin-bottom: 2rem;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+}
+
+.chart-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+}
+
+.chart-legend {
+    display: flex;
+    gap: 1.5rem;
+}
+
+.legend-item i {
+    margin-right: 0.5rem;
+}
+
+.legend-item.current i { color: var(--navy-blue); }
+.legend-item.previous i { color: var(--stone-gray); }
+
+.analytics-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.5rem;
+}
+
+.category-breakdown, .regional-sales {
+    background: var(--white);
+    padding: 1.5rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+}
+
+.top-products {
+    background: var(--white);
+    padding: 1.5rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+}
+
+.product-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 1rem 0;
+    border-bottom: 1px solid var(--stone-gray);
+}
+
+.product-item:last-child {
+    border-bottom: none;
+}
+
+@media (max-width: 768px) {
+    .chart-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
+    }
+    
+    .form-actions {
+        flex-wrap: wrap;
+        gap: 1rem;
+    }
+}
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Sales Trend Chart
+    const trendCtx = document.getElementById('salesTrendChart').getContext('2d');
+    new Chart(trendCtx, {
+        type: 'line',
+        data: {
+            labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+            datasets: [{
+                label: 'Current Period',
+                data: [12500, 18900, 17800, 16200, 21400, 19800],
+                borderColor: var(--navy-blue),
+                backgroundColor: rgba(10, 35, 66, 0.1),
+                tension: 0.4,
+                fill: true
+            },
+            {
+                label: 'Previous Period',
+                data: [11000, 16200, 15400, 14500, 18900, 17500],
+                borderColor: var(--stone-gray),
+                backgroundColor: rgba(217, 217, 214, 0.1),
+                tension: 0.4,
+                fill: true
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: { position: 'top' }
+            },
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    grid: { color: var(--stone-gray) }
+                }
+            }
+        }
+    });
+
+    // Category Breakdown Chart
+    const categoryCtx = document.getElementById('categoryChart').getContext('2d');
+    new Chart(categoryCtx, {
+        type: 'doughnut',
+        data: {
+            labels: ['Outerwear', 'Suits', 'Dresses', 'Accessories'],
+            datasets: [{
+                data: [45, 30, 15, 10],
+                backgroundColor: [
+                    var(--navy-blue),
+                    var(--success-green),
+                    var(--gold-foil),
+                    var(--burgundy)
+                ],
+                borderWidth: 0
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: { position: 'right' }
+            }
+        }
+    });
+
+    // Regional Sales Chart
+    const regionalCtx = document.getElementById('regionalChart').getContext('2d');
+    new Chart(regionalCtx, {
+        type: 'bar',
+        data: {
+            labels: ['North', 'South', 'East', 'West'],
+            datasets: [{
+                label: 'Sales by Region',
+                data: [18900, 15400, 12450, 16800],
+                backgroundColor: var(--navy-blue),
+                borderColor: var(--navy-blue),
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    grid: { color: var(--stone-gray) }
+                }
+            }
+        }
+    });
+});
+</script>
+
+<%- include ('../partials/admin/footer') %> 

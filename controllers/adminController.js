@@ -1,10 +1,66 @@
 const uploadOptions = require('../utils/uploadOptions');
 const Category = require('../models/Category');
 const Product = require('../models/Product');
+const Order = require('../models/Order');
+const User = require('../models/User');
 // const flash = require('connect-flash');
 
 const getDashboard = async (req, res) => {
   try {
+    const orders = await Order.find();
+    const totalOrders = orders.length;
+    const totalRevenue = orders.reduce((total, order) => {
+      return total + order.items.reduce((itemTotal, item) => itemTotal + item.price, 0);
+    }, 0);
+    const totalProducts = await Product.countDocuments();
+    const totalUsers = await User.countDocuments({ roles: { $ne: 'Admin' } });
+    const pendingOrders = orders.filter(order => order.fulfillment_status === 'pending');
+    const pendingOrdersCount = pendingOrders.length;
+
+    // Get current month's revenue
+    const currentDate = new Date();
+    const currentMonth = currentDate.getMonth();
+    const currentYear = currentDate.getFullYear();
+
+    // Get last month's date range
+    const lastMonth = currentMonth === 0 ? 11 : currentMonth - 1;
+    const lastMonthYear = currentMonth === 0 ? currentYear - 1 : currentYear;
+
+    // Calculate current month's revenue
+    const currentMonthRevenue = orders
+      .filter(order => {
+        const orderDate = new Date(order.createdAt);
+        return orderDate.getMonth() === currentMonth &&
+          orderDate.getFullYear() === currentYear;
+      })
+      .reduce((total, order) => {
+        return total + order.items.reduce((itemTotal, item) => itemTotal + item.price, 0);
+      }, 0);
+
+    // Calculate last month's revenue
+    const lastMonthRevenue = orders
+      .filter(order => {
+        const orderDate = new Date(order.createdAt);
+        return orderDate.getMonth() === lastMonth &&
+          orderDate.getFullYear() === lastMonthYear;
+      })
+      .reduce((total, order) => {
+        return total + order.items.reduce((itemTotal, item) => itemTotal + item.price, 0);
+      }, 0);
+
+    // Calculate growth percentage
+    const salesGrowth = lastMonthRevenue === 0 ? 100 :
+      Math.round(((currentMonthRevenue - lastMonthRevenue) / lastMonthRevenue) * 100);
+
+      // Calculate new users this month
+    const newUsersThisMonth = await User.countDocuments({
+      roles: { $ne: 'Admin' },
+      createdAt: {
+        $gte: new Date(currentYear, currentMonth, 1),
+        $lte: new Date(currentYear, currentMonth + 1, 0)
+      }
+    });
+
     // Add null check for req.user
     if (!req.user) {
       return res.redirect('/login');
@@ -13,7 +69,15 @@ const getDashboard = async (req, res) => {
     res.render('admin/dashboard', {
       title: 'Dashboard',
       user: req.user,
-      isAdmin: req.user.role === 'Admin' // Note: Case sensitivity - 'Admin' vs 'admin'
+      isAdmin: req.user.role === 'Admin', // Note: Case sensitivity - 'Admin' vs 'admin'
+      orders,
+      totalOrders,
+      totalRevenue,
+      totalProducts,
+      totalUsers,
+      pendingOrdersCount,
+      salesGrowth,
+      newUsersThisMonth,
     });
   } catch (error) {
     console.error('Dashboard error:', error);
@@ -221,7 +285,7 @@ const showCategoryUpdateForm = async (req, res) => {
       category: category,
       uploadOptions: uploadOptions,
     })
-  }catch (error) {
+  } catch (error) {
     console.error('Error fetching category for update:', error);
     req.flash('error', 'Error fetching category for update');
     res.redirect('/admin/categories');
@@ -295,29 +359,15 @@ const handleCategoryUpdate = async (req, res) => {
 
 const handleProductDeletion = async (req, res) => {
   try {
-    const category = await Category.findByIdAndDelete(req.params.id); // Changed to findByIdAndDelete
+    const product = await Product.findByIdAndDelete(req.params.id); // Changed to findByIdAndDelete
 
-    if (!category) {
-      req.falsh('error', 'Category not found');
-      // return res.status(404).json({
-      //   success: false,
-      //   message: "Category not found",
-      // });
+    if (!product) {
+      req.falsh('error', 'Product not found');
     }
-
-    // return res.status(200).json({
-    //   success: true,
-    //   message: "Category deleted successfully",
-    //   data: category,
-    // });
-    req.flash('success', 'Category deleted successfully');
-    res.redirect('/admin/categories');
+    req.flash('success', 'Product deleted successfully');
+    res.redirect('/admin/products');
   } catch (err) {
-    return res.status(500).json({
-      success: false,
-      message: "Server error",
-      error: err.message,
-    });
+    req.flash('error', 'Error deleting product');
   }
 }
 
@@ -490,7 +540,7 @@ const handleProductUpdate = async (req, res) => {
 const showProductUpdateForm = async (req, res) => {
   try {
     const product = await Product.findById(req.params.id);
-const categories = await Category.find();
+    const categories = await Category.find();
     if (!product) {
       req.flash('error', 'Category not found');
       return res.redirect('/admin/products');
@@ -504,7 +554,7 @@ const categories = await Category.find();
       categories: categories,
       uploadOptions: uploadOptions,
     })
-  }catch (error) {
+  } catch (error) {
     console.error('Error fetching category for update:', error);
     req.flash('error', 'Error fetching product for update');
     res.redirect('/admin/products');
@@ -528,5 +578,6 @@ module.exports = {
   showCategoryUpdateForm,
   handleCategoryUpdate,
   handleProductUpdate,
-  showProductUpdateForm
+  showProductUpdateForm,
+  handleProductDeletion
 };

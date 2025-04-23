@@ -1,0 +1,328 @@
+<%- include ('../partials/header') %> 
+
+<section class="orders-section">
+    <div class="orders-container">
+        <h2 class="orders-title">Order History</h2>
+        
+        <% if (orders && orders.length > 0) { %>
+            <div class="orders-list">
+                <% orders.forEach(order => { %>
+                    <div class="order-card">
+                        <div class="order-header">
+                            <div class="order-meta">
+                                <p class="order-number">Order #<%= order.orderNumber %></p>
+                                <p class="order-date"><%= order.orderDate %></p>
+                            </div>
+                            <div class="order-status <%= order?.status?.toLowerCase() %>">
+                                <i class="fa-regular fa-circle-check"></i>
+                                <%= order.status %>
+                            </div>
+                        </div>
+
+                        <div class="order-details">
+                            <div class="order-items">
+                                <% order.items.forEach(item => { %>
+                                    <div class="order-item">
+                                        <img src="<%= item.image %>" alt="<%= item.name %>" class="item-image">
+                                        <div class="item-info">
+                                            <h4 class="item-name"><%= item.name %></h4>
+                                            <p class="item-variant"><%= item.color %>, Size <%= item.size %></p>
+                                        </div>
+                                        <p class="item-quantity">Qty: <%= item.quantity %></p>
+                                        <p class="item-price">£<%= item.price %></p>
+                                    </div>
+                                <% }) %>
+                            </div>
+
+                            <div class="order-footer">
+                                <div class="order-total">
+                                    <span>Total:</span>
+                                    <span class="total-amount">£<%= order.total %></span>
+                                </div>
+                                <div class="order-actions">
+                                    <button class="reorder-btn">
+                                        <i class="fa-regular fa-rotate"></i>
+                                        Reorder
+                                    </button>
+                                    <a href="/invoice/<%= order.orderNumber %>" class="invoice-link">
+                                        View Invoice
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                <% }) %>
+            </div>
+        <% } else { %>
+            <div class="empty-orders">
+                <div class="empty-content">
+                    <i class="fa-regular fa-box-open"></i>
+                    <h3>No Orders Yet</h3>
+                    <p>Your sartorial journey begins here</p>
+                    <a href="/collections" class="shop-btn">Explore Collections</a>
+                </div>
+            </div>
+        <% } %>
+    </div>
+</section>
+
+<style>
+/* Orders Section Styles */
+.orders-section {
+    padding: 4rem 5%;
+    background-color: var(--ivory-white);
+    min-height: 100vh;
+}
+
+.orders-container {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.orders-title {
+    font-family: 'Playfair Display', serif;
+    color: var(--navy-blue);
+    font-size: 2.5rem;
+    margin-bottom: 2rem;
+    border-bottom: 2px solid var(--gold-foil);
+    padding-bottom: 1rem;
+}
+
+.order-card {
+    background: var(--white);
+    border: 1px solid var(--stone-gray);
+    margin-bottom: 2rem;
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.order-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.5rem;
+    background: var(--warm-beige);
+    border-bottom: 1px solid var(--stone-gray);
+}
+
+.order-meta {
+    display: flex;
+    gap: 2rem;
+}
+
+.order-number {
+    font-weight: 600;
+    color: var(--navy-blue);
+}
+
+.order-date {
+    color: var(--pewter);
+}
+
+.order-status {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    font-size: 0.9rem;
+}
+
+.order-status.delivered {
+    background: var(--success-green);
+    color: var(--white);
+}
+
+.order-status.processing {
+    background: var(--gold-foil);
+    color: var(--charcoal-black);
+}
+
+.order-status.cancelled {
+    background: var(--error-maroon);
+    color: var(--white);
+}
+
+.order-items {
+    padding: 1.5rem;
+}
+
+.order-item {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    padding: 1rem 0;
+    border-bottom: 1px solid var(--stone-gray);
+}
+
+.order-item:last-child {
+    border-bottom: none;
+}
+
+.item-image {
+    width: 80px;
+    height: 100px;
+    object-fit: cover;
+    border-radius: 2px;
+}
+
+.item-info {
+    flex: 1;
+}
+
+.item-name {
+    font-family: 'Playfair Display', serif;
+    color: var(--navy-blue);
+    margin-bottom: 0.25rem;
+}
+
+.item-variant {
+    color: var(--pewter);
+    font-size: 0.9rem;
+}
+
+.item-quantity {
+    width: 80px;
+    text-align: center;
+    color: var(--pewter);
+}
+
+.item-price {
+    width: 100px;
+    text-align: right;
+    color: var(--burgundy);
+    font-weight: 500;
+}
+
+.order-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.5rem;
+    border-top: 1px solid var(--stone-gray);
+}
+
+.order-total {
+    display: flex;
+    gap: 1rem;
+    font-size: 1.1rem;
+}
+
+.total-amount {
+    color: var(--burgundy);
+    font-weight: 600;
+}
+
+.order-actions {
+    display: flex;
+    gap: 1rem;
+}
+
+.reorder-btn {
+    background: var(--navy-blue);
+    color: var(--gold-foil);
+    border: 1px solid var(--gold-foil);
+    padding: 0.8rem 1.5rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.invoice-link {
+    background: var(--white);
+    color: var(--pewter);
+    border: 1px solid var(--stone-gray);
+    padding: 0.8rem 1.5rem;
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+.reorder-btn:hover {
+    background: var(--hunter-green);
+}
+
+.invoice-link:hover {
+    border-color: var(--antique-brass);
+    color: var(--charcoal-black);
+}
+
+.empty-orders {
+    text-align: center;
+    padding: 4rem 0;
+}
+
+.empty-content {
+    max-width: 500px;
+    margin: 0 auto;
+}
+
+.empty-content i {
+    font-size: 3rem;
+    color: var(--pewter);
+    margin-bottom: 1.5rem;
+}
+
+.shop-btn {
+    background: var(--navy-blue);
+    color: var(--gold-foil);
+    padding: 1rem 2rem;
+    text-decoration: none;
+    margin-top: 1.5rem;
+    display: inline-block;
+}
+
+@media (max-width: 768px) {
+    .order-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
+    }
+
+    .order-item {
+        flex-wrap: wrap;
+        gap: 1rem;
+    }
+
+    .item-image {
+        width: 60px;
+        height: 80px;
+    }
+
+    .item-quantity,
+    .item-price {
+        width: auto;
+        text-align: left;
+    }
+
+    .order-footer {
+        flex-direction: column;
+        gap: 1rem;
+        align-items: flex-start;
+    }
+}
+
+@media (max-width: 480px) {
+    .order-meta {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+    
+    .order-status {
+        align-self: flex-start;
+    }
+}
+</style>
+
+<script>
+// Add collapsible order details functionality
+document.querySelectorAll('.order-header').forEach(header => {
+    header.addEventListener('click', () => {
+        const details = header.nextElementSibling;
+        details.classList.toggle('active');
+    });
+});
+</script>
+
+<%- include ('../partials/footer') %> 

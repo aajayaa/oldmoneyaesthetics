@@ -358,6 +358,24 @@
             margin-right: auto;
         }
 
+        .alert {
+            padding: 1rem;
+            margin-bottom: 1rem;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+        }
+
+        .alert-danger {
+            background-color: #dc3545;
+            color: white;
+        }
+
+        .alert-success {
+            background-color: #28a745;
+            color: white;
+        }
+
         @media (max-width: 992px) {
             .products-table {
                 display: block;
@@ -401,148 +419,169 @@
 
     <!-- Main Content Area -->
     <main class="main-content">
-        <div class="page-header">
-            <h1 class="page-title">Products</h1>
-            <div class="page-actions">
-                <a href="#" class="btn btn-outline">
-                    <i class="fas fa-file-export"></i> Export
-                </a>
-                <a href="#" class="btn btn-primary">
-                    <i class="fas fa-plus"></i> Add Product
-                </a>
+        <% if (messages.error) { %>
+            <div class="alert alert-danger">
+                <%= messages.error %>
             </div>
-        </div>
-
-        <!-- Filters Bar -->
-        <div class="filters-bar">
-            <div class="filter-group">
-                <label for="search">Search</label>
-                <input type="text" id="search" class="filter-control" placeholder="Product name, SKU...">
-            </div>
-            <div class="filter-group">
-                <label for="category">Category</label>
-                <select id="category" class="filter-control">
-                    <option value="">All Categories</option>
-                    <option value="furniture">Furniture</option>
-                    <option value="textiles">Textiles</option>
-                    <option value="decor">Home Decor</option>
-                    <option value="lighting">Lighting</option>
-                </select>
-            </div>
-            <div class="filter-group">
-                <label for="status">Status</label>
-                <select id="status" class="filter-control">
-                    <option value="">All Statuses</option>
-                    <option value="active">Active</option>
-                    <option value="draft">Draft</option>
-                    <option value="archived">Archived</option>
-                </select>
-            </div>
-            <div class="filter-actions">
-                <button class="btn btn-outline">
-                    <i class="fas fa-filter"></i> Filter
-                </button>
-                <button class="btn btn-outline">
-                    <i class="fas fa-times"></i> Clear
-                </button>
-            </div>
-        </div>
-
-        <!-- Products Table -->
-        <table class="products-table">
-            <thead>
-                <tr>
-                    <th style="width: 30%;">Product</th>
-                    <th>Status</th>
-                    <th>Price</th>
-                    <th>Inventory</th>
-                    <th>Category</th>
-                    <th>Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-
-                <% products.forEach(product=> { %>
-
-
-                    <!-- Product 1 -->
-                    <tr>
-                        <td>
-                            <div class="product-info">
-                                <img src="<%= product.image %> " alt="Product" class="product-image">
-                                <div>
-                                    <div class="product-name">
-                                        <%= product.name %>
-                                    </div>
-                                    <div class="product-sku">SKU: <%= product.sku %>
-                                    </div>
-                                </div>
+            <% } %>
+                <% if (messages.success) { %>
+                    <div class="alert alert-success">
+                        <%= messages.success %>
+                    </div>
+                    <% } %>
+                        <div class="page-header">
+                            <h1 class="page-title">Products</h1>
+                            <div class="page-actions">
+                                <a href="#" class="btn btn-outline">
+                                    <i class="fas fa-file-export"></i> Export
+                                </a>
+                                <a href="#" class="btn btn-primary">
+                                    <i class="fas fa-plus"></i> Add Product
+                                </a>
                             </div>
-                        </td>
-                        <td>
-                            <span class="status-badge status-active">Active</span>
-                        </td>
-                        <td>
-                            <span class="price-value">Rs. <%= product.price %> </span>
-                            <span class="price-compare">Rs. <%= product.originalPrice %> </span>
-                        </td>
-                        <td>
-                            <span class="stock-value stock-in">
-                                <%= product?.stock> 0 ? `${product.stock} in stock` : 'Out of stock' %>
-                            </span>
-                        </td>
-                        <td>t-shirts </td>
-                        <td>
-                            <a href="/admin/products/edit/<%= product._id %> "> <button class="action-btn" title="Edit">
-                                    <i class="fas fa-edit"></i>
-                                </button></a>
-                            <a href="/admin/products/edit/:id"><button class="action-btn" title="Duplicate">
-                                    <i class="fas fa-copy"></i>
-                                </button></a>
-                            <a href="/admin/products/delete/:id"></a> <button class="action-btn delete" title="Delete">
-                                <i class="fas fa-trash"></i>
-                            </button>
-                        </td>
-                    </tr>
-                    <% }) %>
+                        </div>
 
-            </tbody>
-        </table>
+                        <!-- Filters Bar -->
+                        <div class="filters-bar">
+                            <div class="filter-group">
+                                <label for="search">Search</label>
+                                <input type="text" id="search" class="filter-control"
+                                    placeholder="Product name, SKU...">
+                            </div>
+                            <div class="filter-group">
+                                <label for="category">Category</label>
+                                <select id="category" class="filter-control">
+                                    <option value="">All Categories</option>
+                                    <option value="furniture">Furniture</option>
+                                    <option value="textiles">Textiles</option>
+                                    <option value="decor">Home Decor</option>
+                                    <option value="lighting">Lighting</option>
+                                </select>
+                            </div>
+                            <div class="filter-group">
+                                <label for="status">Status</label>
+                                <select id="status" class="filter-control">
+                                    <option value="">All Statuses</option>
+                                    <option value="active">Active</option>
+                                    <option value="draft">Draft</option>
+                                    <option value="archived">Archived</option>
+                                </select>
+                            </div>
+                            <div class="filter-actions">
+                                <button class="btn btn-outline">
+                                    <i class="fas fa-filter"></i> Filter
+                                </button>
+                                <button class="btn btn-outline">
+                                    <i class="fas fa-times"></i> Clear
+                                </button>
+                            </div>
+                        </div>
 
-        <!-- Pagination -->
-        <div class="pagination">
-            <div class="pagination-info">
-                Showing 1 to 5 of 24 products
-            </div>
-            <div class="pagination-controls">
-                <button class="page-btn disabled">
-                    <i class="fas fa-chevron-left"></i>
-                </button>
-                <button class="page-btn active">1</button>
-                <button class="page-btn">2</button>
-                <button class="page-btn">3</button>
-                <button class="page-btn">4</button>
-                <button class="page-btn">5</button>
-                <button class="page-btn">
-                    <i class="fas fa-chevron-right"></i>
-                </button>
-            </div>
-        </div>
+                        <!-- Products Table -->
+                        <table class="products-table">
+                            <thead>
+                                <tr>
+                                    <th style="width: 30%;">Product</th>
+                                    <th>Status</th>
+                                    <th>Price</th>
+                                    <th>Inventory</th>
+                                    <th>Category</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <% if (products && products.length> 0) { %>
+                                <tbody>
 
-        <!-- Empty State (hidden by default) -->
-        <!-- <div class="empty-state">
-            <div class="empty-icon">
-                <i class="fas fa-box-open"></i>
-            </div>
-            <h3 class="empty-title">No Products Found</h3>
-            <p class="empty-text">
-                You haven't added any products yet or your filters didn't match any products.
-                Start by adding your first product to showcase in your store.
-            </p>
-            <a href="#" class="btn btn-primary">
-                <i class="fas fa-plus"></i> Add Product
-            </a>
-        </div> -->
+
+
+                                    <% products.forEach(product=> { %>
+
+
+                                        <!-- Product 1 -->
+                                        <tr>
+                                            <td>
+                                                <div class="product-info">
+                                                    <img src="<%= product.image %> " alt="Product"
+                                                        class="product-image">
+                                                    <div>
+                                                        <div class="product-name">
+                                                            <%= product.name %>
+                                                        </div>
+                                                        <div class="product-sku">SKU: <%= product.sku %>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <span class="status-badge status-active">Active</span>
+                                            </td>
+                                            <td>
+                                                <span class="price-value">Rs. <%= product.price %> </span>
+                                                <span class="price-compare">Rs. <%= product.originalPrice %> </span>
+                                            </td>
+                                            <td>
+                                                <span class="stock-value stock-in">
+                                                    <%= product?.stock> 0 ? `${product.stock} in stock` : 'Out of stock'
+                                                        %>
+                                                </span>
+                                            </td>
+                                            <td>t-shirts </td>
+                                            <td>
+                                                <a href="/admin/products/edit/<%= product._id %> "> <button
+                                                        class="action-btn" title="Edit">
+                                                        <i class="fas fa-edit"></i>
+                                                    </button></a>
+
+                                                <a href="/admin/products/delete/<%= product._id %> "> <button
+                                                        class="action-btn delete" title="Delete">
+                                                        <i class="fas fa-trash"></i>
+                                                    </button></a>
+                                            </td>
+                                        </tr>
+                                        <% }) %>
+
+
+                                </tbody>
+
+                        </table>
+
+                        <!-- Pagination -->
+                        <div class="pagination">
+                            <div class="pagination-info">
+                                Showing 1 to 5 of 24 products
+                            </div>
+                            <div class="pagination-controls">
+                                <button class="page-btn disabled">
+                                    <i class="fas fa-chevron-left"></i>
+                                </button>
+                                <button class="page-btn active">1</button>
+                                <button class="page-btn">2</button>
+                                <button class="page-btn">3</button>
+                                <button class="page-btn">4</button>
+                                <button class="page-btn">5</button>
+                                <button class="page-btn">
+                                    <i class="fas fa-chevron-right"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <% } else{ %>
+
+                            <!-- Empty State (hidden by default) -->
+                            <div class="empty-state">
+                                <div class="empty-icon">
+                                    <i class="fas fa-box-open"></i>
+                                </div>
+                                <h3 class="empty-title">No Products Found</h3>
+                                <p class="empty-text">
+                                    You haven't added any products yet or your filters didn't match any products.
+                                    Start by adding your first product to showcase in your store.
+                                </p>
+                                <a href="/admin/products/create" class="btn btn-primary">
+                                    <i class="fas fa-plus"></i> Add Product
+                                </a>
+                            </div>
+                            <% } %>
+
     </main>
 
     <script>

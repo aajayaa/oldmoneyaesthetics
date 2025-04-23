@@ -1,6 +1,16 @@
 <%- include ('../../partials/admin/sidebar') %> 
     <!-- Main Content Area -->
     <main class="main-content">
+        <% if (messages.error) { %>
+            <div class="alert alert-danger">
+                <%= messages.error %>
+            </div>
+        <% } %>
+        <% if (messages.success) { %>
+            <div class="alert alert-success">
+                <%= messages.success %>
+            </div>
+        <% } %>
         <div class="form-header">
             <h1 class="form-title">Add New Product</h1>
             <div class="form-actions">
@@ -244,6 +254,23 @@
             --error-maroon: #8C2F3D;
             --white: #ffffff;
         }
+        .alert {
+    padding: 1rem;
+    margin-bottom: 1rem;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+}
+
+.alert-danger {
+    background-color: #dc3545;
+    color: white;
+}
+
+.alert-success {
+    background-color: #28a745;
+    color: white;
+}
 
         * {
             margin: 0;

@@ -13,6 +13,7 @@ router.get('/products/create', adminController.createProduct);
 router.get('/products', adminController.viewProduct);
 router.get('/products/edit/:id', adminController.showProductUpdateForm);
 router.post('/products/update/:id', adminController.handleProductUpdate);
+router.get('/products/delete/:id', adminController.handleProductDeletion);
 router.get('/orders', adminController.orders);
 router.get('/categories', adminController.viewCategory);
 router.get('/categories/create', adminController.createCategory);
@@ -22,5 +23,8 @@ router.get('/categories/edit/:id', adminController.showCategoryUpdateForm);
 router.post('/categories/update/:id', uploadOptions.single('image'), adminController.handleCategoryUpdate);
 router.post('/categories/create', uploadOptions.single('image'), adminController.handleCategorySubmit);
 router.post('/products/create', uploadOptions.array('images', 10), adminController.handleProductSubmit);
+router.get('/sales', function(req, res){
+    res.render('admin/salesAnalytics')
+})
 
 module.exports = router;

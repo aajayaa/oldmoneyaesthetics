@@ -111,12 +111,24 @@
         </div>
 
         <!-- Recommended -->
-        <div class="recommended-products">
-            <h2>Complete Your Ensemble</h2>
+        <section class="recommended-section">
+            <h2>You May Like These</h2>
             <div class="recommended-grid">
-                <!-- Repeat product cards from previous section -->
+                <!-- Recommended Product 1 -->
+                 <% similarProducts.forEach(sp => { %>
+                  <article class="product-card">
+                    <div class="product-image"><img src="<%= sp.image %> " alt="" ></div>
+                    <h3><%= sp.name %> </h3>
+                    <p class="product-price">Rs.<%= sp.price %> </p>
+                    <button class="product-cta">View</button>
+                </article>
+                 <% }) %>
+                
+
+                
             </div>
-        </div>
+        </section>
+
     </section>
     <div class="notification" id="notification"></div>
 

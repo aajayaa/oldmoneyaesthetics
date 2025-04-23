@@ -2,7 +2,7 @@
 
     <section class="products-page">
         <!-- Controls -->
-        <div class="products-controls">
+        <!-- <div class="products-controls">
             <div class="filter-group">
                 <span>Categories:</span>
                 <button class="filter-btn active" data-category="all">All</button>
@@ -17,28 +17,60 @@
                 <option value="newest">Newest First</option>
                 <option value="popular">Most Popular</option>
             </select>
-        </div>
+        </div> -->
+
+        <form id="filterSortForm" method="GET" action="/collections" class="products-controls">
+            <div class="filter-group">
+                <span>Categories:</span>
+                <input type="hidden" name="sort" value="<%= sort || '' %>">
+                <button type="submit" name="category" value="all"
+                    class="filter-btn <%= category === 'all' ? 'active' : '' %>">All</button>
+                <button type="submit" name="category" value="suits"
+                    class="filter-btn <%= category === 'suits' ? 'active' : '' %>">Suits</button>
+                <button type="submit" name="category" value="outerwear"
+                    class="filter-btn <%= category === 'outerwear' ? 'active' : '' %>">Outerwear</button>
+                <button type="submit" name="category" value="accessories"
+                    class="filter-btn <%= category === 'accessories' ? 'active' : '' %>">Accessories</button>
+            </div>
+
+            <!-- <select name="sort" class="sort-select" onchange="document.getElementById('filterSortForm').submit()">
+                <option value="price-asc" <%= sort === 'price-asc' ? 'selected' : '' %>>Price: Low to High</option>
+                <option value="price-desc" <%= sort === 'price-desc' ? 'selected' : '' %>>Price: High to Low</option>
+                <option value="newest" <%= sort === 'newest' ? 'selected' : '' %>>Newest First</option>
+                <option value="popular" <%= sort === 'popular' ? 'selected' : '' %>>Most Popular</option>
+            </select> -->
+
+            <select class="sort-select">
+                <option value="price-asc">Price: Low to High</option>
+                <option value="price-desc">Price: High to Low</option>
+                <option value="newest">Newest First</option>
+                <option value="featured">Featured</option>
+            </select>
+
+        </form>
+
 
         <!-- Product Grid -->
         <div class="products-grid">
             <% collections.forEach(collection=> { %>
-
-                <article class="product-card" data-category="<%= collection.category.name %> "
-                    data-price="<%= collection.price %> ">
-                    <div class="product-image"><img src="<%= collection.image %> " alt=""></div>
-                    <h3>
-                        <%= collection.name %>
-                    </h3>
-                    <p class="product-price">Rs. <%= collection.price %>
-                    </p>
-                    <button class="product-cta">View</button>
-                </article>
+                <a href="/product/<%= collection._id %> ">
+                    <article class="product-card" data-category="<%= collection.category.name %> "
+                        data-price="<%= collection.price %> ">
+                        <div class="product-image"><img src="<%= collection.image %> " alt=""></div>
+                        <h3>
+                            <%= collection.name %>
+                        </h3>
+                        <p class="product-price">Rs. <%= collection.price %>
+                        </p>
+                        <button class="product-cta">View</button>
+                    </article>
+                </a>
                 <% }) %>
 
         </div>
 
         <!-- Pagination -->
-        <div class="pagination">
+        <!-- <div class="pagination">
             <% if (currentPage > 1) { %>
                 <a href="/collections?page=<%= currentPage - 1 %>" class="page-btn">←</a>
             <% } else { %>
@@ -56,37 +88,34 @@
             <% } %>
                         
             
+        </div> -->
+        <div class="pagination">
+            <% if (currentPage> 1) { %>
+                <a href="/collections?page=<%= currentPage - 1 %>&category=<%= category %>&sort=<%= sort %>"
+                    class="page-btn">←</a>
+                <% } else { %>
+                    <button class="page-btn" disabled>←</button>
+                    <% } %>
+
+                        <% for (let i=1; i <=totalPages; i++) { %>
+                            <a href="/collections?page=<%= i %>&category=<%= category %>&sort=<%= sort %>"
+                                class="page-btn <%= currentPage === i ? 'active' : '' %>">
+                                <%= i %>
+                            </a>
+                            <% } %>
+
+                                <% if (currentPage < totalPages) { %>
+                                    <a href="/collections?page=<%= currentPage + 1 %>&category=<%= category %>&sort=<%= sort %>"
+                                        class="page-btn">→</a>
+                                    <% } else { %>
+                                        <button class="page-btn" disabled>→</button>
+                                        <% } %>
         </div>
 
-        <!-- Recommended -->
-        <section class="recommended-section">
-            <h2>You May Like These</h2>
-            <div class="recommended-grid">
-                <!-- Recommended Product 1 -->
-                <article class="product-card">
-                    <div class="product-image"></div>
-                    <h3>Silk Pocket Square</h3>
-                    <p class="product-price">£120</p>
-                    <button class="product-cta">View</button>
-                </article>
 
-                <!-- Recommended Product 2 -->
-                <article class="product-card">
-                    <div class="product-image"></div>
-                    <h3>Oxford Dress Shoes</h3>
-                    <p class="product-price">£450</p>
-                    <button class="product-cta">View</button>
-                </article>
 
-                <!-- Recommended Product 3 -->
-                <article class="product-card">
-                    <div class="product-image"></div>
-                    <h3>Cashmere Scarf</h3>
-                    <p class="product-price">£280</p>
-                    <button class="product-cta">View</button>
-                </article>
-            </div>
-        </section>
     </section>
 
-    <%- include ('../partials/footer') %>
+
+
+    <%- include('../partials/footer') %>
