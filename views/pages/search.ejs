@@ -1,0 +1,182 @@
+<%- include('../partials/header') %>
+
+<section class="search-results">
+    <div class="container">
+        <h1 class="search-title">Search Results for "<%= searchQuery %>"</h1>
+        
+        <% if (products.length > 0) { %>
+            <div class="product-grid">
+                <% products.forEach(product => { %>
+                    <article class="product-card">
+                        <a href="/product/<%= product._id %>">
+                            <div class="product-image">
+                                <img src="<%= product.image %>" alt="<%= product.name %>">
+                                <div class="product-overlay"></div>
+                            </div>
+                            <div class="product-info">
+                                <h3 class="product-name"><%= product.name %></h3>
+                                <p class="product-price">Rs. <%= product.price %></p>
+                            </div>
+                        </a>
+                    </article>
+                <% }) %>
+            </div>
+        <% } else { %>
+            <div class="no-results">
+                <i class="fas fa-search no-results-icon"></i>
+                <p class="no-results-text">No products found matching your search.</p>
+                <a href="/collections" class="browse-link">Browse all collections</a>
+            </div>
+        <% } %>
+    </div>
+</section>
+
+<style>
+.search-results {
+    padding: 4rem 2rem;
+    background-color: var(--stone-gray);
+    min-height: 60vh;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.search-title {
+    font-size: 2rem;
+    color: var(--navy-blue);
+    margin-bottom: 2rem;
+    font-weight: 500;
+    text-align: center;
+}
+
+.product-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 2rem;
+    margin-top: 2rem;
+}
+
+.product-card {
+    background: var(--white);
+    border-radius: 8px;
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+}
+
+.product-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+}
+
+.product-card a {
+    text-decoration: none;
+    color: inherit;
+}
+
+.product-image {
+    position: relative;
+    padding-top: 100%;
+    overflow: hidden;
+}
+
+.product-image img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+}
+
+.product-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(10, 35, 66, 0.05);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.product-card:hover .product-image img {
+    transform: scale(1.05);
+}
+
+.product-card:hover .product-overlay {
+    opacity: 1;
+}
+
+.product-info {
+    padding: 1.5rem;
+}
+
+.product-name {
+    font-size: 1.1rem;
+    color: var(--navy-blue);
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+}
+
+.product-price {
+    color: var(--burgundy);
+    font-weight: 600;
+    font-size: 1.1rem;
+}
+
+.no-results {
+    text-align: center;
+    padding: 4rem 2rem;
+}
+
+.no-results-icon {
+    font-size: 3rem;
+    color: var(--pewter);
+    margin-bottom: 1rem;
+}
+
+.no-results-text {
+    font-size: 1.2rem;
+    color: var(--navy-blue);
+    margin-bottom: 1.5rem;
+}
+
+.browse-link {
+    display: inline-block;
+    padding: 0.8rem 2rem;
+    background-color: var(--navy-blue);
+    color: var(--white);
+    text-decoration: none;
+    border-radius: 4px;
+    transition: background-color 0.3s ease;
+}
+
+.browse-link:hover {
+    background-color: var(--burgundy);
+}
+
+@media (max-width: 768px) {
+    .search-results {
+        padding: 2rem 1rem;
+    }
+
+    .search-title {
+        font-size: 1.5rem;
+    }
+
+    .product-grid {
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+        gap: 1rem;
+    }
+
+    .product-info {
+        padding: 1rem;
+    }
+}
+</style>
+
+<%- include('../partials/footer') %>

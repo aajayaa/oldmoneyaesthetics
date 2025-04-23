@@ -52,12 +52,14 @@ const authRoutes = require('./routes/authRoutes');
 const adminRoutes = require('./routes/adminRoutes');
 const pageRoutes = require('./routes/pageRoutes');
 const cartRoutes = require('./routes/cartRoutes');
+const searchRoutes = require('./routes/searchRoutes');
 
 // Routes
 app.use('/', pageRoutes);
 app.use('/', authRoutes);
 app.use('/admin', adminRoutes);
 app.use('/', cartRoutes);
+app.use('/search', searchRoutes);
 
 app.listen(port, () => {
   console.log(`Server is running on port http://localhost:${port}`);
