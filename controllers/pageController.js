@@ -199,6 +199,41 @@ const orders = async (req, res) => {
     }
 }
 
+
+const path = require('path');
+
+const updateProfile = async (req, res) => {
+  try {
+    const userId = req.user._id;
+    const { fullname, email, phone, dob } = req.body;
+    const avatarFile = req.file;
+
+    const updateData = {
+      name: fullname,
+      email,
+      phone,
+      dob
+    };
+
+    const basePath = `${req.protocol}://${req.get('host')}/public/images/uploads/`;
+
+    if (avatarFile) {
+        updateData.image = `${basePath}${req.file.filename}`;
+    }
+
+    const updatedUser = await User.findByIdAndUpdate(userId, updateData, {
+      new: true,
+      runValidators: true
+    });
+
+    res.redirect('/profile?updated=true');
+  } catch (err) {
+    console.error('Update profile error:', err);
+    res.status(500).send('Server Error');
+  }
+};
+
+
 module.exports = {
     getHome,
     getCollections,

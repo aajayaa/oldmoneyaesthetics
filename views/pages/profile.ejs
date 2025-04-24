@@ -7,9 +7,14 @@
                     <div class="avatar-container">
                         <img src="<%= user.avatar || '/images/default-avatar.jpeg' %>" alt="Profile Avatar"
                             class="profile-avatar">
-                        <button class="avatar-upload">
-                            <i class="fa-solid fa-camera"></i>
-                        </button>
+                        <!-- Avatar Upload Form -->
+                        <form id="avatarUploadForm" action="/profile/avatar" method="POST"
+                            enctype="multipart/form-data">
+                            <input type="file" name="avatar" id="avatarInput" style="display: none;" accept="image/*">
+                            <button class="avatar-upload" type="button">
+                                <i class="fa-solid fa-camera"></i>
+                            </button>
+                        </form>
                     </div>
 
                     <h3 class="user-name">
@@ -44,94 +49,94 @@
                 <!-- Profile Information Section -->
                 <div class="content-section active" id="profile">
                     <h2 class="section-title">Personal Details</h2>
-                    <form class="profile-form">
-                        <div class="form-grid">
-                            <div class="input-group">
-                                <label>Full Name</label>
-                                <input type="text" value="<%= user.name %>" required>
-                            </div>
-                            <div class="input-group">
-                                <label>Email Address</label>
-                                <input type="email" value="<%= user.email %>" required>
-                            </div>
-                            <div class="input-group">
-                                <label>Phone Number</label>
-                                <input type="tel" value="<%= user.phone %>">
-                            </div>
-                            <div class="input-group">
-                                <label>Date of Birth</label>
-                                <input type="date" value="<%= user.dob %>">
-                            </div>
+                    <form class="profile-form" action="/profile/update" method="post" enctype="multipart/form-data>
+                        <div class=" form-grid">
+                        <div class="input-group">
+                            <label>Full Name</label>
+                            <input type="text" name="fullname" value="<%= user.name %>" required>
                         </div>
-                        <button type="submit" class="save-changes">
-                            <i class="fa-regular fa-floppy-disk"></i>
-                            Save Changes
-                        </button>
-                    </form>
+                        <div class="input-group">
+                            <label>Email Address</label>
+                            <input type="email" name="email" value="<%= user.email %>" required>
+                        </div>
+                        <div class="input-group">
+                            <label>Phone Number</label>
+                            <input type="tel" name="phone" value="<%= user.phone %>">
+                        </div>
+                        <div class="input-group">
+                            <label>Date of Birth</label>
+                            <input type="date" name="dob" value="<%= user.dob %>">
+                        </div>
                 </div>
+                <button type="submit" class="save-changes">
+                    <i class="fa-regular fa-floppy-disk"></i>
+                    Save Changes
+                </button>
+                </form>
+            </div>
 
-                <!-- Security Section -->
-                <div class="content-section" id="security">
-                    <h2 class="section-title">Account Security</h2>
-                    <form class="security-form">
-                        <div class="input-group">
-                            <label>Current Password</label>
-                            <input type="password" required>
+            <!-- Security Section -->
+            <div class="content-section" id="security">
+                <h2 class="section-title">Account Security</h2>
+                <form class="security-form">
+                    <div class="input-group">
+                        <label>Current Password</label>
+                        <input type="password" required>
+                    </div>
+                    <div class="input-group">
+                        <label>New Password</label>
+                        <input type="password" required>
+                    </div>
+                    <div class="input-group">
+                        <label>Confirm New Password</label>
+                        <input type="password" required>
+                    </div>
+                    <div class="security-options">
+                        <label class="checkbox-option">
+                            <input type="checkbox" <%=user.twoFactor ? 'checked' : '' %>>
+                            Enable Two-Factor Authentication
+                        </label>
+                    </div>
+                    <button type="submit" class="save-changes">
+                        Update Security Settings
+                    </button>
+                </form>
+            </div>
+
+            <!-- Preferences Section -->
+            <div class="content-section" id="preferences">
+                <h2 class="section-title">Preferences</h2>
+                <div class="preference-options">
+                    <div class="preference-item">
+                        <h4>Theme Preferences</h4>
+                        <div class="theme-switch">
+                            <button class="theme-option active" data-theme="light">
+                                <i class="fa-regular fa-sun"></i>
+                                Light
+                            </button>
+                            <button class="theme-option" data-theme="dark">
+                                <i class="fa-regular fa-moon"></i>
+                                Dark
+                            </button>
                         </div>
-                        <div class="input-group">
-                            <label>New Password</label>
-                            <input type="password" required>
-                        </div>
-                        <div class="input-group">
-                            <label>Confirm New Password</label>
-                            <input type="password" required>
-                        </div>
-                        <div class="security-options">
+                    </div>
+
+                    <div class="preference-item">
+                        <h4>Notification Preferences</h4>
+                        <div class="notification-options">
                             <label class="checkbox-option">
-                                <input type="checkbox" <%=user.twoFactor ? 'checked' : '' %>>
-                                Enable Two-Factor Authentication
+                                <input type="checkbox" checked>
+                                Email Notifications
                             </label>
-                        </div>
-                        <button type="submit" class="save-changes">
-                            Update Security Settings
-                        </button>
-                    </form>
-                </div>
-
-                <!-- Preferences Section -->
-                <div class="content-section" id="preferences">
-                    <h2 class="section-title">Preferences</h2>
-                    <div class="preference-options">
-                        <div class="preference-item">
-                            <h4>Theme Preferences</h4>
-                            <div class="theme-switch">
-                                <button class="theme-option active" data-theme="light">
-                                    <i class="fa-regular fa-sun"></i>
-                                    Light
-                                </button>
-                                <button class="theme-option" data-theme="dark">
-                                    <i class="fa-regular fa-moon"></i>
-                                    Dark
-                                </button>
-                            </div>
-                        </div>
-
-                        <div class="preference-item">
-                            <h4>Notification Preferences</h4>
-                            <div class="notification-options">
-                                <label class="checkbox-option">
-                                    <input type="checkbox" checked>
-                                    Email Notifications
-                                </label>
-                                <label class="checkbox-option">
-                                    <input type="checkbox">
-                                    SMS Notifications
-                                </label>
-                            </div>
+                            <label class="checkbox-option">
+                                <input type="checkbox">
+                                SMS Notifications
+                            </label>
                         </div>
                     </div>
                 </div>
             </div>
+        </div>
         </div>
     </section>
 
@@ -382,6 +387,21 @@
                 reader.readAsDataURL(file);
             };
             input.click();
+        });
+
+
+        // Trigger file input on camera icon click
+        document.querySelector('.avatar-upload').addEventListener('click', function (e) {
+            e.preventDefault();
+            document.getElementById('avatarInput').click();
+        });
+
+        // Auto submit form when image selected
+        document.getElementById('avatarInput').addEventListener('change', function () {
+            const file = this.files[0];
+            if (file) {
+                document.getElementById('avatarUploadForm').submit();
+            }
         });
     </script>
 

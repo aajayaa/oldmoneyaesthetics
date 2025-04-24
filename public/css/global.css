@@ -47,8 +47,8 @@
     transition: color 0.3s ease;
   }
   
-  a:hover:not(.logo) {
-    color: var(--ivory-white);
+  a:hover:not(.logo):not(.nav-links) {
+    color: var(--success-green);
   }
   
   /* ===== REUSABLE COMPONENTS ===== */

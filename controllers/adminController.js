@@ -433,7 +433,8 @@ const handleProductSubmit = async (req, res) => {
       return res.status(400).send("At least one image is required");
     }
 
-    const basePath = `${req.protocol}://${req.get("host")}/public/images/uploads/`;
+    // const basePath = `${req.protocol}://${req.get("host")}/public/images/uploads/`;
+    const basePath  = `/images/uploads`
     const imagesPaths = req.files.map((file) => `${basePath}${file.filename}`);
 
     let product = new Product({
